@@ -1,0 +1,10 @@
+### Upload file
+POST http://localhost:7007/api/files/
+
+{
+  "folder_path": "/Folder1",
+  "name": "picture",
+  "file_type": ".jpg",
+}
+
+###
