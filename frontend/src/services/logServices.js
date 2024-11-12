@@ -1,22 +1,7 @@
-import { BASE_URL } from "../utils/globalVariables";
 
-const readAllLogs = async () => {
-    try {
-      const token = localStorage.getItem("token");
-  
-      if (token) {
-        const result = await fetch(`${BASE_URL}/user/logs/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const theResult = await result.json();
-  
-        return theResult;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+export const readAllLogs = async () => {
+  return [
+    { id: 1, title: "Log 1", description: "Description 1", date: "2023-01-01" },
+    { id: 2, title: "Log 2", description: "Description 2", date: "2023-01-02" },
+  ];
+};
