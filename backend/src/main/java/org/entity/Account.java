@@ -13,4 +13,7 @@ public class Account {
     public void updateRole(Role role) {
         this.role = role;
     }
+    public String getRoleAsString() {
+        return role.toString();
+    }
 }

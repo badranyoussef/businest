@@ -1,46 +1,62 @@
 package org.dao;
+import lombok.Getter;
+import org.dto.AccountDTO;
 import org.entity.Account;
+import org.entity.Role;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class AccountDAO {
+
+    public static List<Account> createAccountList() {
+        List<Account> accountList = new ArrayList<>();
+        accountList.add(new Account(1, "Alex Johnson", Role.COMPANY_MANAGER));
+        accountList.add(new Account(2, "Jamie Smith", Role.EMPLOYEE));
+        accountList.add(new Account(3, "Taylor Brown", Role.EMPLOYEE));
+        accountList.add(new Account(4, "Morgan White", Role.COMPANY_MANAGER));
+        accountList.add(new Account(5, "Casey Black", Role.HR));
+        accountList.add(new Account(6, "Jordan Green", Role.EMPLOYEE));
+        accountList.add(new Account(7, "Riley Grey", Role.EMPLOYEE));
+        accountList.add(new Account(8, "Avery Gold", Role.COMPANY_MANAGER));
+        accountList.add(new Account(9, "Cameron Blue", Role.EMPLOYEE));
+        accountList.add(new Account(10, "Dakota Silver", Role.EMPLOYEE));
+
+        return accountList;
+    }
+
     private static AccountDAO instance;
-    private static final List<AccountDTO> accounts = createAccountList();
+
+    private List<Account> accounts = createAccountList();
+
     public static AccountDAO getInstance() {
         if (instance == null) {
             instance = new AccountDAO();
         }
         return instance;
     }
-    public static List<AccountDTO> getAccounts() {
-        return accounts;
+
+    public AccountDTO getAccountById(int id) {
+        Account account = accounts.get(id - 1); //because it is a index
+        AccountDTO dto = new AccountDTO(account);
+        return dto;
     }
 
-    public static AccountDTO getAccountById(int id) {
-        AccountDTO account = accounts.get(id-1); //because it is a index
-        return account;
-    }
-
-    public static Account updateAccount(AccountDTO accountDTO) {
-        accounts.set(accountDTO.getId, )
+    public AccountDTO updateAccount(AccountDTO dto) {
+        for (Account account : accounts) {
+            if (account.getId() == dto.getId()) {
+                return new AccountDTO(account);
+            }
+        }
         return null;
     }
-
-    public static List<AccountDTO> createAccountList() {
-        List<AccountDTO> accountList = new ArrayList<>();
-        accountList.add(new AccountDTO(1, "Alex Johnson", "Company Manager"));
-        accountList.add(new AccountDTO(2, "Jamie Smith", "Employee"));
-        accountList.add(new AccountDTO(3, "Taylor Brown", "Employee"));
-        accountList.add(new AccountDTO(4, "Morgan White", "Company Manager"));
-        accountList.add(new AccountDTO(5, "Casey Black", "Employee"));
-        accountList.add(new AccountDTO(6, "Jordan Green", "Employee"));
-        accountList.add(new AccountDTO(7, "Riley Grey", "Employee"));
-        accountList.add(new AccountDTO(8, "Avery Gold", "Company Manager"));
-        accountList.add(new AccountDTO(9, "Cameron Blue", "Employee"));
-        accountList.add(new AccountDTO(10, "Dakota Silver", "Employee"));
-
-        return accountList;
+    
+    public List<AccountDTO> getAllAccounts(){
+        List<AccountDTO> dtoList = new ArrayList<>();
+        for (Account account: accounts) {
+            dtoList.add(new AccountDTO(account));
+        }
+        return dtoList;
     }
 }

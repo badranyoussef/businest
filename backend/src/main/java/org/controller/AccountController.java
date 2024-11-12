@@ -25,7 +25,7 @@ public class AccountController {
     public Handler getAccountsById(AccountDAO dao) {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
-            AccountDTO account = dao.getAccountByID(id);
+            AccountDTO account = dao.getAccountById(id);
             if (account == null ) {
                 //throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "No users were found.", timestamp);
                 System.out.println("No user found");
@@ -38,7 +38,7 @@ public class AccountController {
     public Handler updateAccount(AccountDAO dao) {
         return ctx -> {
             AccountDTO account = ctx.bodyAsClass(AccountDTO.class);
-            AccountDTO updatedAccount = dao.updateAccount(account.getRole());
+            AccountDTO updatedAccount = dao.updateAccount(account);
             if (updatedAccount == null ) {
                 //throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "No users were found.", timestamp);
                 System.out.println("something went wrong, try to update account again");
