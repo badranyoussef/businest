@@ -38,5 +38,11 @@ class Account {
     + methodExample()
 }
 
+class AccountController {
+    + List<AccountDTO> getAllAccounts()
+    + AccountDTO getAccountById(int id)
+    + AccountDTO updateAccount(String Role)
+}
+
 !pragma layout smetana
 @enduml
