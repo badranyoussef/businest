@@ -40,19 +40,5 @@ public class FileDAO extends AbstractDAO<File> {
             return query.getResultList();
         }
     }
-
-    public int deleteFileFromPath(int id) {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            File fileFound = em.find(File.class, id);
-            if (fileFound != null) {
-                em.remove(fileFound);
-                em.getTransaction().commit();
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    }
 }
 

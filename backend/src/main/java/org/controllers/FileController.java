@@ -114,8 +114,8 @@ public class FileController {
             String id = ctx.pathParam("id");
             File file = ctx.bodyAsClass(File.class);
             if (file != null) {
-                int i = fileDAO.update(file);
-                if (i > 0) {
+                File i = fileDAO.update(file);
+                if (i != null) {
                     FileDTO dto = convertToDTO(file);
                     ctx.json(dto);
                 } else {

@@ -24,13 +24,14 @@ public abstract class AbstractDAO<T> implements InterfaceDAO<T> {
     }
 
     @Override
-    public int update(T entity) {
+    public T update(T entity) {
+        T updatedEntity;
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.merge(entity);
+            updatedEntity = em.merge(entity);
             em.getTransaction().commit();
-            return 1;
         }
+        return updatedEntity;
     }
 
     @Override
