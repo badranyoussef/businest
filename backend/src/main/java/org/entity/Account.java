@@ -1,3 +1,5 @@
+package org.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
