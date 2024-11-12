@@ -24,10 +24,10 @@ public class Endpoints {
                 before(ctx -> securityController.authorizeRole(ctx, Role.COMPANY_MANAGER));
 
                 // Get all folders in the manager's company
-                get("/companyfolders", ctx -> folderController.getFoldersByCompany(ctx));
+                get("companyfolders", ctx -> folderController.getFoldersByCompany(ctx));
 
                 // Assign role to a folder
-                post("/assignrole", ctx -> folderController.assignRole(ctx));
+                post("assignrole", ctx -> folderController.assignRole(ctx));
             });
         });
     }

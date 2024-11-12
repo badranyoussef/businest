@@ -2,14 +2,15 @@ package org.folder;
 
 import io.javalin.http.Context;
 import com.google.gson.Gson;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class FolderController {
 
     private FolderService folderService;
     private Gson gson = new Gson();
-
+    private static final Logger logger = LoggerFactory.getLogger(FolderController.class);
     public FolderController(FolderService folderService) {
         this.folderService = folderService;
     }
