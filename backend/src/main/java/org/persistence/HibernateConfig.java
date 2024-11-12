@@ -47,7 +47,7 @@ public class HibernateConfig {
             /*props.put("hibernate.connection.url", System.getenv("DB_URL"));
             props.put("hibernate.connection.username", System.getenv("DB_USER"));
             props.put("hibernate.connection.password", System.getenv("DB_PASSWORD"));*/
-            props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/mockexam?currentSchema=public");
+            props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/businest?currentSchema=public");
             props.put("hibernate.connection.username", "postgres");
             props.put("hibernate.connection.password", "postgres");
             props.put("hibernate.show_sql", "true");

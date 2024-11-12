@@ -102,6 +102,7 @@ public class FileController {
             File createdFile = dao.create(file);
             FileDTO dto = convertToDTO(createdFile);
             if (dto != null) {
+                System.out.println("Det gik godt ven.");
                 ctx.status(HttpStatus.OK).json(dto);
             } else {
                 throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Couldn't create file.", timestamp);
