@@ -109,7 +109,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <repositories>
         <repository>
             <id>maven_central</id>

@@ -22,6 +22,7 @@ public class ApplicationConfig {
     private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
     //private ISecurityController securityController = new SecurityController(emf);
     private ObjectMapper om = new ObjectMapper();
+
     private static ApplicationConfig instance;
     private Javalin app;
 

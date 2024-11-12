@@ -1,7 +1,7 @@
 package org.daos;
 
 import jakarta.persistence.EntityManagerFactory;
-import org.persistence.model.entities.*;
+import org.persistence.model.UserChangesLogEntry;
 
 import java.util.List;
 

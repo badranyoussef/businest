@@ -8,10 +8,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.persistence.model.File;
+import org.persistence.model.UserChangesLogEntry;
 
 import java.util.Properties;
 
-@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@NoArgsConstructor()//access = lombok.AccessLevel.PRIVATE)
 public class HibernateConfig {
 
     private static EntityManagerFactory entityManagerFactory;
@@ -96,6 +97,7 @@ public class HibernateConfig {
 
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(File.class);
+        configuration.addAnnotatedClass(UserChangesLogEntry.class);
     }
 
     private static EntityManagerFactory getEntityManagerFactoryConfigDevelopment() {

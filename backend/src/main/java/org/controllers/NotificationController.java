@@ -4,7 +4,7 @@ import io.javalin.http.Handler;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
 import org.daos.LogDAO;
-import org.persistence.model.entities.*;
+import org.persistence.model.UserChangesLogEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
