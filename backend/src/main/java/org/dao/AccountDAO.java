@@ -29,20 +29,18 @@ public class AccountDAO {
     }
 
     public static List<AccountDTO> createAccountList() {
+        List<AccountDTO> accountList = new ArrayList<>();
+        accountList.add(new AccountDTO(1, "Alex Johnson", "Company Manager"));
+        accountList.add(new AccountDTO(2, "Jamie Smith", "Employee"));
+        accountList.add(new AccountDTO(3, "Taylor Brown", "Employee"));
+        accountList.add(new AccountDTO(4, "Morgan White", "Company Manager"));
+        accountList.add(new AccountDTO(5, "Casey Black", "Employee"));
+        accountList.add(new AccountDTO(6, "Jordan Green", "Employee"));
+        accountList.add(new AccountDTO(7, "Riley Grey", "Employee"));
+        accountList.add(new AccountDTO(8, "Avery Gold", "Company Manager"));
+        accountList.add(new AccountDTO(9, "Cameron Blue", "Employee"));
+        accountList.add(new AccountDTO(10, "Dakota Silver", "Employee"));
 
-        accounts.add(new AccountDTO(1, "Alex Johnson", "Company Manager"));
-        accounts.add(new AccountDTO(2, "Jamie Smith", "Employee"));
-        accounts.add(new AccountDTO(3, "Taylor Brown", "Employee"));
-        accounts.add(new AccountDTO(4, "Morgan White", "Company Manager"));
-        accounts.add(new AccountDTO(5, "Casey Black", "Employee"));
-        accounts.add(new AccountDTO(6, "Jordan Green", "Employee"));
-        accounts.add(new AccountDTO(7, "Riley Grey", "Employee"));
-        accounts.add(new AccountDTO(8, "Avery Gold", "Company Manager"));
-        accounts.add(new AccountDTO(9, "Cameron Blue", "Employee"));
-        accounts.add(new AccountDTO(10, "Dakota Silver", "Employee"));
-
-        return userList;
+        return accountList;
     }
-
-    List accounts = createUserList();
 }
