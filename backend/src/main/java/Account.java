@@ -1,12 +1,14 @@
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class Account {
     private int id;
     private String name;
-    private SystemRole role;
+    private Role role;
 
-    public Account(int id, String name, SystemRole role) {
-        this.id = id;
-        this.name = name;
+    public void updateRole(Role role) {
         this.role = role;
     }
 }
