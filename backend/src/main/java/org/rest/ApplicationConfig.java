@@ -19,7 +19,7 @@ public class ApplicationConfig {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
 
-    private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
+    //public static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
     //private ISecurityController securityController = new SecurityController(emf);
     private ObjectMapper om = new ObjectMapper();
 
