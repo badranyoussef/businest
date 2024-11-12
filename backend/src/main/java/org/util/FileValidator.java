@@ -1,4 +1,4 @@
-package org.file;
+package org.util;
 
 import java.io.File;
 import java.util.Arrays;
@@ -6,7 +6,11 @@ import java.util.List;
 
 public class FileValidator {
 
-    public boolean validateFormat(File file) {
+    public boolean validateFile(File file) {
+        return validateExtension(file) == validateInformation(null);
+    }
+
+    public boolean validateExtension(File file) {
         List<String> approvedFormats = Arrays.asList(".txt", ".pdf");
 
         String fileName = file.getName();
