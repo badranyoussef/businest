@@ -18,11 +18,11 @@ public class Route {
         routeFile = new RouteFile(fileDAO);
     }
 
-    public static EndpointGroup addRoutes() {
+    public EndpointGroup addRoutes() {
         return combineRoutes(routeFile.getRoutes());
     }
 
-    private static EndpointGroup combineRoutes(EndpointGroup... endpointGroups) {
+    private EndpointGroup combineRoutes(EndpointGroup... endpointGroups) {
         return () -> {
             for (EndpointGroup group : endpointGroups) {
                 path("/", group);
