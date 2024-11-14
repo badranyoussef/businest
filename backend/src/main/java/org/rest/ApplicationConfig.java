@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.javalin.apibuilder.ApiBuilder.path;
+
 public class ApplicationConfig {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
@@ -27,17 +29,6 @@ public class ApplicationConfig {
     private Javalin app;
 
     private ApplicationConfig() {
-        ObjectMapper om = new ObjectMapper();
-        app = Javalin.create(config -> {
-            config.http.defaultContentType = "application/json";
-            config.routing.contextPath = "/api";
-            config.plugins.enableCors(cors -> {
-                cors.add(it -> {
-                    it.anyHost();
-                    //it.allowHost("https://cphbusinessprojekt.dk");
-                });
-            });
-        });
     }
 
     public static ApplicationConfig getInstance() {
@@ -48,6 +39,19 @@ public class ApplicationConfig {
     }
 
     public ApplicationConfig initiateServer() {
+
+        app = Javalin.create(config -> {
+            config.http.defaultContentType = "application/json";
+            config.routing.contextPath = "/api";
+            /*config.plugins.enableCors(cors -> {
+                cors.add(it -> {
+                    it.anyHost();
+                    //it.allowHost("https://cphbusinessprojekt.dk");
+                });
+            });
+
+             */
+        });
         return instance;
     }
 
@@ -57,7 +61,9 @@ public class ApplicationConfig {
     }
 
     public ApplicationConfig setRoute(EndpointGroup route) {
-        app.routes(route);
+        app.routes(() -> {
+            path("/", route);
+        });
         return instance;
     }
 

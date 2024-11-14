@@ -6,7 +6,7 @@ import org.persistence.model.UserChangesLogEntry;
 import java.util.List;
 
 public class LogDAO {
-
+/*
     public LogDAO(EntityManagerFactory _emf) {
         emf = _emf;
     }
@@ -18,5 +18,7 @@ public class LogDAO {
             return em.createQuery("FROM UserChangeLogEntry t", UserChangesLogEntry.class).getResultList();
         }
     }
+
+ */
 
 }

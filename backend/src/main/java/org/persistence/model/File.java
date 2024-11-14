@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dtos.FileDTO;
 
-    @Getter
+@Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -32,5 +33,10 @@ public class File {
             this.folderPath = folderPath;
             this.name = name;
             this.fileType = fileType;
+        }
+        public File(FileDTO fileDTO) {
+            this.folderPath = fileDTO.getFolder_path();
+            this.name = fileDTO.getName();
+            this.fileType = fileDTO.getFile_type();
         }
     }

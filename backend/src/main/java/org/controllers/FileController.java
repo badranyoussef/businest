@@ -2,6 +2,8 @@ package org.controllers;
 
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
+import jakarta.persistence.EntityManagerFactory;
+import lombok.NoArgsConstructor;
 import org.daos.FileDAO;
 import org.dtos.FileDTO;
 import org.exceptions.ApiException;
@@ -12,21 +14,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@NoArgsConstructor
 public class FileController {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static String timestamp = dateFormat.format(new Date());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private String timestamp = dateFormat.format(new Date());
 
-    public static FileDTO convertToDTO(File file) {
+    private FileDAO fileDAO;
+
+    public FileController(EntityManagerFactory emf) {
+        fileDAO = FileDAO.getInstance(emf);
+
+    }
+
+    public FileDTO convertToDTO(File file) {
         return FileDTO.builder()
-                .id(file.getId())
-                .folderPath(file.getFolderPath())
+                //.id(file.getId())
+                .folder_path(file.getFolderPath())
                 .name(file.getName())
-                .fileType(file.getFileType())
+                .file_type(file.getFileType())
                 .build();
     }
 
-    public static Handler getAllByTypeInPath(FileDAO dao) {
+    public Handler getAllByTypeInPath(FileDAO dao) {
         return ctx -> {
             String folderPath = ctx.pathParam("folder_path");
             String fileType = ctx.pathParam("file_type");
@@ -43,7 +53,7 @@ public class FileController {
         };
     }
 
-    public static Handler getAllFilesInPath(FileDAO dao) {
+    public Handler getAllFilesInPath(FileDAO dao) {
         return ctx -> {
             String filePath = ctx.pathParam("path");
             List<File> fileList = dao.getAllFilesInPath(filePath);
@@ -58,8 +68,8 @@ public class FileController {
             }
         };
     }
-
-    public static Handler delete(FileDAO dao) {
+/*
+    public Handler delete(FileDAO dao) {
         return ctx -> {
             String file_id = ctx.pathParam("id");
             int id = ctx.bodyAsClass(Integer.class);
@@ -75,7 +85,7 @@ public class FileController {
     }
 
 
-    public static Handler getById(FileDAO dao) {
+    public Handler getById(FileDAO dao) {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             try {
@@ -96,10 +106,17 @@ public class FileController {
         };
     }
 
-    public static Handler create(FileDAO dao) {
+ */
+
+    public Handler create() {
+        //System.out.println("Filecontroller create method called");
         return ctx -> {
-            File file = ctx.bodyAsClass(File.class);
-            File createdFile = dao.create(file);
+            System.out.println("GOT TO HERE");
+            FileDTO fileDTO = ctx.bodyAsClass(FileDTO.class);
+
+            File file = new File(fileDTO);
+
+            File createdFile = fileDAO.create(file);
             FileDTO dto = convertToDTO(createdFile);
             if (dto != null) {
                 System.out.println("Det gik godt ven.");
@@ -110,7 +127,7 @@ public class FileController {
         };
     }
 
-    public static Handler update(FileDAO fileDAO) {
+    public Handler update(FileDAO fileDAO) {
         return ctx -> {
             String id = ctx.pathParam("id");
             File file = ctx.bodyAsClass(File.class);
