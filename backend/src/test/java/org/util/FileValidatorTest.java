@@ -24,7 +24,7 @@ class FileValidatorTest {
     private URL url12byte = getClass().getResource("12B.txt");
     private URL urlAcceptedFile = getClass().getResource("good.txt");
     private URL url48byte = getClass().getResource("48B.txt");
-    private URL urlLong = getClass().getResource("long**.txt");
+    private URL urlLong = getClass().getResource("looong.txt");
     private URL urlShort = getClass().getResource("short.txt");
     private URL urlMissingTitle = getClass().getResource(".txt");
     private URL urlFileType = getClass().getResource("type.js");
