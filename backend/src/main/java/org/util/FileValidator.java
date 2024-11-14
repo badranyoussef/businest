@@ -15,7 +15,8 @@ public class FileValidator {
     }
 
     public boolean validateFile(File file) {
-        return validateExtension(file) == validateTitleLength(file.getName());
+        return validateExtension(file) && validateFileSize(file) && validateTitleLength(file.getName())
+                && validateFileSymbols(file.getName());
     }
 
     public boolean validateExtension(File file) {
