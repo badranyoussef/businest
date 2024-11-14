@@ -55,7 +55,7 @@ public class FileController {
 
     public Handler getAllFilesInPath(FileDAO dao) {
         return ctx -> {
-            String filePath = ctx.pathParam("path");
+            String filePath = ctx.pathParam("folder_path");
             List<File> fileList = dao.getAllFilesInPath(filePath);
             List<FileDTO> dtoList = new ArrayList<>();
             for (File f : fileList) {
@@ -71,8 +71,7 @@ public class FileController {
 /*
     public Handler delete(FileDAO dao) {
         return ctx -> {
-            String file_id = ctx.pathParam("id");
-            int id = ctx.bodyAsClass(Integer.class);
+            int id = Integer.parseInt(ctx.pathParam("id"));
             File foundFile = dao.getById(id);
             if (foundFile != null) {
                 FileDTO dto = convertToDTO(foundFile);
@@ -129,7 +128,6 @@ public class FileController {
 
     public Handler update(FileDAO fileDAO) {
         return ctx -> {
-            String id = ctx.pathParam("id");
             File file = ctx.bodyAsClass(File.class);
             if (file != null) {
                 File i = fileDAO.update(file);

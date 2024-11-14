@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>backend</artifactId>
+    <artifactId>CA-3</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -17,6 +17,16 @@
         <restassured.version>5.3.0</restassured.version>
         <hibernate.version>6.2.4.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.7.2</junit.version>
+        <hamcrest.version>2.0.0.0</hamcrest.version>
+        <restassured.version>5.3.2</restassured.version>
+        <hibernate.version>6.2.4.Final</hibernate.version>
+        <testcontainers.version>1.19.5</testcontainers.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <jwt.version>9.0.1</jwt.version>
+        <nimbus.version>9.10</nimbus.version>
+        <db.name>notesdb</db.name>
     </properties>
 
     <dependencies>
@@ -106,6 +116,33 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!--  Hamcrest  -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>java-hamcrest</artifactId>
+            <version>2.0.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!--  RestAssured  -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Json datatype formater from LocalDate to String -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.0</version>
+        </dependency>
+        <!-- Cucumber -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.18.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

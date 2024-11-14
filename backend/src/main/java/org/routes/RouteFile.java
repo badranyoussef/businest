@@ -17,20 +17,20 @@ public class RouteFile {
 
 
     public EndpointGroup getRoutes() {
-        return () -> {
-            path("files", () -> {
-                //get("/{folder_path}/{file_type}", ctx -> FileController.getAllByTypeInPath(fileDAO).handle(ctx));
 
-                //get("/{id}", ctx -> FileController.getById(fileDAO).handle(ctx));
+        return () -> path("/files", () -> {
+            get("/file/{id}", ctx -> FileController.getById(fileDAO).handle(ctx));
 
-                post("/create", fileController.create());
+            get("/{folder_path}", ctx -> FileController.getAllFilesInPath(fileDAO).handle(ctx));
 
-                //delete("/{id}", ctx -> FileController.delete(fileDAO).handle(ctx));
+            get("/{folder_path}/{file_type}", ctx -> FileController.getAllByTypeInPath(fileDAO).handle(ctx));
 
-                //put("/{id}", ctx -> FileController.update(fileDAO).handle(ctx));
+            post("/", ctx -> FileController.create(fileDAO).handle(ctx);
 
-                //get("/{path}", ctx -> FileController.getAllFilesInPath(fileDAO).handle(ctx));
-            });
-        };
+            delete("/{id}", ctx -> FileController.delete(fileDAO).handle(ctx));
+
+            put("/", ctx -> FileController.update(fileDAO).handle(ctx));
+        });
+
     }
 }
