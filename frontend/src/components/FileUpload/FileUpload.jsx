@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Upload, X, FileIcon, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function FileUpload({

@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 import PropTypes from 'prop-types';
-import '../../styles/SearchBar.css';
+import './SearchBar.css';
 
 export function SearchBar({ value, onChange, placeholder = 'Search...' }) {
   return (

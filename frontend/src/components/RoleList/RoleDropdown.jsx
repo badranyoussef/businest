@@ -1,8 +1,8 @@
-import React from 'react';
-import { ChevronDown } from 'lucide-react';
-import '../../styles/RoleDropdown.css';
+import PropTypes from "prop-types"; // Import prop-types
+import { ChevronDown } from "lucide-react";
+import "./RoleDropdown.css";
 
-export default function RoleDropdown({ currentRole, roles, onRoleChange }) {
+function RoleDropdown({ currentRole, roles, onRoleChange }) {
   return (
     <div className="dropdown-container">
       <select
@@ -22,3 +22,16 @@ export default function RoleDropdown({ currentRole, roles, onRoleChange }) {
     </div>
   );
 }
+
+RoleDropdown.propTypes = {
+  currentRole: PropTypes.string.isRequired,
+  roles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onRoleChange: PropTypes.func.isRequired,
+};
+
+export default RoleDropdown;

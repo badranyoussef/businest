@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Briefcase, User } from 'lucide-react';
-import '../../styles/Navbar.css';
+import './Navbar.css';
 
 export function Navbar() {
   const location = useLocation();

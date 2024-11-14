@@ -1,5 +1,4 @@
-import React from 'react';
-import '../../styles/Profile.css';
+import './Profile.css';
 
 export function Profile() {
   return (

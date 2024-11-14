@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import '../../styles/Pagination.css';
+import './Pagination.css';
 
 export function Pagination({ currentPage, totalPages, onPageChange }) {
   return (

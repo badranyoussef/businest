@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Pagination } from "../shared/Pagination";
 import { SearchBar } from "../shared/SearchBar";
 import { Folder } from "lucide-react";
-import "../../styles/RoleList.css";
+import "./FolderList.css";
 import {
   getAllFoldersAsync,
   mockFolders,

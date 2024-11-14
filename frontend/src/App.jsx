@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/Navigation/Navbar";
 import { RoleList } from "./components/RoleList/RoleList";
 import { Profile } from "./components/Profile/Profile";
-import "./styles/App.css";
+import "./App.css";
 import { FolderList } from "./components/FolderList/FolderList";
 import { NotFound } from "./components/NotFound/notFound";
+import { Navbar } from "./components/NavBar/Navbar";
 
 export function App() {
   return (

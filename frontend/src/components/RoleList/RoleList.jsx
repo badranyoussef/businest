@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Pagination } from "../shared/Pagination";
 import { SearchBar } from "../shared/SearchBar";
-import "../../styles/RoleList.css";
+import "./RoleList.css";
 
 export function RoleList() {
   const [currentPage, setCurrentPage] = useState(1);
