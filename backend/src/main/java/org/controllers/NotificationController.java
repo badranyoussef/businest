@@ -15,7 +15,8 @@ public class NotificationController {
 
     public NotificationController(EntityManagerFactory _emf) {
 
-        //this.logDAO = new LogDAO(_emf);
+
+        this.logDAO = new LogDAO(_emf);
     }
 /*
     public Handler getAllTemplateEntityOnes() {
