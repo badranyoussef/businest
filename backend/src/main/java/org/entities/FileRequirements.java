@@ -17,16 +17,16 @@ public class FileRequirements {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private char[] symbolsNotAllowed_Title;
-    private int charLength_Title;
+    private char[] forbiddenSymbols_Title;
+    private int charMaxLength_Title;
     private double fileSizeBytes;
 
     @ElementCollection
     private Set<String> fileExtensionAllowed = new HashSet<>();
 
-    public FileRequirements(char[] symbolsNotAllowed_Title, int charLength_Title, double fileSizeBytes, Set<String> fileExtension) {
-        this.symbolsNotAllowed_Title = symbolsNotAllowed_Title;
-        this.charLength_Title = charLength_Title;
+    public FileRequirements(char[] forbiddenSymbols_Title, int charMaxLength_Title, double fileSizeBytes, Set<String> fileExtension) {
+        this.forbiddenSymbols_Title = forbiddenSymbols_Title;
+        this.charMaxLength_Title = charMaxLength_Title;
         this.fileSizeBytes = fileSizeBytes;
         this.fileExtensionAllowed = fileExtension;
     }
