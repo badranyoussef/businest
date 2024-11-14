@@ -4,6 +4,7 @@ import io.javalin.http.Handler;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
 import org.daos.LogDAO;
+import org.dtos.UserChangesLogEntryDTO;
 import org.persistence.model.UserChangesLogEntry;
 
 import java.util.List;
@@ -11,32 +12,21 @@ import java.util.stream.Collectors;
 
 public class NotificationController {
 
-    private LogDAO logDAO;
 
-    public NotificationController(EntityManagerFactory _emf) {
-
-
-        this.logDAO = new LogDAO(_emf);
-    }
-/*
-    public Handler getAllTemplateEntityOnes() {
+    public static Handler getAllLogEntries(LogDAO logDAO) {
         return ctx -> {
-
             try{
-                List<UserChangesLogEntry> entityONES = logDAO.getAll();
+                System.out.println("Get all log entries - START");
+                List<UserChangesLogEntry> allLogEntries = logDAO.getAll();
 
-                List<UserChangesLogEntryDTO> allTemplateEntityOnes = entityONES.stream()
-                        .map(t -> new DtoONE(t)).collect(Collectors.toList());
+                List<UserChangesLogEntryDTO> allLogEntriesAsDTOs = allLogEntries.stream()
+                        .map(t -> new UserChangesLogEntryDTO(t)).collect(Collectors.toList());
 
-                ctx.status(200).json(allTemplateEntityOnes);
+                ctx.status(200).json(allLogEntriesAsDTOs);
 
-            }catch (PersistenceException pe){
-                throw new ApiException(500, "Something went wrong when retrieving all templateEntityOne. " +
-                        "Exception message: " + pe.getMessage());
+            }catch (Exception e){
+                System.out.println("Some error happened when trying to fetch all log entries");
             }
-
         };
     }
-
- */
 }

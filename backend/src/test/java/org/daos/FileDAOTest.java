@@ -77,7 +77,7 @@ public class FileDAOTest {
     public void createFile(){
         //Given
         File expectedFile = new File("ademnation","adem-picture", ".jpg");
-        int expectedId = 2;
+        int expectedId = 4;
 
         //When
         File createdFile = fileDAO.create(expectedFile);
@@ -111,7 +111,7 @@ public class FileDAOTest {
         int expectedResult = 0;
 
         //When
-        int result = fileDAO.delete(2);
+        int result = fileDAO.delete(5);
 
         //Then
         assertEquals(expectedResult, result);

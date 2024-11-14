@@ -51,7 +51,7 @@ public class HibernateConfig {
             props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/businest?currentSchema=public");
             props.put("hibernate.connection.username", "postgres");
             props.put("hibernate.connection.password", "postgres");
-            props.put("hibernate.show_sql", "true");
+            props.put("hibernate.show_sql", "false");
             props.put("hibernate.format_sql", "true");
             props.put("hibernate.use_sql_comments", "true");
             props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");

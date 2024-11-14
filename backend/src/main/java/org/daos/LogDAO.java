@@ -1,5 +1,6 @@
 package org.daos;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.persistence.model.UserChangesLogEntry;
 
@@ -18,6 +19,15 @@ public class LogDAO {
         try (var em = emf.createEntityManager()) {
 
             return em.createQuery("FROM UserChangesLogEntry t", UserChangesLogEntry.class).getResultList();
+        }
+    }
+
+    public UserChangesLogEntry create(UserChangesLogEntry userChangesLogEntry) {
+        try (EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            em.persist(userChangesLogEntry);
+            em.getTransaction().commit();
+            return userChangesLogEntry;
         }
     }
 
