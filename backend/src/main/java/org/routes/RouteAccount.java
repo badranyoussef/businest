@@ -1,8 +1,8 @@
-package org.Routes;
+package org.routes;
 
 import io.javalin.apibuilder.EndpointGroup;
-import org.controller.AccountController;
-import org.dao.AccountDAO;
+import org.controllers.AccountController;
+import org.daos.AccountDAO;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 import static io.javalin.apibuilder.ApiBuilder.post;

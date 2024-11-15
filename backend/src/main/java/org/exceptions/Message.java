@@ -1,4 +1,4 @@
-package org.exception;
+package org.exceptions;
 
 public class Message extends Exception {
 

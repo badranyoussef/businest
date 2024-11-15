@@ -1,12 +1,8 @@
-package org.dao;
+package org.daos;
 
-import org.dto.AccountDTO;
-import org.entity.Account;
+import org.dtos.AccountDTO;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

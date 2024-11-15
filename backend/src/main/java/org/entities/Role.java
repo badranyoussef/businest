@@ -1,8 +1,7 @@
-package org.entity;
+package org.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @AllArgsConstructor

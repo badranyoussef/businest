@@ -1,12 +1,10 @@
-package org.dto;
+package org.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.entity.Account;
-
-import javax.management.relation.Role;
+import org.entities.Account;
 
 @Getter
 @Setter

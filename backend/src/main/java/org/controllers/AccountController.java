@@ -1,10 +1,10 @@
-package org.controller;
+package org.controllers;
 
 import java.util.List;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
-import org.dao.AccountDAO;
-import org.dto.AccountDTO;
+import org.daos.AccountDAO;
+import org.dtos.AccountDTO;
 
 public class AccountController {
 

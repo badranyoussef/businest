@@ -1,12 +1,11 @@
-package org.dao;
+package org.daos;
 import lombok.Getter;
-import org.dto.AccountDTO;
-import org.entity.Account;
-import org.entity.Role;
+import org.dtos.AccountDTO;
+import org.entities.Account;
+import org.entities.Role;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class AccountDAO {
 
