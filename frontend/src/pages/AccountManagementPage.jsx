@@ -1,27 +1,54 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Users } from 'lucide-react';
 import { SearchBar } from '../components/SearchBar';
 import { EmployeeTable } from '../components/EmployeeTable';
-import { getEmployees, mockEmployees } from '../data/mockEmployees';
+import { getAccounts } from '../api/accountApi';
 
 export function AccountManagementPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchEmployees() {
-      const data = await getEmployees();
-      setEmployees(data)
-    }
+    const fetchEmployees = async () => {
+      try {
+        const data = await getAccounts();
+        setEmployees(data);
+      } catch (err) {
+        setError('Failed to fetch employees');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchEmployees();
-  }, [])
+  }, []);
 
   const filteredEmployees = useMemo(() => {
     return employees.filter(employee =>
       employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       employee.role.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery]);
+  }, [searchQuery, employees]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-red-50 text-red-800 p-4 rounded-lg">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">

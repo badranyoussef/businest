@@ -7,8 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/accounts" replace />} />
-        <Route path="/accounts" element={<AccountManagementPage />} />
+        <Route path="/" element={<Navigate to="/account" replace />} />
+        <Route path="/account" element={<AccountManagementPage />} />
         <Route path="/account/:id" element={<AccountPage />} />
       </Routes>
     </BrowserRouter>
