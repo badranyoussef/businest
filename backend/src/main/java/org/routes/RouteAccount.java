@@ -8,7 +8,6 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class RouteAccount {
-    public class RouteUser {
         private static AccountController accountController = new AccountController();
         private static AccountDAO accountDAO = new AccountDAO();
 
@@ -21,5 +20,4 @@ public class RouteAccount {
                 });
             };
         }
-    }
 }
