@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>CA-3</artifactId>
+    <artifactId>businest</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -25,12 +25,22 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!--   Jackson     -->
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.0</version>
         </dependency>
+
         <!--  Javalin  -->
         <dependency>
             <groupId>io.javalin</groupId>
@@ -131,6 +141,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <repositories>
         <repository>
             <id>maven_central</id>

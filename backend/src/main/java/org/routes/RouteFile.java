@@ -14,6 +14,7 @@ public class RouteFile {
     }
 
     public EndpointGroup getRoutes() {
+
         return () -> path("/files", () -> {
             get("/file/{id}", ctx -> FileController.getById(fileDAO).handle(ctx));
 
@@ -27,5 +28,6 @@ public class RouteFile {
 
             put("/", ctx -> FileController.update(fileDAO).handle(ctx));
         });
+
     }
 }

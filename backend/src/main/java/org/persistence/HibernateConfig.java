@@ -8,10 +8,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.persistence.model.File;
+import org.persistence.model.UserChangesLogEntry;
 
 import java.util.Properties;
 
-@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@NoArgsConstructor()//access = lombok.AccessLevel.PRIVATE)
 public class HibernateConfig {
 
     private static EntityManagerFactory entityManagerFactory;
@@ -50,7 +51,7 @@ public class HibernateConfig {
             props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/businest?currentSchema=public");
             props.put("hibernate.connection.username", "postgres");
             props.put("hibernate.connection.password", "postgres");
-            props.put("hibernate.show_sql", "true");
+            props.put("hibernate.show_sql", "false");
             props.put("hibernate.format_sql", "true");
             props.put("hibernate.use_sql_comments", "true");
             props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -96,6 +97,7 @@ public class HibernateConfig {
 
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(File.class);
+        configuration.addAnnotatedClass(UserChangesLogEntry.class);
     }
 
     private static EntityManagerFactory getEntityManagerFactoryConfigDevelopment() {

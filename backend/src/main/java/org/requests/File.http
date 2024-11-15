@@ -1,9 +1,10 @@
+
 ### Create file
 POST http://localhost:7007/api/files
 Content-Type: application/json
 
 {
-  "folderPath": "Folder1",
+  "folderPath": "Folder2",
   "name": "picture",
   "fileType": ".png"
 }
@@ -33,4 +34,10 @@ Content-Type: application/json
 
 ### Get all files in path
 GET http://localhost:7007/api/files/Folder1
+Content-Type: application/json
+
+
+
+### Get all log entries
+GET http://localhost:7007/api/logs/all
 Content-Type: application/json

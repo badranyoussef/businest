@@ -6,31 +6,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Entity
-    @Table(name = "file")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "file")
 
 public class File {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id", nullable = false)
-        private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
 
-        @Column(name = "folder_path", nullable = false)
-        private String folderPath;
+    @Column(name = "folder_path", nullable = false)
+    private String folderPath;
 
-        @Column(name = "name", nullable = false)
-        private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-        @Column(name = "file_type", nullable = false)
-        private String fileType;
+    @Column(name = "file_type", nullable = false)
+    private String fileType;
 
-        public File(String folderPath, String name, String fileType) {
-            this.folderPath = folderPath;
-            this.name = name;
-            this.fileType = fileType;
-        }
+    public File(String folderPath, String name, String fileType) {
+        this.folderPath = folderPath;
+        this.name = name;
+        this.fileType = fileType;
     }
+}
