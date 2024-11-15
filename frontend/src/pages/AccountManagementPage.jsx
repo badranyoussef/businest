@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Users } from 'lucide-react';
 import { SearchBar } from '../components/SearchBar';
 import { EmployeeTable } from '../components/EmployeeTable';
@@ -6,9 +6,18 @@ import { getEmployees, mockEmployees } from '../data/mockEmployees';
 
 export function AccountManagementPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    async function fetchEmployees() {
+      const data = await getEmployees();
+      setEmployees(data)
+    }
+    fetchEmployees();
+  }, [])
 
   const filteredEmployees = useMemo(() => {
-    return getEmployees.filter(employee =>
+    return employees.filter(employee =>
       employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       employee.role.toLowerCase().includes(searchQuery.toLowerCase())
     );

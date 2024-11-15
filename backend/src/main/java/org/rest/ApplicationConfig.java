@@ -43,14 +43,12 @@ public class ApplicationConfig {
         app = Javalin.create(config -> {
             config.http.defaultContentType = "application/json";
             config.routing.contextPath = "/api";
-            /*config.plugins.enableCors(cors -> {
+            config.plugins.enableCors(cors -> {
                 cors.add(it -> {
                     it.anyHost();
                     //it.allowHost("https://cphbusinessprojekt.dk");
                 });
             });
-
-             */
         });
         return instance;
     }
