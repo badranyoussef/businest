@@ -1,5 +1,16 @@
 import { ROLES } from './roles';
 
+export const getEmployees = async () => {
+  try {
+    const res = await fetch("http://localhost:7007/api/account");
+    if(!res.ok) throw new Error("Error fethcing accounts")
+    const data = await res.json()
+    return data;
+  } catch (e) {
+    throw new Error(e.message)
+  }
+}
+
 export const mockEmployees = [
   {
     id: 1,
