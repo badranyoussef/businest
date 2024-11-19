@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "xxx";
+const API_URL = import.meta.env.REACT_APP_API_URL;
 
 export const getAllFoldersAsync = async (companyName) => {
   const response = await axios.get(`${API_URL}/folders/${companyName}`);
