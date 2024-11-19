@@ -5,7 +5,9 @@ import { Folder } from "lucide-react";
 import "./FolderList.css";
 import {
   getAllFoldersAsync,
+  getAllRolesAsync,
   mockFolders,
+  mockRoles,
   updateFolderRoleAsync,
 } from "../../services/folderService";
 
@@ -14,16 +16,19 @@ export function FolderList() {
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 5;
 
-  // Initially set folders from mock data
-  const [folders, setFolders] = useState(mockFolders || []);
+  const [companyName] = useState("example");
+  const [folders, setFolders] = useState(mockFolders);
+  const [roles, setRoles] = useState(mockRoles);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [companyName] = useState("YourCompanyName");
-
-  const roles = ["Admin", "Manager", "User", "Guest"];
 
   useEffect(() => {
     fetchFolders();
-  }, [companyName]);
+    fetchRoles();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const handleRoleChange = async (folderId, newRole) => {
     try {
@@ -57,25 +62,31 @@ export function FolderList() {
     }
   };
 
+  const fetchRoles = async () => {
+    try {
+      const fetchedRoles = await getAllRolesAsync(companyName);
+      if (Array.isArray(fetchedRoles)) {
+        setRoles(fetchedRoles);
+      } else {
+        console.error("Fetched data is not an array:", fetchedRoles);
+      }
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+      setErrorMessage("Failed to fetch roles");
+    }
+  };
+
   const filteredFolders = useMemo(() => {
     if (!searchQuery) return folders;
 
     const query = searchQuery.toLowerCase();
-    return Array.isArray(folders)
-      ? folders.filter(
-          (folder) =>
-            folder.folderName.toLowerCase().includes(query) ||
-            folder.role.toLowerCase().includes(query)
-        )
-      : [];
+    return folders.filter(
+      (folder) =>
+        folder.folderName.toLowerCase().includes(query) ||
+        folder.role.toLowerCase().includes(query)
+    );
   }, [folders, searchQuery]);
 
-  // Reset to first page when search query changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
-
-  // Pagination calculations
   const totalPages = Math.ceil(filteredFolders.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -84,7 +95,7 @@ export function FolderList() {
   return (
     <div className="role-list">
       <div className="role-list-header">
-        <h1>Folder Permissions</h1>
+        <h1>{companyName} -- Folder Permissions</h1>
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
@@ -92,7 +103,6 @@ export function FolderList() {
         />
       </div>
 
-      {/* Display error message if an error occurs */}
       {errorMessage && (
         <div className="error-message">
           <strong>Error:</strong> {errorMessage}

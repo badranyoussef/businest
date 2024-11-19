@@ -2,16 +2,21 @@ import axios from "axios";
 
 const API_URL = "xxx";
 
-export const updateFolderRoleAsync = async (folderId, newRole) => {
-    const response = await axios.post(`${API_URL}/folders/${folderId}/role`, {
-      role: newRole,
-    });
-    return response.data;
+export const getAllFoldersAsync = async (companyName) => {
+  const response = await axios.get(`${API_URL}/folders/${companyName}`);
+  return response.data;
 };
 
-export const getAllFoldersAsync = async (companyName) => {
-    const response = await axios.get(`${API_URL}/folders/${companyName}`);
+export const getAllRolesAsync = async (company) => {
+    const response = await axios.get(`${API_URL}/${company}/roles`);
     return response.data;
+}
+
+export const updateFolderRoleAsync = async (folderId, newRole) => {
+  const response = await axios.post(`${API_URL}/folders/${folderId}/role`, {
+    role: newRole,
+  });
+  return response.data;
 };
 
 export const mockFolders = [
@@ -46,3 +51,5 @@ export const mockFolders = [
     role: "Guest",
   },
 ];
+
+export const mockRoles = ["Admin", "Manager", "User", "Guest"];
