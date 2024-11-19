@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { readAllLogs } from "C:/Inteli/businest/frontend/src/services/logServices.js";
+import { readAllLogEntries } from "C:/Inteli/businest/frontend/src/services/logServices.js";
 
 const MyLogs = () => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    readAllLogs().then((data) => setLogs(data));
+    readAllLogEntries().then((data) => setLogs(data));
   }, []);
 
-  
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '10px',
+  };
+
+  const headerStyle = {
+    display: 'contents',
+    fontWeight: 'bold',
+  };
+
+  const rowStyle = {
+    display: 'contents',
+  };
+
+  const cellStyle = {
+    padding: '10px',
+    border: '1px solid #ccc',
+  };
 
   return (
     <div>
