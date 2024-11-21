@@ -53,3 +53,25 @@ export const mockFolders = [
 ];
 
 export const mockRoles = ["Admin", "Manager", "User", "Guest"];
+
+export const mockSubroles = ["guest", "basic", "lead"];
+
+export const mockFolderPermissions = {
+  guest: { read: true, write: false, delete: false, download: false, manageFolder: false, manageFiles: false },
+  basic: { read: true, write: true, delete: false, download: true, manageFolder: false, manageFiles: false },
+  lead: { read: true, write: true, delete: true, download: true, manageFolder: true, manageFiles: true },
+};
+
+// Mock fetching folder details by ID
+export const getFolderByIdAsync = async (folderId) => {
+  return {
+    id: folderId,
+    folderName: `Folder ${folderId}`,
+    permissions: mockFolderPermissions,
+  };
+};
+
+// Mock updating folder permissions
+export const updateFolderPermissionsAsync = async (folderId, permissions) => {
+  console.log(`Updated permissions for folder ${folderId}:`, permissions);
+};

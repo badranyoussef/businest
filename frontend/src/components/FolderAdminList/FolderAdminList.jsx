@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
-import { Pagination } from "../shared/Pagination";
-import { SearchBar } from "../shared/SearchBar";
+import { Pagination } from "../shared/Pagination/Pagination";
+import { SearchBar } from "../shared/SearchBar/SearchBar";
 import { Folder } from "lucide-react";
-import "./FolderList.css";
+import { Link } from "react-router-dom";
+import "./FolderAdminList.css";
 import {
   getAllFoldersAsync,
   getAllRolesAsync,
@@ -93,84 +94,85 @@ export function FolderList() {
   const currentFolders = filteredFolders.slice(startIndex, endIndex);
 
   return (
-    <div className="role-list">
-      <div className="role-list-header">
-        <h1>{companyName} -- Folder Permissions</h1>
-        <SearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          placeholder="Search folders..."
-        />
-      </div>
-
-      {errorMessage && (
-        <div className="error-message">
-          <strong>Error:</strong> {errorMessage}
-        </div>
-      )}
-
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Folder Name</th>
-              <th>Permission</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentFolders.map((folder) => (
-              <tr key={folder.id}>
-                <td className="folder-name">
-                  <Folder className="folder-icon" size={18} />
-                  {" " + folder.folderName}
-                </td>
-                <td>
-                  <select
-                    value={folder.role}
-                    onChange={(e) =>
-                      handleRoleChange(folder.id, e.target.value)
-                    }
-                    className={`role-select ${folder.role
-                      .toLowerCase()
-                      .replace(" ", "-")}`}
-                  >
-                    {roles.map((role) => (
-                      <option key={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-            ))}
-            {currentFolders.length === 0 && (
-              <tr>
-                <td colSpan={2} className="empty-message">
-                  No folders found matching your search.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="table-footer">
-        <div className="entry-count">
-          {filteredFolders.length > 0
-            ? `Showing ${startIndex + 1}-${Math.min(
-                endIndex,
-                filteredFolders.length
-              )} of ${filteredFolders.length} folders`
-            : "No folders to show"}
-        </div>
-        {filteredFolders.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+      <div className="role-list">
+        <div className="role-list-header">
+          <h1>Folder Permissions</h1>
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search folders..."
           />
+        </div>
+
+        {errorMessage && (
+          <div className="error-message">
+            <strong>Error:</strong> {errorMessage}
+          </div>
         )}
+
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Folder Name</th>
+                <th>Permission</th>
+                <th>Configure</th>{" "}
+                {/* Add a column for the configuration link */}
+              </tr>
+            </thead>
+            <tbody>
+              {currentFolders.map((folder) => (
+                <tr key={folder.id}>
+                  <td className="folder-name">
+                    <Folder className="folder-icon" size={18} />
+                    {" " + folder.folderName}
+                  </td>
+                  <td>
+                    <select
+                      value={folder.role}
+                      onChange={(e) =>
+                        handleRoleChange(folder.id, e.target.value)
+                      }
+                      className={`role-select ${folder.role
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
+                    >
+                      {roles.map((role) => (
+                        <option key={role} value={role}>
+                          {role}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <Link to={`/folders/${folder.id}/configure`}>
+                      Configure
+                    </Link>{" "}
+                    {/* Link to configuration page */}
+                  </td>
+                </tr>
+              ))}
+              {currentFolders.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="empty-message">
+                    No folders found matching your search.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="table-footer">
+          {/* Pagination */}
+          {filteredFolders.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </div>
       </div>
-    </div>
   );
 }

@@ -6,9 +6,36 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
+}
+
+:root {
+  --businest-black: #1f2937;
+  --businest-baby-blue: #bfebff;
+  --businest-grey: #4b5563;
+}
+
+/* global styling for tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 1rem;
+  background-color: #f9fafb;
+  color: #4b5563;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+td {
+  padding: 1rem;
+  color: #1f2937;
 }
