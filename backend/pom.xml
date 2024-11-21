@@ -14,7 +14,12 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <db.name>businest</db.name>
+        <db.username>postgres</db.username>
+        <db.password>postgres</db.password>
+        <secret.key>841D8A6C80CBA4FCAD32D5367C18C53B</secret.key>
+        <issuer>cphbusiness.dk</issuer>
+        <token.expiration.time>3600000</token.expiration.time>
         <!-- Dependency versions -->
         <hibernate.version>6.2.4.Final</hibernate.version>
         <postgresql.version>42.6.0</postgresql.version>

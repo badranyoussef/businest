@@ -5,6 +5,7 @@ import io.javalin.testtools.JavalinTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import jakarta.persistence.EntityManagerFactory;
+import org.controllers.CompanyController;
 import org.folder.*;
 import org.junit.jupiter.api.*;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class FolderControllerIntegrationTest {
     private FolderController folderController;
     private ISecurityController securityController;
     private FolderService folderService;
+    private CompanyController companyController;
     private User user;
 
     @BeforeAll
@@ -53,10 +55,10 @@ public class FolderControllerIntegrationTest {
         securityController = new SecurityController();
 
         app = Javalin.create(config -> {
-            // Any necessary configuration
+
         });
 
-        Endpoints endpoints = new Endpoints(securityController, folderController);
+        Endpoints endpoints = new Endpoints(securityController, folderController,companyController);
         endpoints.registerRoutes(app);
 
         // Clean the database before each test
