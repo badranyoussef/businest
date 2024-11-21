@@ -4,9 +4,10 @@ import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import jakarta.persistence.EntityManagerFactory;
 import org.folder.*;
 import org.junit.jupiter.api.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
