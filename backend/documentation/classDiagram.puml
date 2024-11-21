@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'----- Entities -----
+class Account
+class File
+class Folder
+class UserChangesLogEntry
+enum SystemRole {
+    USER
+    COMPANY MANAGER
+}
+
+'----- Controllers -----
+class AccountController
+class FileController
+class FolderController
+class NotificationController
+
+'----- DAOs -----
+class FileDAO
+class LogDAO
+class AccountDAO
+class FolderDAO
+
+class FileValidator
+
+
+'List <|-- AbstractList
+'Collection <|-- AbstractCollection
+
+'Collection <|- List
+'AbstractCollection <|- AbstractList
+'AbstractList <|-- ArrayList
+
+class Account {
+    - String example
+    + methodExample()
+}
+
+!pragma layout smetana
+@enduml
