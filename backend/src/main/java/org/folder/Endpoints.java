@@ -1,26 +1,30 @@
 package org.folder;
 
 import io.javalin.Javalin;
+import org.controllers.CompanyController;
+
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Endpoints {
 
     private ISecurityController securityController;
     private FolderController folderController;
+    private CompanyController companyController; // New controller for company-related actions
 
-    public Endpoints(ISecurityController securityController, FolderController folderController) {
+    public Endpoints(ISecurityController securityController, FolderController folderController, CompanyController companyController) {
         this.securityController = securityController;
         this.folderController = folderController;
+        this.companyController = companyController;
     }
 
     public void registerRoutes(Javalin app) {
-        // Apply authentication to all routes under /folders
-        app.before("/folders/*", ctx -> securityController.authenticate(ctx));
+        // Apply authentication to all routes
+        app.before("/*", ctx -> securityController.authenticate(ctx));
 
-        // Define routes under /folders
+        // Define routes
         app.routes(() -> {
             path("folders", () -> {
-                // Apply authorization to ensure only CompanyManagers can access
+                // Authorization for folder routes
                 before(ctx -> securityController.authorizeRole(ctx, Role.COMPANY_MANAGER));
 
                 // Get all folders for a specific company
@@ -28,6 +32,14 @@ public class Endpoints {
 
                 // Assign role to a folder
                 post("/{folderId}/role", ctx -> folderController.assignRole(ctx));
+            });
+
+            path("{companyName}", () -> {
+                // Authorization for company routes
+                before(ctx -> securityController.authorizeRole(ctx, Role.COMPANY_MANAGER));
+
+                // Get all roles for a specific company
+                get("/roles", ctx -> companyController.getRoles(ctx));
             });
         });
     }

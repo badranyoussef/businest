@@ -1,11 +1,12 @@
 
 
+import jakarta.persistence.EntityTransaction;
 import org.folder.Folder;
 import org.folder.FolderService;
 import org.folder.Role;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
