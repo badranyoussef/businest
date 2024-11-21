@@ -23,34 +23,35 @@ export const mockFolders = [
   {
     id: 1,
     folderName: "Project Documentation",
-    role: "User",
+    roles: ["User", "Admin"],
   },
   {
     id: 2,
     folderName: "Financial Reports",
-    role: "User",
+    roles: ["User"],
   },
   {
     id: 3,
     folderName: "Marketing Assets",
-    role: "User",
+    roles: ["User", "Manager"],
   },
   {
     id: 4,
     folderName: "Employee Records",
-    role: "Manager",
+    roles: ["Manager", "Admin"],
   },
   {
     id: 5,
     folderName: "Client Contracts",
-    role: "Manager",
+    roles: ["Manager", "User"],
   },
   {
     id: 6,
     folderName: "Product Designs",
-    role: "Guest",
+    roles: ["Guest", "User"],
   },
 ];
+
 
 export const mockRoles = ["Admin", "Manager", "User", "Guest"];
 
