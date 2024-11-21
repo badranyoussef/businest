@@ -6,11 +6,12 @@ import { NotFound } from "./components/NotFound/NotFound";
 import { Navbar } from "./components/shared/Navbar/Navbar";
 import Footer from "./components/shared/Footer/Footer";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Routes>
+      <div className="app-body">
+        <Routes>
           <Route path="/" element={<FolderList />} />
           <Route
             path="/folders/:folderId/configure"
@@ -18,10 +19,9 @@ function App() {
           />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </div>
       <Footer />
     </BrowserRouter>
   );
 }
-
-export default App;

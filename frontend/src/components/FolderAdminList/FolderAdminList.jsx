@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Pagination } from "../shared/Pagination/Pagination";
 import { SearchBar } from "../shared/SearchBar/SearchBar";
-import { Folder } from "lucide-react";
+import { Folder, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./FolderAdminList.css";
 import {
@@ -94,7 +94,9 @@ export function FolderList() {
                   <Folder className="folder-icon" size={18} />
                   {" " + folder.folderName}
                 </td>
-                <td>{/* FILES */}</td>
+                <td>
+                  {folder.numberOfFiles} file{folder.numberOfFiles !== 1 && "s"}
+                </td>
                 <td>
                   {folder.roles.map((role, index) => (
                     <span key={role}>
@@ -103,9 +105,17 @@ export function FolderList() {
                     </span>
                   ))}
                 </td>
-                <td>{/* PERMISSIONS */}</td>
                 <td>
-                  <Link to={`/folders/${folder.id}/configure`}>Configure</Link>{" "}
+                  {folder.lastUpdated.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </td>
+                <td>
+                  <Link to={`/folders/${folder.folderName}/configure`}>
+                    <Settings className="cog-icon" size={18} />
+                  </Link>{" "}
                 </td>
               </tr>
             ))}

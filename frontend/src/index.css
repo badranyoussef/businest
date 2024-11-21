@@ -5,11 +5,22 @@
   box-sizing: border-box;
 }
 
+.app-body {
+  display: flex;
+  align-items: center;        /* Vertically centers content */
+  justify-content: center;    /* Horizontally centers content */
+  min-height: 78vh;           /* Ensures it's at least 75% of the viewport height */
+  max-width: 60%;             /* Limits the width to 60% of the parent */
+  margin: 0 auto;             /* Centers the container horizontally if it has a defined width */
+  flex-direction: column;     /* Aligns child elements vertically (optional, if you want them stacked) */
+  text-align: center;         /* Optionally aligns text inside */
+}
+
 body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5;
+  justify-content: center;
 }
 
 :root {
@@ -38,4 +49,9 @@ tr {
 td {
   padding: 1rem;
   color: #1f2937;
+  border-right: 1px solid #e0e0e0; /* Light grey line between columns */
+  border-right-style: dashed;
+}
+td:last-child {
+  border-right: none;
 }
