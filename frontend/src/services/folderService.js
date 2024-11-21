@@ -19,11 +19,41 @@ export const updateFolderRoleAsync = async (folderId, newRole) => {
   return response.data;
 };
 
+const mockFolderPermissions1 = {
+  read: true,
+  write: false,
+  delete: false,
+  download: false,
+  manageFolder: false,
+  manageFiles: false,
+};
+
+const mockFolderPermissions2 = {
+  read: true,
+  write: true,
+  delete: false,
+  download: true,
+  manageFolder: false,
+  manageFiles: false,
+};
+
+const mockFolderPermissions3 = {
+  read: true,
+  write: true,
+  delete: true,
+  download: true,
+  manageFolder: true,
+  manageFiles: true,
+};
+
 export const mockFolders = [
   {
     id: 1,
     folderName: "Project Documentation",
-    roles: ["User", "Admin"],
+    rolesPermissionsMatrix: [
+      { role: "User", permissions: mockFolderPermissions1 },
+      { role: "Admin", permissions: mockFolderPermissions2 },
+    ],
     numberOfFiles: 45,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -32,7 +62,9 @@ export const mockFolders = [
   {
     id: 2,
     folderName: "Financial Reports",
-    roles: ["User"],
+    rolesPermissionsMatrix: [
+      { role: "User", permissions: mockFolderPermissions1 },
+    ],
     numberOfFiles: 88,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -41,7 +73,10 @@ export const mockFolders = [
   {
     id: 3,
     folderName: "Marketing Assets",
-    roles: ["User", "Manager"],
+    rolesPermissionsMatrix: [
+      { role: "User", permissions: mockFolderPermissions1 },
+      { role: "Manager", permissions: mockFolderPermissions2 },
+    ],
     numberOfFiles: 32,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -50,7 +85,10 @@ export const mockFolders = [
   {
     id: 4,
     folderName: "Employee Records",
-    roles: ["Manager", "Admin"],
+    rolesPermissionsMatrix: [
+      { role: "Manager", permissions: mockFolderPermissions2 },
+      { role: "Admin", permissions: mockFolderPermissions3 },
+    ],
     numberOfFiles: 60,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -59,7 +97,10 @@ export const mockFolders = [
   {
     id: 5,
     folderName: "Client Contracts",
-    roles: ["Manager", "User"],
+    rolesPermissionsMatrix: [
+      { role: "Manager", permissions: mockFolderPermissions2 },
+      { role: "User", permissions: mockFolderPermissions1 },
+    ],
     numberOfFiles: 25,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -68,7 +109,10 @@ export const mockFolders = [
   {
     id: 6,
     folderName: "Product Designs",
-    roles: ["Guest", "User"],
+    rolesPermissionsMatrix: [
+      { role: "Guest", permissions: mockFolderPermissions1 },
+      { role: "User", permissions: mockFolderPermissions2 },
+    ],
     numberOfFiles: 73,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -80,35 +124,8 @@ export const mockRoles = ["Admin", "Manager", "User", "Guest"];
 
 export const mockSubroles = ["guest", "basic", "lead"];
 
-export const mockFolderPermissions = {
-  guest: {
-    read: true,
-    write: false,
-    delete: false,
-    download: false,
-    manageFolder: false,
-    manageFiles: false,
-  },
-  basic: {
-    read: true,
-    write: true,
-    delete: false,
-    download: true,
-    manageFolder: false,
-    manageFiles: false,
-  },
-  lead: {
-    read: true,
-    write: true,
-    delete: true,
-    download: true,
-    manageFolder: true,
-    manageFiles: true,
-  },
-};
-
 // Mock fetching folder details by ID
-export const getFolderByIdAsync = async (folderName) => {
+export const getFolderByNameAsync = async (folderName) => {
   return mockFolders.find((folder) => folder.folderName === folderName);
 };
 

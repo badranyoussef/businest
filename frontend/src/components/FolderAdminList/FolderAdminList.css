@@ -4,6 +4,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   min-height: 76vh;    /* Ensures the container doesn't stretch beyond the max-width */
+  min-width: 100%;    /* Ensures the container doesn't stretch beyond the max-width */
 }
 
 .role-list-header {

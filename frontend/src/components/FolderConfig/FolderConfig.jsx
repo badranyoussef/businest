@@ -1,27 +1,56 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getFolderByIdAsync, updateFolderPermissionsAsync } from '../../services/folderService';
-import './FolderConfig.css'; // Make sure you create this file
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getFolderByNameAsync } from "../../services/folderService";
+import "./FolderConfig.css";
 
-function FolderConfig() {
-  const { folderId } = useParams();
+export default function FolderConfig() {
+  const { folderName } = useParams();
   const [folder, setFolder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("folderName", folderName);
     const loadFolder = async () => {
       try {
-        const folderData = await getFolderByIdAsync(folderId);
+        const folderData = await getFolderByNameAsync(folderName);
         setFolder(folderData);
       } catch (error) {
-        console.error('Error loading folder:', error);
+        console.error("Error loading folder:", error);
       } finally {
         setLoading(false);
       }
     };
 
     loadFolder();
-  }, [folderId]);
+  }, [folderName]);
+
+  const handlePermissionChange = (role, permission) => {
+    const updatedPermissions = folder.rolesPermissionsMatrix.map((rolePerm) => {
+      if (rolePerm.role === role) {
+        return {
+          ...rolePerm,
+          permissions: {
+            ...rolePerm.permissions,
+            [permission]: !rolePerm.permissions[permission],
+          },
+        };
+      }
+      return rolePerm;
+    });
+
+    setFolder({ ...folder, rolesPermissionsMatrix: updatedPermissions });
+  };
+
+  const handleSave = () => {
+    // Save the changes
+    console.log("Saving...");
+  };
+
+  const handleCancel = () => {
+    // Navigate back to folders page
+    navigate("/folders");
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -35,39 +64,32 @@ function FolderConfig() {
     <div className="folder-config">
       <h1>Folder Configuration</h1>
       <div className="folder-info">
-        <h2>Folder: {folder.folderName}</h2>
+        <h2>{folder.folderName}</h2>
         <table className="permissions-table">
           <thead>
             <tr>
-              <th>Permission</th>
-              {Object.keys(folder.permissions).map((role) => (
-                <th key={role}>{role}</th>
-              ))}
+              <th>Role</th>
+              {Object.keys(folder.rolesPermissionsMatrix[0].permissions).map(
+                (perm) => (
+                  <th key={perm}>
+                    {perm.replace(/([A-Z])/g, " $1").toLowerCase()}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody>
-            {Object.keys(folder.permissions[Object.keys(folder.permissions)[0]]).map((perm) => (
-              <tr key={perm}>
-                <td>{perm.replace(/([A-Z])/g, ' $1').toLowerCase()}</td>
-                {Object.entries(folder.permissions).map(([role, perms]) => (
-                  <td key={role}>
+            {folder.rolesPermissionsMatrix.map((rolePerm) => (
+              <tr key={rolePerm.role}>
+                <td>{rolePerm.role}</td>
+                {Object.keys(rolePerm.permissions).map((perm) => (
+                  <td key={perm}>
                     <input
                       type="checkbox"
-                      checked={perms[perm]}
-                      onChange={async () => {
-                        const newPerms = {
-                          ...folder.permissions,
-                          [role]: {
-                            ...folder.permissions[role],
-                            [perm]: !perms[perm],
-                          },
-                        };
-                        await updateFolderPermissionsAsync(folderId, newPerms);
-                        setFolder({
-                          ...folder,
-                          permissions: newPerms,
-                        });
-                      }}
+                      checked={rolePerm.permissions[perm]}
+                      onChange={() =>
+                        handlePermissionChange(rolePerm.role, perm)
+                      }
                     />
                   </td>
                 ))}
@@ -75,9 +97,11 @@ function FolderConfig() {
             ))}
           </tbody>
         </table>
+        <div className="folder-config-actions">
+          <button onClick={handleSave}>Save</button> {/* Corrected */}
+          <button onClick={handleCancel}>Cancel</button> {/* Corrected */}
+        </div>
       </div>
     </div>
   );
 }
-
-export default FolderConfig;

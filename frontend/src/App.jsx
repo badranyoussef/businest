@@ -12,9 +12,9 @@ export default function App() {
       <Navbar />
       <div className="app-body">
         <Routes>
-          <Route path="/" element={<FolderList />} />
+          <Route path="/folders" element={<FolderList />} />
           <Route
-            path="/folders/:folderId/configure"
+            path="/folders/:folderName/configure"
             element={<FolderConfig />}
           />
           <Route path="/profile" element={<Profile />} />

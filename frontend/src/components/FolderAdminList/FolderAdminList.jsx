@@ -98,10 +98,10 @@ export function FolderList() {
                   {folder.numberOfFiles} file{folder.numberOfFiles !== 1 && "s"}
                 </td>
                 <td>
-                  {folder.roles.map((role, index) => (
-                    <span key={role}>
-                      {role}
-                      {index < folder.roles.length - 1 && ", "}
+                  {folder.rolesPermissionsMatrix.map((matrix, index) => (
+                    <span key={matrix.role}>
+                      {matrix.role}
+                      {index < folder.rolesPermissionsMatrix.length - 1 && ", "}
                     </span>
                   ))}
                 </td>
