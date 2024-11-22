@@ -1,19 +1,18 @@
-
-### Create file
+### Create fileData
 POST http://localhost:7007/api/files
 Content-Type: application/json
 
 {
-  "folderPath": "Folder2",
-  "name": "picture",
-  "fileType": ".png"
+  "description": "Upload of file test.",
+  "topic": "Test",
+  "filePath": "businest\\backend\\src\\main\\resources\\12B.txt"
 }
 
-### Read file by id
-GET http://localhost:7007/api/files/file/9
+### Read fileData by id
+GET http://localhost:7007/api/files/fileData/1
 Content-Type: application/json
 
-### Update file
+### Update fileData
 PUT http://localhost:7007/api/files
 Content-Type: application/json
 
@@ -21,10 +20,12 @@ Content-Type: application/json
   "id": 1,
   "folderPath": "Folder2",
   "name": "landscape",
-  "fileType": ".png"
+  "fileType": ".png",
+  "topic": "topic",
+  "description": "description"
 }
 
-### Delete file
+### Delete fileData
 DELETE http://localhost:7007/api/files/2
 Content-Type: application/json
 
@@ -35,8 +36,6 @@ Content-Type: application/json
 ### Get all files in path
 GET http://localhost:7007/api/files/Folder1
 Content-Type: application/json
-
-
 
 ### Get all log entries
 GET http://localhost:7007/api/logs/all

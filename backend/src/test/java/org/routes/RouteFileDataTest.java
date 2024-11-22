@@ -7,13 +7,16 @@ import jakarta.persistence.EntityManagerFactory;
 import org.dtos.FileDTO;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
 import org.rest.ApplicationConfig;
 
-import static org.hamcrest.Matchers.*;
+import java.net.URL;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class RouteFileTest {
+class RouteFileDataTest {
 
     private static EntityManagerFactory emf;
     private static ApplicationConfig app;
@@ -41,13 +44,15 @@ class RouteFileTest {
 
     @BeforeEach
     public void beforeEach() {
+        URL testfile = getClass().getResource("testfile.txt");
+        java.io.File file = new java.io.File(testfile.getPath());
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
-            em.persist(new File("folder", "profile-picture1", ".jpg"));
-            em.persist(new File("folder", "profile-picture2", ".jpg"));
-            em.persist(new File("folder2", "profile-picture3", ".png"));
-            em.persist(new File("folder2", "profile-picture4", ".png"));
+            em.persist(new FileData("Profile picture", "work", file));
+            em.persist(new FileData("Profile picture", "work", file));
+            em.persist(new FileData("Profile picture", "work", file));
+            em.persist(new FileData("Profile picture", "work", file));
             em.getTransaction().commit();
         }
     }
@@ -56,7 +61,7 @@ class RouteFileTest {
     public void afterEach() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.createQuery("DELETE FROM File ").executeUpdate();
+            em.createQuery("DELETE FROM FileData ").executeUpdate();
             em.getTransaction().commit();
         }
     }
@@ -86,10 +91,12 @@ class RouteFileTest {
     @Test
     @DisplayName("Creating a file")
     void test1() {
+        URL testfile = getClass().getResource("testfile.txt");
+        java.io.File file = new java.io.File(testfile.getPath());
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(new File("folder", "profile-picture1", ".jpg"))
+                .body(new FileData("Profile picture", "work", file))
                 .when()
                 .post("/")
                 .then()
@@ -123,7 +130,7 @@ class RouteFileTest {
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(new FileDTO(1, "folder", "profile-picture4", ".png"))
+                .body(new FileDTO(1, "folder", "profile-picture4", ".png", "work", ".png"))
                 .when()
                 .put("/")
                 .then()
@@ -161,7 +168,7 @@ class RouteFileTest {
                 .when()
                 .get("/{folder_path}")
                 .then()
-                .body("size()", equalTo(2))
+                .body("size()", equalTo(3))
                 .body("[0].id", equalTo(1))
                 .body("[0].folderPath", equalTo("folder"))
                 .body("[0].name", equalTo("profile-picture1"))
@@ -183,14 +190,10 @@ class RouteFileTest {
                 .when()
                 .get("/{folder_path}/{file_type}")
                 .then()
-                .body("size()", equalTo(2))
+                .body("size()", equalTo(1))
                 .body("[0].id", equalTo(3))
                 .body("[0].folderPath", equalTo("folder2"))
                 .body("[0].name", equalTo("profile-picture3"))
-                .body("[0].fileType", equalTo(".png"))
-                .body("[1].id", equalTo(4))
-                .body("[1].folderPath", equalTo("folder2"))
-                .body("[1].name", equalTo("profile-picture4"))
-                .body("[1].fileType", equalTo(".png"));
+                .body("[0].fileType", equalTo(".png"));
     }
 }
