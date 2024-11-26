@@ -12,4 +12,8 @@ public class SubRole {
     public String toString() {
         return title;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }

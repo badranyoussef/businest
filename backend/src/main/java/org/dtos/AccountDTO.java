@@ -12,18 +12,17 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 
 public class AccountDTO {
     private int id;
     private String name;
     private String role;
-    private List<SubRole> subRoles;
+    private List<String> subRoles;
 
-    public AccountDTO(Account account) {
-        this.id = account.getId();
-        this.name = account.getName();
-        this.role = account.getRoleAsString();
-        this.subRoles = account.getSubRoles();
+    public AccountDTO(int id, String name, String role, List<String> subRoles) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.subRoles = subRoles;
     }
 }
