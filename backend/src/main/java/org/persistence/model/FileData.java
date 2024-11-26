@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.File;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,31 +32,54 @@ public class FileData {
     private String fileType;
 
     @Column(name = "file_path", nullable = false)
-    private String filePath;  // Store file path
+    private String filePath;
 
     public FileData(String description, String topic, File file) {
-        this.description = description;
-        this.topic = topic;
-        this.filePath = file.getAbsolutePath();  // Store absolute file path
-        this.name = removeExtension(file.getName());
-        this.fileType = extractFileType(file.getName());
-    }
+        System.out.println("Creating FileData with:");
+        System.out.println("Description: " + description);
+        System.out.println("Topic: " + topic);
+        System.out.println("File: " + (file != null ? file.getAbsolutePath() : "null"));
 
-    private String extractFileType(String filename) {
-        int dotIndex = filename.lastIndexOf('.');
-        if (dotIndex > 0 && dotIndex < filename.length() - 1) {
-            return filename.substring(dotIndex + 1);  // Extract the file type (extension)
-        } else {
-            return "unknown";  // Provide a default value if no extension is present
+        // Validate inputs
+        if (file == null) {
+            throw new IllegalArgumentException("File cannot be null");
         }
-    }
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty");
+        }
+        if (topic == null || topic.trim().isEmpty()) {
+            throw new IllegalArgumentException("Topic cannot be null or empty");
+        }
 
-    private String removeExtension(String filename) {
-        int dotIndex = filename.lastIndexOf('.');
+        // Set the basic fields
+        this.description = description.trim();
+        this.topic = topic.trim();
+        this.filePath = file.getAbsolutePath();
+
+        // Get the filename
+        String fileName = file.getName();
+        if (fileName == null || fileName.trim().isEmpty()) {
+            fileName = "unnamed_file.txt";
+        }
+
+        // Extract name and file type
+        int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
-            return filename.substring(0, dotIndex);  // Return the filename without the extension
+            // File has an extension
+            this.name = fileName.substring(0, dotIndex).trim();
+            this.fileType = fileName.substring(dotIndex + 1).toLowerCase().trim();
         } else {
-            return filename;  // No extension, return the full filename
+            // File has no extension
+            this.name = fileName.trim();
+            this.fileType = "txt"; // Default file type
+        }
+
+        // Final validation
+        if (this.name == null || this.name.isEmpty()) {
+            this.name = "unnamed";
+        }
+        if (this.fileType == null || this.fileType.isEmpty()) {
+            this.fileType = "txt";
         }
     }
 }

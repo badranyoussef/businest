@@ -1,11 +1,13 @@
+
+
 ### Create fileData
 POST http://localhost:7007/api/files
 Content-Type: application/json
 
 {
-  "description": "Upload of file test.",
+  "description": "Test file",
   "topic": "Test",
-  "filePath": "businest\\backend\\src\\main\\resources\\12B.txt"
+  "filePath": "./backend/src/main/resource/12B.txt"
 }
 
 ### Read fileData by id

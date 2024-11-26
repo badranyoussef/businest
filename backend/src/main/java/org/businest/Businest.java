@@ -11,9 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 
-@SpringBootApplication
-@EnableJpaRepositories("org.persistence.repository")
-
 public class Businest {
     public static void main(String[] args) {
 

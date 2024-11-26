@@ -7,11 +7,13 @@ import org.dtos.FileDTO;
 import org.exceptions.ApiException;
 import org.persistence.model.FileData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.persistence.repository.FileDataRepository;
+import org.dtos.FileCreateRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,64 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/files")
 public class FileController {
-
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
-
-    @Autowired
-    private FileDataRepository fileDataRepository;
-
-    private final String uploadDir = Paths.get(System.getProperty("user.dir"), "uploads").toString();
-
-    @PostMapping
-    public int uploadFile(@RequestParam("file") MultipartFile file,
-                          @RequestParam("description") String description,
-                          @RequestParam("topic") String topic) throws IOException {
-
-        // Check if the file is empty
-        if (file.isEmpty()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), "File is empty.", timestamp);
-        }
-
-        // Create the directory if it doesn't exist
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            boolean dirCreated = directory.mkdirs();
-            if (!dirCreated) {
-                throw new IOException("Failed to create the directory: " + uploadDir);
-            }
-        }
-
-
-        // Get the original filename
-        String fileName = file.getOriginalFilename();
-        if (fileName == null) {
-            throw new IOException("File name is missing.");
-        }
-
-        // Create a path to save the file
-        Path path = Path.of(uploadDir + fileName);
-
-        // Save the file to the directory
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-        // Create a FileData object with description, topic, and file metadata
-        FileData fileData = new FileData(description, topic, new File(path.toString()));
-
-        // Persist the file entity using DAO
-        FileData savedFile = fileDataRepository.save(fileData);
-
-        // Convert to DTO and return response
-        FileDTO dto = convertToDTO(savedFile);
-        if (dto != null) {
-            return HttpStatus.OK.getCode();
-        } else {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Couldn't create file.", timestamp);
-        }
-    }
+    private static final String uploadDir = "./backend/src/main/resources/uploads";
 
     public static FileDTO convertToDTO(FileData fileData) {
         return FileDTO.builder()
@@ -93,6 +41,75 @@ public class FileController {
                 .topic(fileData.getTopic())
                 .build();
     }
+
+    public static Handler create(FileDAO dao) {
+        return ctx -> {
+            System.out.println("Starting file creation...");
+
+            // Parse the request body into FileCreateRequest
+            FileCreateRequest request = ctx.bodyAsClass(FileCreateRequest.class);
+            System.out.println("Received request: " + request);
+
+            if (request.getFilePath() == null || request.getFilePath().trim().isEmpty()) {
+                throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), "File path is required.", timestamp);
+            }
+
+            // Get the source file
+            File sourceFile = new File(request.getFilePath());
+            System.out.println("Source file path: " + sourceFile.getAbsolutePath());
+
+            if (!sourceFile.exists()) {
+                throw new ApiException(HttpStatus.BAD_REQUEST.getCode(),
+                        "Source file not found: " + sourceFile.getAbsolutePath(), timestamp);
+            }
+
+            // Create uploads directory if it doesn't exist
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                if (!directory.mkdirs()) {
+                    throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(),
+                            "Failed to create upload directory", timestamp);
+                }
+            }
+
+            // Generate unique filename
+            String uniqueFilename = System.currentTimeMillis() + "_" + sourceFile.getName();
+            Path targetLocation = Paths.get(uploadDir + uniqueFilename);
+            System.out.println("Target location: " + targetLocation);
+
+            try {
+                // Copy file to upload directory
+                Files.copy(sourceFile.toPath(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File copied successfully");
+
+                // Create FileData object
+                FileData fileData = new FileData(
+                        request.getDescription(),
+                        request.getTopic(),
+                        targetLocation.toFile()
+                );
+                System.out.println("Created FileData: " + fileData);
+
+                // Save using DAO
+                FileData savedFile = dao.create(fileData);
+                System.out.println("Saved FileData: " + savedFile);
+
+                // Convert to DTO and return
+                FileDTO dto = convertToDTO(savedFile);
+                ctx.status(HttpStatus.OK).json(dto);
+            } catch (Exception e) {
+                System.err.println("Error occurred: " + e.getMessage());
+                e.printStackTrace();
+
+                // Clean up the file if there was an error
+                Files.deleteIfExists(targetLocation);
+
+                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(),
+                        "Failed to create file: " + e.getMessage(), timestamp);
+            }
+        };
+    }
+
 
     public static Handler getAllByTypeInPath(FileDAO dao) {
         return ctx -> {
@@ -162,49 +179,6 @@ public class FileController {
             }
         };
     }
-
-    /*public static Handler create(FileDAO dao) {
-        return ctx -> {
-            FileData fileData = ctx.bodyAsClass(FileData.class);
-            FileData createdFileData = dao.create(fileData);
-            FileDTO dto = convertToDTO(createdFileData);
-            if (dto != null) {
-                ctx.status(HttpStatus.OK).json(dto);
-            } else {
-                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Couldn't create fileData.", timestamp);
-            }
-        };
-    }*/
-    public static Handler create(FileDAO dao) {
-        return ctx -> {
-            // Get file from request
-            FileData fileData = ctx.bodyAsClass(FileData.class);  // Get FileData from body
-
-            // Check if the file is present
-            if (fileData == null || fileData.getFilePath() == null) {
-                throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), "Missing file or file path.", timestamp);
-            }
-
-            // Assuming you have a method to handle file paths
-            java.io.File file = new java.io.File(fileData.getFilePath());
-
-            // Create the FileData object with the file
-            FileData createdFileData = new FileData(fileData.getDescription(),
-                    fileData.getTopic(), file);
-
-            // Persist the file entity using DAO
-            FileData savedFile = dao.create(createdFileData);  // DAO to save the file
-
-            // Convert to DTO if needed and respond
-            FileDTO dto = convertToDTO(savedFile);
-            if (dto != null) {
-                ctx.status(HttpStatus.OK.getCode()).json(dto);
-            } else {
-                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Couldn't create file.", timestamp);
-            }
-        };
-    }
-
 
     public static Handler update(FileDAO fileDAO) {
         return ctx -> {
