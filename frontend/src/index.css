@@ -5,10 +5,56 @@
   box-sizing: border-box;
 }
 
+.app-body {
+  display: flex;
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
+  min-height: 78vh; /* Ensures it's at least 75% of the viewport height */
+  max-width: 60%; /* Limits the width to 60% of the parent */
+  margin: 0 auto; /* Centers the container horizontally if it has a defined width */
+  flex-direction: column; /* Aligns child elements vertically (optional, if you want them stacked) */
+  text-align: center; /* Optionally aligns text inside */
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5;
+  justify-content: center;
+}
+
+:root {
+  --businest-black: #1f2937;
+  --businest-baby-blue: #bfebff;
+  --businest-dark-blue: #79b8d8;
+  --businest-grey: #4b5563;
+  --businest-light-red: #ffcccb;
+  --businest-dark-red: #ff9e9d;
+}
+
+/* global styling for tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 1rem;
+  background-color: #f9fafb;
+  color: #4b5563;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+td {
+  padding: 1rem;
+  color: #1f2937;
+  border-right: 1px solid #e0e0e0; /* Light grey line between columns */
+  border-right-style: dashed;
+}
+td:last-child {
+  border-right: none;
 }

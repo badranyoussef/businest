@@ -1,23 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FolderConfig from "./components/FolderConfig/FolderConfig";
+import { FolderList } from "./components/FolderAdminList/FolderAdminList";
 import { Profile } from "./components/Profile/Profile";
-import "./App.css";
-import { FolderList } from "./components/FolderList/FolderList";
-import { NotFound } from "./components/NotFound/notFound";
-import { Navbar } from "./components/NavBar/Navbar";
+import { NotFound } from "./components/NotFound/NotFound";
+import { Navbar } from "./components/shared/Navbar/Navbar";
+import Footer from "./components/shared/Footer/Footer";
 
-export function App() {
+export default function App() {
   return (
-    <Router>
-      <div className="app">
-        <Navbar />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<FolderList />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+    <BrowserRouter>
+      <Navbar />
+      <div className="app-body">
+        <Routes>
+          <Route path="/folders" element={<FolderList />} />
+          <Route
+            path="/folders/:folderName/configure"
+            element={<FolderConfig />}
+          />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
-    </Router>
+      <Footer />
+    </BrowserRouter>
   );
 }
