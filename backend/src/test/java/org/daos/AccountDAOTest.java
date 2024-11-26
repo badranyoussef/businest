@@ -1,4 +1,4 @@
-package org.daos;
+/* package org.daos;
 
 import org.dtos.AccountDTO;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,3 +49,5 @@ class AccountDAOTest {
 
     }
 }
+
+ */

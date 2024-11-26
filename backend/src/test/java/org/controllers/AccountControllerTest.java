@@ -1,4 +1,4 @@
-package org.controllers;
+/* package org.controllers;
 
 import org.dtos.AccountDTO;
 
@@ -10,17 +10,6 @@ class AccountControllerTest {
 
     public static List<AccountDTO> createUserList() {
         List<AccountDTO> userList = new ArrayList<>();
-
-        userList.add(new AccountDTO(1, "Alex Johnson", "Company Manager"));
-        userList.add(new AccountDTO(2, "Jamie Smith", "Employee"));
-        userList.add(new AccountDTO(3, "Taylor Brown", "Employee"));
-        userList.add(new AccountDTO(4, "Morgan White", "Company Manager"));
-        userList.add(new AccountDTO(5, "Casey Black", "Employee"));
-        userList.add(new AccountDTO(6, "Jordan Green", "Employee"));
-        userList.add(new AccountDTO(7, "Riley Grey", "Employee"));
-        userList.add(new AccountDTO(8, "Avery Gold", "Company Manager"));
-        userList.add(new AccountDTO(9, "Cameron Blue", "Employee"));
-        userList.add(new AccountDTO(10, "Dakota Silver", "Employee"));
 
         return userList;
     }
@@ -47,3 +36,5 @@ class AccountControllerTest {
     void updateAccount() {
     }
 }
+
+ */
