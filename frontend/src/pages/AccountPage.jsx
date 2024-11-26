@@ -79,11 +79,11 @@ export function AccountPage() {
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <button
-          onClick={() => navigate('/accounts')}
+          onClick={() => navigate('/account')}
           className="mb-6 inline-flex items-center text-blue-600 hover:text-blue-500"
         >
           <ArrowLeft className="h-5 w-5 mr-1" />
-          Back to Accounts
+          Back to Account
         </button>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
