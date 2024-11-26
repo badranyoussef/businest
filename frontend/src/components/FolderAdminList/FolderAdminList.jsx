@@ -4,7 +4,7 @@ import { SearchBar } from "../shared/SearchBar/SearchBar";
 import { Folder, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./FolderAdminList.css";
-import { getAllFoldersAsync } from "../../services/folderService";
+import { getAllFoldersByCompanyNameAsync } from "../../services/folderService";
 
 export function FolderAdminList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +25,7 @@ export function FolderAdminList() {
 
   const fetchFolders = async () => {
     try {
-      const fetchedFolders = await getAllFoldersAsync(companyName);
+      const fetchedFolders = await getAllFoldersByCompanyNameAsync(companyName);
       console.log('fetchedFolders:', fetchedFolders);
       if (Array.isArray(fetchedFolders)) {
         setFolders(fetchedFolders);

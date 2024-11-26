@@ -4,7 +4,7 @@ import { SearchBar } from "../shared/SearchBar/SearchBar";
 import { Folder } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./AllFoldersPage.css"; // You will need to create this CSS for grid styling
-import { getAllFoldersAsync } from "../../services/folderService";
+import { getAllFoldersByCompanyNameAsync } from "../../services/folderService";
 
 export function AllFoldersPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +18,7 @@ export function AllFoldersPage() {
   useEffect(() => {
     const fetchFolders = async () => {
       try {
-        const fetchedFolders = await getAllFoldersAsync(companyName);
+        const fetchedFolders = await getAllFoldersByCompanyNameAsync(companyName);
         if (Array.isArray(fetchedFolders)) {
           setFolders(fetchedFolders);
         } else {
