@@ -4,13 +4,7 @@ import { SearchBar } from "../shared/SearchBar/SearchBar";
 import { Folder, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./FolderAdminList.css";
-import {
-  getAllFoldersAsync,
-  // getAllRolesAsync,
-  mockFolders,
-  // mockRoles,
-  // updateFolderRoleAsync,
-} from "../../services/folderService";
+import { getAllFoldersAsync, mockFolders } from "../../services/folderService";
 
 export function FolderList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,11 +41,19 @@ export function FolderList() {
     if (!searchQuery) return folders;
 
     const query = searchQuery.toLowerCase();
-    return folders.filter(
-      (folder) =>
-        folder.folderName.toLowerCase().includes(query) ||
-        folder.roles.some((role) => role.toLowerCase().includes(query))
-    );
+    return folders.filter((folder) => {
+      // Check folder name
+      const folderNameMatch = folder.folderName.toLowerCase().includes(query);
+
+      // Check if any role or subrole matches
+      const roleMatch = Object.keys(folder.rolesPermissionsMatrix).some((role) => {
+        return folder.rolesPermissionsMatrix[role].some((subrole) => 
+          subrole.toLowerCase().includes(query)
+        );
+      });
+
+      return folderNameMatch || roleMatch;
+    });
   }, [folders, searchQuery]);
 
   const totalPages = Math.ceil(filteredFolders.length / itemsPerPage);
@@ -82,43 +84,53 @@ export function FolderList() {
             <tr>
               <th>Folder Name</th>
               <th>Files</th>
-              <th>Permissions</th>
+              <th>Roles</th>
               <th>Last Updated</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {currentFolders.map((folder) => (
-              <tr key={folder.id}>
-                <td className="folder-name">
-                  <Folder className="folder-icon" size={18} />
-                  {" " + folder.folderName}
-                </td>
-                <td>
-                  {folder.numberOfFiles} file{folder.numberOfFiles !== 1 && "s"}
-                </td>
-                <td>
-                  {folder.rolesPermissionsMatrix.map((matrix, index) => (
-                    <span key={matrix.role}>
-                      {matrix.role}
-                      {index < folder.rolesPermissionsMatrix.length - 1 && ", "}
-                    </span>
-                  ))}
-                </td>
-                <td>
-                  {folder.lastUpdated.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </td>
-                <td>
-                  <Link to={`/folders/${folder.folderName}/configure`}>
-                    <Settings className="cog-icon" size={18} />
-                  </Link>{" "}
-                </td>
-              </tr>
-            ))}
+            {currentFolders.map((folder) => {
+              // Create an array of unique roles
+              const uniqueRoles = Object.keys(folder.rolesPermissionsMatrix);
+
+              return (
+                <tr key={folder.id}>
+                  <td className="folder-name">
+                    <Folder className="folder-icon" size={18} />
+                    {" " + folder.folderName}
+                  </td>
+                  <td>
+                    {folder.numberOfFiles} file
+                    {folder.numberOfFiles !== 1 && "s"}
+                  </td>
+                  <td>
+                    {/* Display roles and their subroles */}
+                    {uniqueRoles.map((role) => {
+                      const subroles = folder.rolesPermissionsMatrix[role];
+                      const subroleNames = Object.keys(subroles).join(", ");
+                      return (
+                        <div key={role}>
+                          <strong>{role}:</strong> {subroleNames}
+                        </div>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    {folder.lastUpdated.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td>
+                    <Link to={`/folders/${folder.folderName}/configure`}>
+                      <Settings className="cog-icon" size={18} />
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
             {currentFolders.length === 0 && (
               <tr>
                 <td colSpan={5} className="empty-message">

@@ -46,25 +46,69 @@ const mockFolderPermissions3 = {
   manageFiles: true,
 };
 
+const mockFolderPermissions4 = {
+  read: false,
+  write: false,
+  delete: false,
+  download: false,
+  manageFolder: false,
+  manageFiles: false,
+};
+
+const mockFolderPermissions5 = {
+  read: true,
+  write: false,
+  delete: false,
+  download: false,
+  manageFolder: false,
+  manageFiles: false,
+};
+
+const mockFolderPermissions6 = {
+  read: true,
+  write: true,
+  delete: true,
+  download: false,
+  manageFolder: false,
+  manageFiles: false,
+};
+
 export const mockFolders = [
   {
     id: 1,
     folderName: "Project Documentation",
-    rolesPermissionsMatrix: [
-      { role: "User", permissions: mockFolderPermissions1 },
-      { role: "Admin", permissions: mockFolderPermissions2 },
-    ],
+    rolesPermissionsMatrix: {
+      CEO: {
+        basic: mockFolderPermissions1,
+        lead: mockFolderPermissions2,
+      },
+      CFO: {
+        lead: mockFolderPermissions2,
+        guest: mockFolderPermissions1,
+      },
+      COO: {
+        guest: mockFolderPermissions3,
+        basic: mockFolderPermissions4,
+      },
+    },
     numberOfFiles: 45,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
-    ), // Random date within the last week
+    ),
   },
   {
     id: 2,
     folderName: "Financial Reports",
-    rolesPermissionsMatrix: [
-      { role: "User", permissions: mockFolderPermissions1 },
-    ],
+    rolesPermissionsMatrix: {
+      CFO: {
+        lead: mockFolderPermissions1,
+        guest: mockFolderPermissions4,
+      },
+      HR: {
+        basic: mockFolderPermissions4,
+        lead: mockFolderPermissions3,
+      },
+    },
     numberOfFiles: 88,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -73,10 +117,20 @@ export const mockFolders = [
   {
     id: 3,
     folderName: "Marketing Assets",
-    rolesPermissionsMatrix: [
-      { role: "User", permissions: mockFolderPermissions1 },
-      { role: "Manager", permissions: mockFolderPermissions2 },
-    ],
+    rolesPermissionsMatrix: {
+      COO: {
+        basic: mockFolderPermissions2,
+        lead: mockFolderPermissions5,
+      },
+      HR: {
+        lead: mockFolderPermissions5,
+        guest: mockFolderPermissions6,
+      },
+      CEO: {
+        guest: mockFolderPermissions6,
+        lead: mockFolderPermissions3,
+      },
+    },
     numberOfFiles: 32,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -85,10 +139,16 @@ export const mockFolders = [
   {
     id: 4,
     folderName: "Employee Records",
-    rolesPermissionsMatrix: [
-      { role: "Manager", permissions: mockFolderPermissions2 },
-      { role: "Admin", permissions: mockFolderPermissions3 },
-    ],
+    rolesPermissionsMatrix: {
+      HR: {
+        lead: mockFolderPermissions3,
+        basic: mockFolderPermissions2,
+      },
+      CFO: {
+        basic: mockFolderPermissions2,
+        lead: mockFolderPermissions5,
+      },
+    },
     numberOfFiles: 60,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -97,10 +157,16 @@ export const mockFolders = [
   {
     id: 5,
     folderName: "Client Contracts",
-    rolesPermissionsMatrix: [
-      { role: "Manager", permissions: mockFolderPermissions2 },
-      { role: "User", permissions: mockFolderPermissions1 },
-    ],
+    rolesPermissionsMatrix: {
+      CEO: {
+        basic: mockFolderPermissions1,
+        lead: mockFolderPermissions5,
+      },
+      COO: {
+        guest: mockFolderPermissions4,
+        basic: mockFolderPermissions6,
+      },
+    },
     numberOfFiles: 25,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -109,10 +175,16 @@ export const mockFolders = [
   {
     id: 6,
     folderName: "Product Designs",
-    rolesPermissionsMatrix: [
-      { role: "Guest", permissions: mockFolderPermissions1 },
-      { role: "User", permissions: mockFolderPermissions2 },
-    ],
+    rolesPermissionsMatrix: {
+      CFO: {
+        lead: mockFolderPermissions2,
+        guest: mockFolderPermissions1,
+      },
+      HR: {
+        basic: mockFolderPermissions5,
+        lead: mockFolderPermissions3,
+      },
+    },
     numberOfFiles: 73,
     lastUpdated: new Date(
       Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000
@@ -120,7 +192,7 @@ export const mockFolders = [
   },
 ];
 
-export const mockRoles = ["Admin", "Manager", "User", "Guest"];
+export const mockRoles = ["CEO", "CFO", "COO", "HR"];
 
 export const mockSubroles = ["guest", "basic", "lead"];
 

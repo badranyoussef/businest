@@ -7,13 +7,13 @@
 
 .app-body {
   display: flex;
-  align-items: center;        /* Vertically centers content */
-  justify-content: center;    /* Horizontally centers content */
-  min-height: 78vh;           /* Ensures it's at least 75% of the viewport height */
-  max-width: 60%;             /* Limits the width to 60% of the parent */
-  margin: 0 auto;             /* Centers the container horizontally if it has a defined width */
-  flex-direction: column;     /* Aligns child elements vertically (optional, if you want them stacked) */
-  text-align: center;         /* Optionally aligns text inside */
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
+  min-height: 78vh; /* Ensures it's at least 75% of the viewport height */
+  max-width: 60%; /* Limits the width to 60% of the parent */
+  margin: 0 auto; /* Centers the container horizontally if it has a defined width */
+  flex-direction: column; /* Aligns child elements vertically (optional, if you want them stacked) */
+  text-align: center; /* Optionally aligns text inside */
 }
 
 body {
@@ -26,7 +26,10 @@ body {
 :root {
   --businest-black: #1f2937;
   --businest-baby-blue: #bfebff;
+  --businest-dark-blue: #79b8d8;
   --businest-grey: #4b5563;
+  --businest-light-red: #ffcccb;
+  --businest-dark-red: #ff9e9d;
 }
 
 /* global styling for tables */
