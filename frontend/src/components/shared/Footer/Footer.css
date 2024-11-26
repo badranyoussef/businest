@@ -1,0 +1,21 @@
+.main-footer {
+    background-color: var(--businest-baby-blue);
+    color: #1f2937;
+    padding: 1rem;
+    text-align: center;
+    bottom: 0;
+}
+
+.main-footer nav {
+    margin-top: 10px;
+}
+
+.main-footer a {
+    color: var(--businest-black);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.main-footer a:hover {
+    text-decoration: underline;
+}
