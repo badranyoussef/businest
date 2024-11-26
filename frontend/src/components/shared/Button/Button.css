@@ -1,0 +1,28 @@
+/* Base button styles */
+.custom-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: var(--businest-black);
+}
+
+/* Positive button (baby blue) */
+.positive-button {
+  background-color: var(--businest-baby-blue);
+}
+
+.positive-button:hover {
+  background-color: var(--businest-dark-blue);
+}
+
+/* Negative button (light pink) */
+.negative-button {
+  background-color: var(--businest-light-red);
+}
+
+.negative-button:hover {
+  background-color: var(--businest-dark-red);
+}

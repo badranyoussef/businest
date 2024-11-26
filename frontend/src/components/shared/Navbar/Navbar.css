@@ -1,0 +1,62 @@
+.navbar {
+  background-color: var(--businest-baby-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  max-height: 10%;
+}
+
+.navbar-container {
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #1f2937;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  color: #3b82f6;
+}
+
+.company-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #6b7280;
+  transition: all 0.2s ease-in-out;
+}
+
+.profile-link:hover {
+  background-color: #f3f4f6;
+  color: #3b82f6;
+}
+
+.profile-link.active {
+  color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.profile-icon {
+  width: 20px;
+  height: 20px;
+}
