@@ -25,16 +25,7 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.28</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!--   Jackson     -->
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -52,6 +43,7 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.7</version>
         </dependency>
+
         <!--  Hibernate  -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
@@ -63,6 +55,7 @@
             <artifactId>postgresql</artifactId>
             <version>42.6.0</version>
         </dependency>
+
         <!--  Testcontainer  -->
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -87,6 +80,7 @@
             <version>1.19.5</version>
             <scope>test</scope>
         </dependency>
+
         <!--   LOMBOK     -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -94,6 +88,7 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
+
         <!--  J-unit   -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -113,6 +108,7 @@
             <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
+
         <!--  Hamcrest  -->
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -120,6 +116,7 @@
             <version>2.0.0.0</version>
             <scope>test</scope>
         </dependency>
+
         <!--  RestAssured  -->
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -127,12 +124,14 @@
             <version>5.3.0</version>
             <scope>test</scope>
         </dependency>
+
         <!-- Json datatype formater from LocalDate to String -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.15.0</version>
         </dependency>
+        
         <!-- Cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
