@@ -1,0 +1,91 @@
+/* RoleManager container styling */
+.role-manager {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.role-manager h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Dropdown section */
+.add-role-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-role-dropdown {
+  width: 70%;
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  margin-right: 10px;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.3s ease;
+}
+
+.add-role-dropdown:focus {
+  border-color: #007bff;
+}
+
+.add-role-button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-role-button:hover {
+  background-color: #0056b3;
+}
+
+/* Roles list */
+.roles-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.roles-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.roles-list li:last-child {
+  border-bottom: none;
+}
+
+/* Remove role button */
+.remove-role {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-role:hover {
+  background-color: #c82333;
+}
