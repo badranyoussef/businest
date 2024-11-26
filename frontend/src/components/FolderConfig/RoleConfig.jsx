@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { mockRoles } from "../../services/folderService";
+import { mockRoles } from "../../services/mockFolderService";
 import "./RoleConfig.css";
 import { Button } from "../shared/Button/Button";
 

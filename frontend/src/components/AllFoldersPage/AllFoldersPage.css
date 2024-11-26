@@ -1,0 +1,61 @@
+.all-folders-page {
+  padding: 1rem;
+}
+
+.all-folders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.folders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Ensure 3 items per row */
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.folder-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.folder-link {
+  text-decoration: none;
+  color: #333;
+  text-align: center;
+}
+
+.folder-icon {
+  margin-bottom: 0.5rem;
+}
+
+.folder-name {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.empty-message {
+  text-align: center;
+  font-size: 1rem;
+  color: #888;
+}

@@ -1,0 +1,22 @@
+.folder-page {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  padding-left: 250px; /* Make room for the sticky sidebar */
+}
+
+.folder-content {
+  flex: 1;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.folder-content h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.folder-icon {
+  margin-right: 0.5rem;
+}

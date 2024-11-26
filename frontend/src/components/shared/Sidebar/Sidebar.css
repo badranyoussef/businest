@@ -1,0 +1,62 @@
+.sidebar {
+  position: fixed; /* Fixes the sidebar to the left of the screen */
+  top: 10%;
+  left: 0; /* Positions the sidebar on the left side of the screen */
+  width: 250px; /* Sidebar width */
+  height: 100vh; /* Full height of the screen */
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  overflow-y: auto; /* Enables vertical scrolling in the sidebar if needed */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-group {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-group h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.folder-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.folder-item:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.folder-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+}
+
+.folder-icon {
+  margin-right: 0.5rem;
+}

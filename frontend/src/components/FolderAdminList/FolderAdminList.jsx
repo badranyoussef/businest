@@ -4,15 +4,15 @@ import { SearchBar } from "../shared/SearchBar/SearchBar";
 import { Folder, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./FolderAdminList.css";
-import { getAllFoldersAsync, mockFolders } from "../../services/folderService";
+import { getAllFoldersAsync } from "../../services/folderService";
 
-export function FolderList() {
+export function FolderAdminList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 4;
 
   const [companyName] = useState("example");
-  const [folders, setFolders] = useState(mockFolders);
+  const [folders, setFolders] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ export function FolderList() {
   const fetchFolders = async () => {
     try {
       const fetchedFolders = await getAllFoldersAsync(companyName);
+      console.log('fetchedFolders:', fetchedFolders);
       if (Array.isArray(fetchedFolders)) {
         setFolders(fetchedFolders);
       } else {
