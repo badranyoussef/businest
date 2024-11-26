@@ -1,20 +1,21 @@
-package org.folder;
+package org.dtos;
+
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Set;
-
+import org.folder.Role;
+import org.folder.SubRole;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class FolderDTO {
     private String id;
-    private String username;
+    private String name;
     private String company;
-    private Set<Role> roles;
-    private Set<SubRole> subRoles;
-
+    private Role role;
+    private SubRole subRole;
 }
+

@@ -9,7 +9,7 @@ public class Endpoints {
 
     private ISecurityController securityController;
     private FolderController folderController;
-    private CompanyController companyController; // New controller for company-related actions
+    private CompanyController companyController;
 
     public Endpoints(ISecurityController securityController, FolderController folderController, CompanyController companyController) {
         this.securityController = securityController;
@@ -32,6 +32,9 @@ public class Endpoints {
 
                 // Assign role to a folder
                 post("/{folderId}/role", ctx -> folderController.assignRole(ctx));
+
+                // Assign sub role to a folder
+                post("/{folderId}/subrole", ctx -> folderController.assignSubRole(ctx));
             });
 
             path("{companyName}", () -> {

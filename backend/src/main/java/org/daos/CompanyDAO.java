@@ -15,14 +15,19 @@ public class CompanyDAO {
         this.entityManagerFactory = HibernateConfig.getEntityManagerFactoryConfig(false);
     }
 
+    public CompanyDAO(EntityManagerFactory emf) {
+        this.entityManagerFactory = emf;
+    }
+
 
     public List<Role> findRolesByCompanyName(String companyName) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            String jpql = "SELECT r FROM Role r WHERE r.company.name = :companyName";
+            String jpql = "SELECT DISTINCT f.role FROM Folder f WHERE f.company = :companyName";
             return entityManager.createQuery(jpql, Role.class)
                     .setParameter("companyName", companyName)
                     .getResultList();
+
         } finally {
             entityManager.close();
         }

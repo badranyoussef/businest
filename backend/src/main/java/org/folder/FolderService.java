@@ -1,60 +1,63 @@
 package org.folder;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.TypedQuery;
+import com.github.dockerjava.api.exception.NotFoundException;
+import org.daos.FolderDAO;
+
+import org.dtos.FolderDTO;
+
 import java.util.List;
 
 public class FolderService {
 
-    private EntityManagerFactory emf;
+    private final FolderDAO folderDAO;
 
-    public FolderService(EntityManagerFactory emf) {
-        this.emf = emf;
+    public FolderService(FolderDAO folderDAO) {
+        this.folderDAO = folderDAO;
     }
 
     public void assignRole(String folderId, String company, Role newRole) {
-        EntityManager em = emf.createEntityManager();
+        FolderDTO folderDTO = folderDAO.findById(folderId);
 
-        try {
-            em.getTransaction().begin();
-
-            Folder folder = em.find(Folder.class, folderId);
-
-            if (folder == null) {
-                throw new IllegalArgumentException("Folder not found.");
-            }
-
-            if (!folder.getCompany().equals(company)) {
-                throw new SecurityException("Unauthorized access: Cannot modify folders from other companies.");
-            }
-
-            folder.setRole(newRole);
-            em.merge(folder);
-
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e; // Let the controller handle the exception
-        } finally {
-            em.close();
+        if (folderDTO == null) {
+            throw new NotFoundException("Folder not found.");
         }
+
+        if (!folderDTO.getCompany().equals(company)) {
+            throw new SecurityException("Unauthorized access: Cannot modify folders from other companies.");
+        }
+
+        folderDTO.setRole(newRole);
+        folderDAO.update(folderDTO);
     }
 
-    public List<Folder> getFoldersInCompany(String company) {
-        EntityManager em = emf.createEntityManager();
+    public List<FolderDTO> getFoldersInCompany(String company) {
+        return folderDAO.findByCompany(company);
+    }
 
-        try {
-            String jpql = "SELECT f FROM Folder f WHERE f.company = :company";
-            TypedQuery<Folder> query = em.createQuery(jpql, Folder.class);
-            query.setParameter("company", company);
-            return query.getResultList();
+    public void updateSubRole(String folderId, String company, SubRole subRole) {
+        FolderDTO folderDTO = folderDAO.findById(folderId);
 
-        } finally {
-            em.close();
+        if (folderDTO == null) {
+            throw new NotFoundException("Folder not found.");
         }
+
+        if (!folderDTO.getCompany().equals(company)) {
+            throw new SecurityException("Unauthorized access: Cannot modify folders from other companies.");
+        }
+
+        folderDTO.setSubRole(subRole);
+        folderDAO.update(folderDTO);
+    }
+
+    public void createFolder(FolderDTO folderDTO) {
+        folderDAO.create(folderDTO);
+    }
+
+    public void deleteFolder(String folderId) {
+        FolderDTO folderDTO = folderDAO.findById(folderId);
+        if (folderDTO == null) {
+            throw new NotFoundException("Folder not found.");
+        }
+        folderDAO.delete(folderId);
     }
 }
