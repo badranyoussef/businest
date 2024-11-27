@@ -4,7 +4,50 @@
 '----- Entities -----
 class Account
 class File
-class Folder
+class Role {
+    - String name
+    - List<Folders> folders
+    - List<SubRole> subRoles
+    + getName()
+    + setName(String name)
+}
+class SubRole {
+    - String name
+    - Role role
+    + getName()
+    + setName(String name)
+    + getRole()
+    + setRole(Role role)
+}
+class PermissionMatrixSettings {
+    - SubRole subRole
+    - Permissions permissions
+    }
+class Permissions {
+    - String name
+    - boolean read
+    - boolean write
+    - boolean delete
+}
+
+class Folder {
+    - String name
+    - List<File> files
+    - List<Folder> folders
+    - List<SubRole> subRoles
+    - Folder parentFolder
+    - List<PermissionMatrixSettings> permissionMatrixSettings
+    + addFile(File file)
+    + addFolder(Folder folder)
+    + removeFile(File file)
+    + removeFolder(Folder folder)
+    + getFiles()
+    + getFolders()
+    + getName()
+    + setName(String name)
+    + getParentFolder()
+    + setParentFolder(Folder parentFolder)
+}
 class UserChangesLogEntry
 enum SystemRole {
     USER
@@ -23,7 +66,16 @@ class LogDAO
 class AccountDAO
 class FolderDAO
 
-class FileValidator
+class FileValidator {
+    - FileRequirements
+    + validateFile(FileRequirements fileRequirements)
+    + validateExtension(File file)
+    + validateTitleLength(String name)
+    - getTitleLengthWithoutExtension(String name)
+    + validateFileSize(File file)
+    + validateFileSymbols(String name)
+
+}
 
 
 'List <|-- AbstractList
@@ -37,6 +89,17 @@ class Account {
     - String example
     + methodExample()
 }
+
+'----- Relations -----
+Folder "1" *-- "0..*" File
+Folder "1" *-- "0..*" Folder
+Folder "1" *-- "0..*" SubRole
+Folder "1" *-- "0..*" PermissionMatrixSettings
+Role "1" *-- "0..*" Folders
+Role "1" *-- "0..*" SubRole
+PermissionMatrixSettings "1" *-- "0..*" Permissions
+PermissionMatrixSettings "1" *-- "0..*" SubRole
+
 
 !pragma layout smetana
 @enduml
