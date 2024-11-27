@@ -101,18 +101,18 @@ public class AccountController {
 //        };
 //    }
 //
-    public Handler getAccountById() {
-        return ctx -> {
-            int id = Integer.parseInt(ctx.pathParam("id"));
-            Account account = dao.getAccountById(id);
-            if (account == null ) {
-                //throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "No users were found.", timestamp);
-                System.out.println("No user found");
-            } else {
-                ctx.status(HttpStatus.OK).json(account);
-            }
-        };
-    }
+//    public Handler getAccountById() {
+//        return ctx -> {
+//            int id = Integer.parseInt(ctx.pathParam("id"));
+//            Account account = dao.getAccountById(id);
+//            if (account == null ) {
+//                //throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "No users were found.", timestamp);
+//                System.out.println("No user found");
+//            } else {
+//                ctx.status(HttpStatus.OK).json(account);
+//            }
+//        };
+//    }
 //
 //    public Handler updateAccount(AccountDAO dao) {
 //        return ctx -> {
