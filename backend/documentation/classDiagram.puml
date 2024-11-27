@@ -1,5 +1,7 @@
+
+https://plantuml.com/class-diagram
+
 @startuml
-'https://plantuml.com/class-diagram
 
 '----- Entities -----
 class Account
@@ -101,5 +103,5 @@ PermissionMatrixSettings "1" *-- "0..*" Permissions
 PermissionMatrixSettings "1" *-- "0..*" SubRole
 
 
-!pragma layout smetana
+'!pragma layout smetana
 @enduml

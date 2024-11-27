@@ -27,6 +27,8 @@ public class RouteFile {
             delete("/{id}", ctx -> FileController.delete(fileDAO).handle(ctx));
 
             put("/", ctx -> FileController.update(fileDAO).handle(ctx));
+
+            get("/getpermissions/{folder_id}", ctx -> FileController.getPermissions(fileDAO).handle(ctx));
         });
 
     }

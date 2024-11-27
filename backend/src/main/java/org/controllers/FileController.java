@@ -1,12 +1,16 @@
 package org.controllers;
 
+import io.javalin.http.Context;
+import io.javalin.http.ExceptionHandler;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
 import org.dtos.FileDTO;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
+import org.util.TokenUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,5 +126,29 @@ public class FileController {
                 }
             }
         };
+    }
+
+    public static Handler getPermissions(FileDAO fileDAO) {
+
+        return ctx -> {
+            var folderID = Integer.parseInt(ctx.pathParam("folder_id"));
+            var userID = getUserIdFromToken(ctx);
+
+            try {
+
+
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
+            } catch (ApiException e) {
+                throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "Item was not found: " + folderID, timestamp);
+            }
+        };
+    }
+
+    private static String getUserIdFromToken(Context ctx) throws ParseException {
+        var header = ctx.headerMap();
+        var token = (header.get("Authorization").split(" "))[1];
+        var userID = TokenUtils.getUserIdFromToken(token);
+        return userID;
     }
 }

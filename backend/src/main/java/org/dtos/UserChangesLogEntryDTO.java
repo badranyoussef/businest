@@ -1,4 +1,4 @@
-package org.entities;
+package org.dtos;
 
 import lombok.*;
 import org.persistence.model.UserChangesLogEntry;

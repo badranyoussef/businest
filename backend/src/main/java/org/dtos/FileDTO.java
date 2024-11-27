@@ -1,6 +1,7 @@
 package org.dtos;
 
 import lombok.*;
+import org.persistence.model.UserChangesLogEntry;
 
 @Getter
 @Setter
@@ -13,4 +14,5 @@ public class FileDTO {
     private String folderPath;
     private String name;
     private String fileType;
+
 }
