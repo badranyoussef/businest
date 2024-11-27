@@ -5,13 +5,11 @@ import org.entities.SubRole;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubRoleDao {
+public class SubRoleDAO {
 
 //    public SubRoleDao() {
 //        this.subRoleList = createSubRoleList(); // Initialiserer listen af subroles
 //    }
-
-    private List<SubRole> subRoleList = new ArrayList<>();
 
     // Opretter en liste af subroles
     public List<SubRole> createSubRoleList() {
@@ -23,6 +21,8 @@ public class SubRoleDao {
         subRoleList.add(new SubRole("Regional Manager"));
         return subRoleList;
     }
+
+    private List<SubRole> subRoleList = createSubRoleList();
 
     // Hent alle subroles
     public List<SubRole> getAllSubRoles() {

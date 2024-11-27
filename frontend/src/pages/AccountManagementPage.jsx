@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Users } from 'lucide-react';
 import { SearchBar } from '../components/SearchBar';
 import { EmployeeTable } from '../components/EmployeeTable';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { getAccounts } from '../api/accountApi';
 
 export function AccountManagementPage() {
@@ -14,6 +16,7 @@ export function AccountManagementPage() {
     const fetchEmployees = async () => {
       try {
         const data = await getAccounts();
+        console.log(data);
         setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees');
@@ -28,14 +31,17 @@ export function AccountManagementPage() {
   const filteredEmployees = useMemo(() => {
     return employees.filter(employee =>
       employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      employee.role.toLowerCase().includes(searchQuery.toLowerCase())
+      employee.rolee.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (employee.subRoles && employee.subRoles.some(subrole => 
+        subrole.toLowerCase().includes(searchQuery.toLowerCase())
+      ))
     );
   }, [searchQuery, employees]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -43,9 +49,7 @@ export function AccountManagementPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-red-50 text-red-800 p-4 rounded-lg">
-          {error}
-        </div>
+        <ErrorMessage message={error} />
       </div>
     );
   }
@@ -62,7 +66,7 @@ export function AccountManagementPage() {
             <SearchBar value={searchQuery} onChange={setSearchQuery} />
           </div>
         </div>
-        
+    
         <EmployeeTable employees={filteredEmployees} />
       </div>
     </div>

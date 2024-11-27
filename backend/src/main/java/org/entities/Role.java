@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Role {
     private String title;
-    //EMPLOYEE, COMPANY_MANAGER, SALES, MARKETING, HR
+
     @Override
     public String toString() {
         return title;

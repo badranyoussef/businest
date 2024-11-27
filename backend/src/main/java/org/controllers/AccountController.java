@@ -1,11 +1,8 @@
 package org.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import java.util.stream.Collectors;
 import io.javalin.http.Handler;
-import io.javalin.http.HttpStatus;
 import org.daos.AccountDAO;
 import org.dtos.AccountDTO;
 import org.entities.Account;

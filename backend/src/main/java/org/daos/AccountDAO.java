@@ -1,7 +1,5 @@
 package org.daos;
 
-import lombok.Getter;
-import org.dtos.AccountDTO;
 import org.entities.Account;
 import org.entities.Role;
 import org.entities.SubRole;
@@ -12,13 +10,13 @@ import java.util.List;
 public class AccountDAO {
 
     private List<Account> accountList;
-    private SubRoleDao subRoleDAO = new SubRoleDao();  // SubRoleDAO som intern komponent
+    private SubRoleDAO subRoleDAO = new SubRoleDAO();  // SubRoleDAO som intern komponent
     private List<SubRole> subRoles = subRoleDAO.createSubRoleList();
 
 
     // Constructor
     public AccountDAO() {
-        this.subRoleDAO = new SubRoleDao(); // Initialiserer SubRoleDAO internt
+        this.subRoleDAO = new SubRoleDAO(); // Initialiserer SubRoleDAO internt
         this.accountList = createAccountList(); // Initialiserer listen af accounts
     }
 

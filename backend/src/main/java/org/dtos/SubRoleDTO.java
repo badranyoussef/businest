@@ -1,11 +1,11 @@
-package org.entities;
+package org.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SubRole {
+public class SubRoleDTO {
     private String title;
 
     @Override

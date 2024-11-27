@@ -67,6 +67,7 @@ public class ApplicationConfig {
 
     public ApplicationConfig setExceptionHandlers() {
         app.exception(Exception.class, (e, ctx) -> {
+            e.printStackTrace(); // Udskriv stack trace i konsollen
             ObjectNode node = om.createObjectNode().put("errorMessage from application config", e.getMessage());
             ctx.status(500).json(node);
         });

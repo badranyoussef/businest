@@ -3,8 +3,18 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:7007/api/account/roles_subroles
+Content-Type: application/json
 
-GET http://localhost:7007/api/account/11
+###
+
+GET http://localhost:7007/api/account/subroles
+Content-Type: application/json
+
+###
+
+
+GET http://localhost:7007/api/account/1
 Content-Type: application/json
 
 ###
@@ -18,7 +28,7 @@ Content-Type: application/json
   "role": "Company Manager",
   "subRoles": [
     "Super Manager",
-    "HR Specialist"
+    "HR Specialistddd"
   ]
 }
 
