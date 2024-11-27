@@ -29,13 +29,15 @@ export function AccountManagementPage() {
   }, []);
 
   const filteredEmployees = useMemo(() => {
-    return employees.filter(employee =>
-      employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      employee.rolee.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (employee.subRoles && employee.subRoles.some(subrole => 
-        subrole.toLowerCase().includes(searchQuery.toLowerCase())
-      ))
-    );
+    return employees.filter(employee => {
+      const name = employee.name || '';  // Hvis name er undefined, brug en tom streng
+      const role = employee.role || '';  // Hvis role er undefined, brug en tom streng
+      const subRoles = employee.subRoles || [];  // Hvis subRoles er undefined, brug en tom liste
+      
+      return name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        subRoles.some(subrole => subrole.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
   }, [searchQuery, employees]);
 
   if (loading) {
