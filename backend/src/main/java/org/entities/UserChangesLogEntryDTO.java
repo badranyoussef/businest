@@ -1,9 +1,7 @@
-package org.dtos;
+package org.entities;
 
 import lombok.*;
 import org.persistence.model.UserChangesLogEntry;
-
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor

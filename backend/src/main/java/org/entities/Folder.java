@@ -3,30 +3,9 @@ package org.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-import org.persistence.model.File;
+import java.util.Set;
 
-/*
-FROM classDiagram:
- class Folder {
-    - String name
-    - List<File> files
-    - List<Folder> folders
-    - List<Role> subRoles
-    - Folder parentFolder
-    - List<PermissionMatrixSettings> permissionMatrixSettings
-    + addFile(File file)
-    + addFolder(Folder folder)
-    + removeFile(File file)
-    + removeFolder(Folder folder)
-    + getFiles()
-    + getFolders()
-    + getName()
-    + setName(String name)
-    + getParentFolder()
-    + setParentFolder(Folder parentFolder)
-}
- */
+import org.persistence.model.File;
 
 @Getter
 @Setter
@@ -34,11 +13,11 @@ FROM classDiagram:
 @NoArgsConstructor
 public class Folder {
     private String name;
-    private List<File> files;
-    private List<Folder> folders;
-    private List<SubRole> subRoles;
+    private Set<File> files;
+    private Set<Folder> folders;
+    private Set<SubRole> subRoles;
     private Folder parentFolder;
-    private List<PermissionMatrixSettings> permissionMatrixSettings;
+    private Set<PermissionMatrixSettings> permissionMatrixSettings;
 
     public void addFile(File file) {
         // files.add(file);
