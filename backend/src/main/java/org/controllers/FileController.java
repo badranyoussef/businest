@@ -6,10 +6,12 @@ import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
 import org.dtos.FileDTO;
+import org.entities.Permissions;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
 import org.util.TokenUtils;
 
+import java.security.Permission;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,9 +138,14 @@ public class FileController {
 
             try {
 
+                List<Permissions> allPermissions = new ArrayList<>();
 
+                // allPermissions = methodGettingAllPermissions(folderID, userID)
+
+                ctx.status(200).json(allPermissions);
             } catch (NumberFormatException e) {
                 ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
+
             } catch (ApiException e) {
                 throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "Item was not found: " + folderID, timestamp);
             }
