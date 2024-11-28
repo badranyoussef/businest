@@ -28,7 +28,8 @@ export function AccountPage() {
         setAccount(accountData);
         setRoles(rolesData.roles);
         setSubRoles(rolesData.subRoles || []);
-        console.log(rolesData, accountData);
+        console.log('testing data');
+        console.log(rolesData);
       } catch (err) {
         setError('Failed to load account data');
       } finally {
