@@ -1,3 +1,8 @@
+
+.folder-config-container {
+  width: 150%;
+}
+
 .folder-config {
   display: flex;
   gap: 2rem;
@@ -16,31 +21,23 @@
 }
 
 .folder-info {
-  padding: 1rem;
-  border: 1px solid #ddd;
+
+  background-color: white;
+  padding: 20px;
   border-radius: 8px;
-  background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  margin-bottom: 2rem;
+
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 h2 {
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 24px;
 }
 
-.add-subrole-section {
-  display: flex;
-  flex-direction: column;  /* Stack the elements vertically */
-  padding: 1rem;
-}
-
-.folder-config-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  justify-content: center;
-}
