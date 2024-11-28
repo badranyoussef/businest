@@ -3,6 +3,7 @@ package org.daos;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.entities.Folder;
 import org.entities.PermissionMatrixSettings;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.persistence.HibernateConfig;
 import org.persistence.model.File;
 
+import groovy.transform.builder.InitializerStrategy.SET;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -39,19 +41,19 @@ public class FolderDAOTest {
     private Folder folder1;
     private Folder folder2;
 
-    private List<SubRole> subRoles1;
-    private List<SubRole> subRoles2;
+    private Set<SubRole> subRoles1;
+    private Set<SubRole> subRoles2;
 
     private Role role1;
     private Role role2;
 
-    private List<PermissionMatrixSettings> permissionMatrixSettingsList1;
-    private List<PermissionMatrixSettings> permissionMatrixSettingsList2;
+    private Set<PermissionMatrixSettings> permissionMatrixSettingsList1;
+    private Set<PermissionMatrixSettings> permissionMatrixSettingsList2;
 
     @BeforeAll
     public static void beforeAll() {
         emf = HibernateConfig.getEntityManagerFactoryConfig(true);
-        folderDAO = FileDAO.getInstance(emf);
+        folderDAO = FolderDAO.getInstance(emf);
     }
 
     @AfterAll
@@ -76,17 +78,15 @@ public class FolderDAOTest {
     }
 
     private void setupInstances() {
-        subRoles1 = List.of(subRole1, subRole2);
-        subRoles2 = List.of(subRole3);
+        subRoles1 = Set.of(subRole1, subRole2);
+        subRoles2 = Set.of(subRole3);
 
-        role1 = new Role("HR", List.of(folder1, folder2), subRoles1);
-        role2 = new Role("Media Relations", List.of(folder1, folder2), subRoles2);
+        role1 = new Role("HR", Set.of(folder1, folder2), subRoles1);
+        role2 = new Role("Media Relations", Set.of(folder1, folder2), subRoles2);
 
         subRole1 = new SubRole("HR_BASIC", role1);
         subRole2 = new SubRole("HR_LEAD", role1);
         subRole3 = new SubRole("MEDIA_RELATIONS_BASIC", role2);
-
-        
 
         permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(subRole1, permission1, true, true, true, true);
         permissionMatrixSettings2Folder1 = new PermissionMatrixSettings(subRole2, permission2, true, true, true, true);

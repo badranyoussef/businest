@@ -3,14 +3,18 @@ package org.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "role")
 public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String name;
     Set<Folder> folders;
     Set<SubRole> subRoles;

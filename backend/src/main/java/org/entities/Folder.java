@@ -12,6 +12,10 @@ import org.persistence.model.File;
 @Entity
 @NoArgsConstructor
 public class Folder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String name;
     private Set<File> files;
     private Set<Folder> folders;
