@@ -28,7 +28,7 @@ public class RouteFile {
 
             put("/", ctx -> FileController.update(fileDAO).handle(ctx));
 
-            get("/getpermissions/{folder_id}", ctx -> FileController.getPermissions(fileDAO).handle(ctx));
+            get("/getpermissions/{folder_id}", ctx -> FileController.getPermissionsForFilesInFolder(fileDAO).handle(ctx));
         });
 
     }

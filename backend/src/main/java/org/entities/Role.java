@@ -12,8 +12,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Role {
     private String name;
+
+    @ManyToMany
     Set<Folder> folders;
+    @OneToMany
     Set<SubRole> subRoles;
+
 
     public Role(String name, Set<Folder> folders, Set<SubRole> subRoles) {
         this.name = name;

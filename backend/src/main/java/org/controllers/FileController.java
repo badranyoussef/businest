@@ -1,17 +1,15 @@
 package org.controllers;
 
 import io.javalin.http.Context;
-import io.javalin.http.ExceptionHandler;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
 import org.dtos.FileDTO;
-import org.entities.Permissions;
+import org.dtos.PermissionsDTO;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
 import org.util.TokenUtils;
 
-import java.security.Permission;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -130,7 +128,7 @@ public class FileController {
         };
     }
 
-    public static Handler getPermissions(FileDAO fileDAO) {
+    public static Handler getPermissionsForFilesInFolder(FileDAO fileDAO) {
 
         return ctx -> {
             var folderID = Integer.parseInt(ctx.pathParam("folder_id"));
@@ -138,11 +136,12 @@ public class FileController {
 
             try {
 
-                List<Permissions> allPermissions = new ArrayList<>();
+                List<PermissionsDTO> userFilePermissionsInFolder = new ArrayList<>();
 
-                // allPermissions = methodGettingAllPermissions(folderID, userID)
+                // userFilePermissionsInFolder = methodGettingPermissionsOfUserInFolder(folderID, userID)
 
-                ctx.status(200).json(allPermissions);
+                ctx.status(200).json(userFilePermissionsInFolder);
+
             } catch (NumberFormatException e) {
                 ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
 
