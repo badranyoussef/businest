@@ -35,6 +35,7 @@ body {
 /* global styling for tables */
 table {
   width: 100%;
+
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -53,15 +54,18 @@ tr {
   display: table-row;
   height: auto;
 }
+
 td {
   padding: 1rem;
   color: #1f2937;
   border-right: 1px solid #e0e0e0; /* Light grey line between columns */
   border-right-style: dashed;
+
   border-bottom: 1px solid #e0e0e0; /* Light grey line between rows */
   border-bottom-style: dashed;
 }
 td:last-child {
   border-right: none;
   border-bottom: none;
+
 }
