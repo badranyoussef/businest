@@ -6,7 +6,7 @@ import { FormField } from './FormField';
 export function AccountForm({ 
   account, 
   roles, 
-  subroles, 
+  subRoles, 
   onSubmit, 
   onChange, 
   isSubmitting 
@@ -37,9 +37,9 @@ export function AccountForm({
       />
 
       <SubroleSelector
-        selectedSubroles={account.subroles || []}
-        availableSubroles={subroles}
-        onChange={(value) => handleChange('subroles', value)}
+        selectedSubroles={account.subRoles || []}
+        availableSubroles={subRoles}
+        onChange={(value) => handleChange('subRoles', value)}
         disabled={isSubmitting}
       />
 

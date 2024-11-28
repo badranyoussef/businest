@@ -11,7 +11,7 @@ export function AccountPage() {
   const navigate = useNavigate();
   const [account, setAccount] = useState(null);
   const [roles, setRoles] = useState([]);
-  const [subroles, setSubroles] = useState([]);
+  const [subRoles, setSubRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,7 +27,7 @@ export function AccountPage() {
         
         setAccount(accountData);
         setRoles(rolesData.roles);
-        setSubroles(rolesData.subroles || []);
+        setSubRoles(rolesData.subRoles || []);
         console.log(rolesData, accountData);
       } catch (err) {
         setError('Failed to load account data');
@@ -99,7 +99,7 @@ export function AccountPage() {
             <AccountForm
               account={account}
               roles={roles}
-              subroles={subroles}
+              subRoles={subRoles}
               onSubmit={handleSubmit}
               onChange={setAccount}
               isSubmitting={isSubmitting}

@@ -7,7 +7,7 @@ export const XXXXXXXXXXgetAccounts = async () => {
     const response = await axios.get(API_URL);
     return response.data.map(account => ({
       ...account,
-      subroles: Array.isArray(account.subroles) ? account.subroles : []
+      subRoles: Array.isArray(account.subRoles) ? account.subRoles : []
     }));
   } catch (error) {
     console.error('Error fetching accounts:', error);
@@ -30,7 +30,7 @@ export const getAccountById = async (id) => {
     const response = await axios.get(`${API_URL}/${id}`);
     return {
       ...response.data,
-      subroles: Array.isArray(response.data.subroles) ? response.data.subroles : []
+      subRoles: Array.isArray(response.data.subRoles) ? response.data.subRoles : []
     };
   } catch (error) {
     console.error('Error fetching account:', error);
@@ -56,16 +56,16 @@ export const getRolesAndSubroles = async () => {
       ? response.data.roles.map(role => role.title) 
       : [];
     
-    const subroles = Array.isArray(response.data.subroles) 
-      ? response.data.subroles.map(subrole => subrole.title) 
+    const subRoles = Array.isArray(response.data.subRoles) 
+      ? response.data.subRoles.map(subrole => subrole.title) 
       : [];
     
     return {
       roles,
-      subroles // Now it's a flat array of all available subroles
+      subRoles // Now it's a flat array of all available subroles
     };
   } catch (error) {
-    console.error('Error fetching roles and subroles:', error);
+    console.error('Error fetching roles and subRoles:', error);
     throw error;
   }
 };

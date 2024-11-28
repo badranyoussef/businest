@@ -35,7 +35,7 @@ public class RoleController {
                             .collect(Collectors.toList());
             HashMap<String, Object> model = new HashMap<>();
             model.put("roles", roles);
-            model.put("subroles", subRoles);
+            model.put("subRoles", subRoles);
             ctx.json(model);
         } catch (Exception e) {
             e.printStackTrace(); // Log the full stack trace
