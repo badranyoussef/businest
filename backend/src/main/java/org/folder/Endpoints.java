@@ -36,7 +36,7 @@ public class Endpoints {
                 before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
                 post(roleController::createRole);
                 get(roleController::getRoles);
-                delete("/{id}", roleController::deleteRole);
+                delete("{id}", roleController::deleteRole);
             });
         });
 
@@ -46,7 +46,7 @@ public class Endpoints {
                 before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
                 post(subRoleController::createSubRole);
                 get(subRoleController::getSubRoles);
-                delete("/{id}", subRoleController::deleteSubRole);
+                delete("{id}", subRoleController::deleteSubRole);
             });
         });
 
@@ -55,19 +55,29 @@ public class Endpoints {
             path("folders", () -> {
                 before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
 
-                get("/{companyName}", folderController::getAllFoldersByCompanyName); // Get all folders by company
-                get("/folder/{folderName}", folderController::getFolderByName); // Get folder by name
-                post("/{folderId}/role", folderController::assignRole); // Assign role to folder
-                post("/{folderId}/subrole", folderController::assignSubRole); // Assign subrole to folder
-                post("/{folderId}/permissions", folderController::updateFolderPermissionsById); // Update permissions
+                // Get folder by name
+                get("{folderName}", folderController::getFolderByName); // GET /folders/{folderName}
+
+                // Get all folders by company name
+                get("{companyName}", folderController::getAllFoldersByCompanyName); // GET /folders/{companyName}
+
+                // Update folder permissions
+                post("{folderId}/permissions", folderController::updateFolderPermissionsById); // POST /folders/{folderId}/permissions
+
+                // Assign role to folder
+                post("{folderId}/role", folderController::assignRole); // POST /folders/{folderId}/role
+
+                // Assign subrole to folder
+                post("{folderId}/subrole", folderController::assignSubRole); // POST /folders/{folderId}/subrole
             });
         });
 
         // Define company-specific routes
         app.routes(() -> {
-            path("{companyName}", () -> {
-                before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
-                get("/roles", companyController::getRoles); // Get roles for a company
+            // Get roles for a company
+            get("{companyName}/roles", ctx -> {
+                securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER);
+                companyController.getRoles(ctx); // GET /{companyName}/roles
             });
         });
     }
