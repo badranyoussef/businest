@@ -1,11 +1,13 @@
 package org.folder;
 
-import com.github.dockerjava.api.exception.NotFoundException;
 import org.daos.FolderDAO;
-
 import org.dtos.FolderDTO;
+import org.entities.Folder;
+import org.exceptions.ApiException;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FolderService {
 
@@ -15,49 +17,92 @@ public class FolderService {
         this.folderDAO = folderDAO;
     }
 
-    public void assignRole(String folderId, String company, Role newRole) {
-        FolderDTO folderDTO = folderDAO.findById(folderId);
+    // Assign a Role to a Folder
+    public void assignRole(String folderId, Role role) {
+        Folder folder = folderDAO.findById(folderId);
 
-        if (folderDTO == null) {
-            throw new NotFoundException("Folder not found.");
+        if (folder == null) {
+            throw new IllegalArgumentException("Folder not found.");
         }
 
-        if (!folderDTO.getCompany().equals(company)) {
-            throw new SecurityException("Unauthorized access: Cannot modify folders from other companies.");
-        }
-
-        folderDTO.setRole(newRole);
-        folderDAO.update(folderDTO);
+        folder.setRole(role);
+        folderDAO.update(folder);
     }
 
-    public List<FolderDTO> getFoldersInCompany(String company) {
-        return folderDAO.findByCompany(company);
-    }
+    // Assign a SubRole to a Folder
+    public void assignSubRole(String folderId, SubRole subRole) {
+        Folder folder = folderDAO.findById(folderId);
 
-    public void updateSubRole(String folderId, String company, SubRole subRole) {
-        FolderDTO folderDTO = folderDAO.findById(folderId);
-
-        if (folderDTO == null) {
-            throw new NotFoundException("Folder not found.");
+        if (folder == null) {
+            throw new IllegalArgumentException("Folder not found.");
         }
 
-        if (!folderDTO.getCompany().equals(company)) {
-            throw new SecurityException("Unauthorized access: Cannot modify folders from other companies.");
-        }
-
-        folderDTO.setSubRole(subRole);
-        folderDAO.update(folderDTO);
+        folder.setSubRole(subRole);
+        folderDAO.update(folder);
     }
 
+    // Fetch all folders for a given company
+    public List<FolderDTO> getFoldersByCompany(String company) {
+        List<Folder> folders = folderDAO.findByCompany(company);
+        return folders.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Fetch a folder by its name and company
+    public FolderDTO getFolderByName(String folderName, String company) {
+        Folder folder = folderDAO.findByName(folderName, company);
+
+        if (folder == null) {
+            throw new ApiException(404, "Folder not found.", Instant.now().toString());
+        }
+
+        return convertToDTO(folder);
+    }
+
+    // Update folder permissions
+    public void updateFolderPermissions(String folderId, FolderDTO updatedFolderDTO) {
+        Folder folder = folderDAO.findById(folderId);
+
+        if (folder == null) {
+            throw new IllegalArgumentException("Folder not found.");
+        }
+
+        folder.setRole(updatedFolderDTO.getRole());
+        folder.setSubRole(updatedFolderDTO.getSubRole());
+        folderDAO.update(folder);
+    }
+
+    // Create a new Folder
     public void createFolder(FolderDTO folderDTO) {
-        folderDAO.create(folderDTO);
+        Folder folder = convertToEntity(folderDTO);
+        folderDAO.create(folder);
     }
 
+    // Delete a Folder by its ID
     public void deleteFolder(String folderId) {
-        FolderDTO folderDTO = folderDAO.findById(folderId);
-        if (folderDTO == null) {
-            throw new NotFoundException("Folder not found.");
-        }
         folderDAO.delete(folderId);
+    }
+
+    // Helper method: Convert Folder entity to FolderDTO
+    private FolderDTO convertToDTO(Folder folder) {
+        return new FolderDTO(
+                folder.getId(),
+                folder.getName(),
+                folder.getCompany(),
+                folder.getRole(),
+                folder.getSubRole()
+        );
+    }
+
+    // Helper method: Convert FolderDTO to Folder entity
+    private Folder convertToEntity(FolderDTO folderDTO) {
+        Folder folder = new Folder();
+        folder.setId(folderDTO.getId());
+        folder.setName(folderDTO.getName());
+        folder.setCompany(folderDTO.getCompany());
+        folder.setRole(folderDTO.getRole());
+        folder.setSubRole(folderDTO.getSubRole());
+        return folder;
     }
 }

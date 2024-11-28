@@ -1,11 +1,13 @@
-import com.github.dockerjava.api.exception.NotFoundException;
 import org.daos.FolderDAO;
-import org.dtos.FolderDTO;
-import org.folder.FolderService;
+import org.entities.Folder;
 import org.folder.Role;
 import org.folder.SubRole;
-import org.junit.jupiter.api.*;
+import org.folder.FolderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,121 +29,83 @@ class FolderServiceTest {
     void testAssignRole_Success() {
         // Arrange
         String folderId = "folder123";
-        String company = "ExampleCompany";
-        Role newRole = Role.USER;
+        Role newRole = new Role(2L, "USER", null, null);
 
-        FolderDTO folderDTO = new FolderDTO(folderId, "Test Folder", company, Role.GUEST, SubRole.LOW);
+        Folder folder = new Folder();
+        folder.setId(folderId);
+        folder.setName("Test Folder");
+        folder.setCompany("ExampleCompany");
+        folder.setRole(new Role(1L, "GUEST", null, null));
 
-        when(folderDAO.findById(folderId)).thenReturn(folderDTO);
-        doNothing().when(folderDAO).update(folderDTO);
+        when(folderDAO.findById(folderId)).thenReturn(folder);
+        doNothing().when(folderDAO).update(folder);
 
         // Act
-        folderService.assignRole(folderId, company, newRole);
+        folderService.assignRole(folderId, newRole);
 
         // Assert
-        assertEquals(newRole, folderDTO.getRole());
+        assertEquals(newRole, folder.getRole());
         verify(folderDAO).findById(folderId);
-        verify(folderDAO).update(folderDTO);
-    }
-
-    @Test
-    void testAssignRole_UnauthorizedAccess() {
-        // Arrange
-        String folderId = "folder123";
-        String company = "ExampleCompany";
-        Role newRole = Role.USER;
-
-        FolderDTO folderDTO = new FolderDTO(folderId, "Test Folder", "DifferentCompany", Role.GUEST, SubRole.LOW);
-
-        when(folderDAO.findById(folderId)).thenReturn(folderDTO);
-
-        // Act & Assert
-        SecurityException exception = assertThrows(SecurityException.class, () -> {
-            folderService.assignRole(folderId, company, newRole);
-        });
-
-        assertEquals("Unauthorized access: Cannot modify folders from other companies.", exception.getMessage());
-        verify(folderDAO).findById(folderId);
-        verify(folderDAO, never()).update(any(FolderDTO.class));
+        verify(folderDAO).update(folder);
     }
 
     @Test
     void testAssignRole_FolderNotFound() {
         // Arrange
         String folderId = "nonExistentFolder";
-        String company = "ExampleCompany";
-        Role newRole = Role.USER;
+        Role newRole = new Role(2L, "USER", null, null);
 
         when(folderDAO.findById(folderId)).thenReturn(null);
 
         // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            folderService.assignRole(folderId, company, newRole);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            folderService.assignRole(folderId, newRole);
         });
 
         assertEquals("Folder not found.", exception.getMessage());
         verify(folderDAO).findById(folderId);
-        verify(folderDAO, never()).update(any(FolderDTO.class));
+        verify(folderDAO, never()).update(any(Folder.class));
     }
 
     @Test
-    void testUpdateSubRole_Success() {
+    void testAssignSubRole_Success() {
         // Arrange
         String folderId = "folder124";
-        String company = "ExampleCompany";
-        SubRole newSubRole = SubRole.HIGH;
+        SubRole newSubRole = new SubRole(2L, "HIGH", null, null);
 
-        FolderDTO folderDTO = new FolderDTO(folderId, "Test Folder", company, Role.USER, SubRole.MEDIUM);
+        Folder folder = new Folder();
+        folder.setId(folderId);
+        folder.setName("Test Folder");
+        folder.setCompany("ExampleCompany");
+        folder.setSubRole(new SubRole(1L, "MEDIUM", null, null));
 
-        when(folderDAO.findById(folderId)).thenReturn(folderDTO);
-        doNothing().when(folderDAO).update(folderDTO);
+        when(folderDAO.findById(folderId)).thenReturn(folder);
+        doNothing().when(folderDAO).update(folder);
 
         // Act
-        folderService.updateSubRole(folderId, company, newSubRole);
+        folderService.assignSubRole(folderId, newSubRole);
 
         // Assert
-        assertEquals(newSubRole, folderDTO.getSubRole());
+        assertEquals(newSubRole, folder.getSubRole());
         verify(folderDAO).findById(folderId);
-        verify(folderDAO).update(folderDTO);
+        verify(folderDAO).update(folder);
     }
 
     @Test
-    void testUpdateSubRole_UnauthorizedAccess() {
-        // Arrange
-        String folderId = "folder124";
-        String company = "ExampleCompany";
-        SubRole newSubRole = SubRole.HIGH;
-
-        FolderDTO folderDTO = new FolderDTO(folderId, "Test Folder", "DifferentCompany", Role.USER, SubRole.MEDIUM);
-
-        when(folderDAO.findById(folderId)).thenReturn(folderDTO);
-
-        // Act & Assert
-        SecurityException exception = assertThrows(SecurityException.class, () -> {
-            folderService.updateSubRole(folderId, company, newSubRole);
-        });
-
-        assertEquals("Unauthorized access: Cannot modify folders from other companies.", exception.getMessage());
-        verify(folderDAO).findById(folderId);
-        verify(folderDAO, never()).update(any(FolderDTO.class));
-    }
-
-    @Test
-    void testUpdateSubRole_FolderNotFound() {
+    void testAssignSubRole_FolderNotFound() {
         // Arrange
         String folderId = "nonExistentFolder";
-        String company = "ExampleCompany";
-        SubRole newSubRole = SubRole.HIGH;
+        SubRole newSubRole = new SubRole(2L, "HIGH", null, null);
 
         when(folderDAO.findById(folderId)).thenReturn(null);
 
         // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            folderService.updateSubRole(folderId, company, newSubRole);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            folderService.assignSubRole(folderId, newSubRole);
         });
 
         assertEquals("Folder not found.", exception.getMessage());
         verify(folderDAO).findById(folderId);
-        verify(folderDAO, never()).update(any(FolderDTO.class));
+        verify(folderDAO, never()).update(any(Folder.class));
     }
 }

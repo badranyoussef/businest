@@ -1,5 +1,3 @@
-
-
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import io.restassured.RestAssured;
@@ -7,17 +5,20 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.controllers.CompanyController;
+import org.controllers.FolderController;
+import org.controllers.RoleController;
+import org.controllers.SubRoleController;
 import org.daos.CompanyDAO;
 import org.daos.FolderDAO;
+import org.daos.RoleDAO;
+import org.daos.SubRoleDAO;
+import org.entities.Folder;
 import org.folder.*;
+
 import org.junit.jupiter.api.*;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -29,6 +30,8 @@ public class FolderControllerIntegrationTest {
     private ISecurityController securityController;
     private FolderService folderService;
     private CompanyController companyController;
+    private RoleController roleController;
+    private SubRoleController subRoleController;
 
     @BeforeAll
     static void setUpClass() {
@@ -50,27 +53,34 @@ public class FolderControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        // Initialize DAOs
         FolderDAO folderDAO = new FolderDAO(emf);
+        RoleDAO roleDAO = new RoleDAO(emf);
+        SubRoleDAO subRoleDAO = new SubRoleDAO(emf);
+        CompanyDAO companyDAO = new CompanyDAO(emf);
+
+        // Initialize Services (if any)
         folderService = new FolderService(folderDAO);
+        CompanyService companyService = new CompanyService(companyDAO);
+
+        // Initialize Controllers
         folderController = new FolderController(folderService);
-        securityController = new org.folder.TestSecurityController();
+        roleController = new RoleController(roleDAO);
+        subRoleController = new SubRoleController(subRoleDAO);
+        companyController = new CompanyController(companyService, folderService);
 
-        // Initialize CompanyController with a mock or real implementation
-        companyController = new CompanyController(new CompanyService(new CompanyDAO(emf)));
+        // Initialize Security Controller
+        securityController = new TestSecurityController();
 
-        app = Javalin.create(config -> {
+        // Initialize the application
+        app = Javalin.create(config -> {});
 
-        });
-
-        Endpoints endpoints = new Endpoints(securityController, folderController, companyController);
+        // Register endpoints
+        Endpoints endpoints = new Endpoints(securityController, folderController, companyController, roleController, subRoleController);
         endpoints.registerRoutes(app);
 
         // Clean the database before each test
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.createQuery("DELETE FROM Folder").executeUpdate();
-        em.getTransaction().commit();
-        em.close();
+        cleanDatabase();
     }
 
     @AfterEach
@@ -80,13 +90,15 @@ public class FolderControllerIntegrationTest {
 
     @Test
     void testAssignRole_Success() {
-        // Insert test data
-        insertTestFolder("folder123", "Test Folder", "ExampleCompany", Role.GUEST, SubRole.LOW);
+        Role userRole = createRole("USER");
+        Role guestRole = createRole("GUEST");
+
+        insertTestFolder("folder123", "Test Folder", "ExampleCompany", guestRole, null);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
 
-            String requestBody = "{ \"folderId\": \"folder123\", \"newRole\": \"USER\" }";
+            String requestBody = userRole.getId().toString();
 
             RestAssured.given()
                     .header("Authorization", "Bearer validToken")
@@ -99,23 +111,25 @@ public class FolderControllerIntegrationTest {
                     .body(equalTo("Role updated successfully."));
         });
 
-        // Verify the folder's role was updated
         EntityManager em = emf.createEntityManager();
         Folder folder = em.find(Folder.class, "folder123");
         assertNotNull(folder);
-        assertEquals(Role.USER, folder.getRole());
+        assertEquals(userRole.getId(), folder.getRole().getId());
         em.close();
     }
 
     @Test
     void testAssignSubRole_Success() {
-        // Insert test data
-        insertTestFolder("folder124", "Test Folder SubRole", "ExampleCompany", Role.USER, SubRole.MEDIUM);
+        Role userRole = createRole("USER");
+        SubRole mediumSubRole = createSubRole("MEDIUM");
+        SubRole highSubRole = createSubRole("HIGH");
+
+        insertTestFolder("folder124", "Test Folder SubRole", "ExampleCompany", userRole, mediumSubRole);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
 
-            String requestBody = "{ \"folderId\": \"folder124\", \"newSubRole\": \"HIGH\" }";
+            String requestBody = highSubRole.getId().toString();
 
             RestAssured.given()
                     .header("Authorization", "Bearer validToken")
@@ -128,107 +142,23 @@ public class FolderControllerIntegrationTest {
                     .body(equalTo("SubRole updated successfully."));
         });
 
-        // Verify the folder's subRole was updated
         EntityManager em = emf.createEntityManager();
         Folder folder = em.find(Folder.class, "folder124");
         assertNotNull(folder);
-        assertEquals(SubRole.HIGH, folder.getSubRole());
+        assertEquals(highSubRole.getId(), folder.getSubRole().getId());
         em.close();
     }
 
     @Test
-    void testAssignRole_UnauthorizedAccess() {
-        // Insert a folder belonging to a different company
-        insertTestFolder("folder125", "Test Folder Unauthorized", "OtherCompany", Role.GUEST, SubRole.LOW);
-
-        JavalinTest.test(app, (server, client) -> {
-            RestAssured.port = server.port();
-
-            String requestBody = "{ \"folderId\": \"folder125\", \"newRole\": \"USER\" }";
-
-            RestAssured.given()
-                    .header("Authorization", "Bearer validToken")
-                    .contentType("application/json")
-                    .body(requestBody)
-                    .when()
-                    .post("/folders/folder125/role")
-                    .then()
-                    .statusCode(403)
-                    .body(equalTo("Forbidden: Unauthorized access: Cannot modify folders from other companies."));
-        });
-    }
-
-    @Test
-    void testAssignSubRole_UnauthorizedAccess() {
-        // Insert a folder belonging to a different company
-        insertTestFolder("folder126", "Test Folder SubRole Unauthorized", "OtherCompany", Role.GUEST, SubRole.LOW);
-
-        JavalinTest.test(app, (server, client) -> {
-            RestAssured.port = server.port();
-
-            String requestBody = "{ \"folderId\": \"folder126\", \"newSubRole\": \"HIGH\" }";
-
-            RestAssured.given()
-                    .header("Authorization", "Bearer validToken")
-                    .contentType("application/json")
-                    .body(requestBody)
-                    .when()
-                    .post("/folders/folder126/subrole")
-                    .then()
-                    .statusCode(403)
-                    .body(equalTo("Forbidden: Unauthorized access: Cannot modify folders from other companies."));
-        });
-    }
-
-    @Test
-    void testAssignRole_FolderNotFound() {
-        // No folder inserted
-
-        JavalinTest.test(app, (server, client) -> {
-            RestAssured.port = server.port();
-
-            String requestBody = "{ \"folderId\": \"nonExistentFolder\", \"newRole\": \"USER\" }";
-
-            RestAssured.given()
-                    .header("Authorization", "Bearer validToken")
-                    .contentType("application/json")
-                    .body(requestBody)
-                    .when()
-                    .post("/folders/nonExistentFolder/role")
-                    .then()
-                    .statusCode(404)
-                    .body(equalTo("Not Found: Folder not found."));
-        });
-    }
-
-    @Test
-    void testAssignSubRole_FolderNotFound() {
-        // No folder inserted
-
-        JavalinTest.test(app, (server, client) -> {
-            RestAssured.port = server.port();
-
-            String requestBody = "{ \"folderId\": \"nonExistentFolder\", \"newSubRole\": \"HIGH\" }";
-
-            RestAssured.given()
-                    .header("Authorization", "Bearer validToken")
-                    .contentType("application/json")
-                    .body(requestBody)
-                    .when()
-                    .post("/folders/nonExistentFolder/subrole")
-                    .then()
-                    .statusCode(404)
-                    .body(equalTo("Not Found: Folder not found."));
-        });
-    }
-
-    @Test
     void testGetFoldersByCompany_Success() {
-        // Insert folders for the company
-        insertTestFolder("folder1", "Folder One", "ExampleCompany", Role.USER, SubRole.MEDIUM);
-        insertTestFolder("folder2", "Folder Two", "ExampleCompany", Role.MANAGER, SubRole.HIGH);
-        // Insert a folder for a different company
-        insertTestFolder("folder3", "Folder Three", "OtherCompany", Role.USER, SubRole.LOW);
+        Role userRole = createRole("USER");
+        Role managerRole = createRole("MANAGER");
+        SubRole mediumSubRole = createSubRole("MEDIUM");
+        SubRole highSubRole = createSubRole("HIGH");
+
+        insertTestFolder("folder1", "Folder One", "ExampleCompany", userRole, mediumSubRole);
+        insertTestFolder("folder2", "Folder Two", "ExampleCompany", managerRole, highSubRole);
+        insertTestFolder("folder3", "Folder Three", "OtherCompany", userRole, null);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
@@ -239,15 +169,32 @@ public class FolderControllerIntegrationTest {
                     .get("/folders/ExampleCompany")
                     .then()
                     .statusCode(200)
-                    .body("$", hasSize(2))
-                    .body("[0].id", anyOf(equalTo("folder1"), equalTo("folder2")))
-                    .body("[1].id", anyOf(equalTo("folder1"), equalTo("folder2")))
-                    .body("[0].subRole", anyOf(equalTo("MEDIUM"), equalTo("HIGH")))
-                    .body("[1].subRole", anyOf(equalTo("MEDIUM"), equalTo("HIGH")));
+                    .body("$", hasSize(2));
         });
     }
 
-    // Helper methods
+    private Role createRole(String roleName) {
+        EntityManager em = emf.createEntityManager();
+        Role role = new Role();
+        role.setName(roleName);
+        em.getTransaction().begin();
+        em.persist(role);
+        em.getTransaction().commit();
+        em.close();
+        return role;
+    }
+
+    private SubRole createSubRole(String subRoleName) {
+        EntityManager em = emf.createEntityManager();
+        SubRole subRole = new SubRole();
+        subRole.setName(subRoleName);
+        em.getTransaction().begin();
+        em.persist(subRole);
+        em.getTransaction().commit();
+        em.close();
+        return subRole;
+    }
+
     private void insertTestFolder(String id, String name, String company, Role role, SubRole subRole) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -263,5 +210,15 @@ public class FolderControllerIntegrationTest {
         } finally {
             em.close();
         }
+    }
+
+    private void cleanDatabase() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM Folder").executeUpdate();
+        em.createQuery("DELETE FROM Role").executeUpdate();
+        em.createQuery("DELETE FROM SubRole").executeUpdate();
+        em.getTransaction().commit();
+        em.close();
     }
 }

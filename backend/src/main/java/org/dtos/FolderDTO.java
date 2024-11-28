@@ -1,12 +1,12 @@
 package org.dtos;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.folder.Role;
 import org.folder.SubRole;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,4 +18,3 @@ public class FolderDTO {
     private Role role;
     private SubRole subRole;
 }
-

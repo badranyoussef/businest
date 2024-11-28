@@ -1,13 +1,12 @@
-package org.folder;
-
+package org.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
-
+import org.folder.Role;
+import org.folder.SubRole;
 
 @Entity
 @Table(name = "folders")
@@ -16,6 +15,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Folder {
+
     @Id
     @Column(name = "folder_id", nullable = false)
     private String id;
@@ -26,20 +26,21 @@ public class Folder {
     @Column(name = "company", nullable = false)
     private String company;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column(name = "sub_role", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "sub_role_id")
     private SubRole subRole;
+
     @PrePersist
     public void prePersist() {
         if (role == null) {
-            role = Role.GUEST;
+            role = null; // Or set a default
         }
         if (subRole == null) {
-            subRole = SubRole.LOW;
+            subRole = null; // Or set a default
         }
     }
 }
