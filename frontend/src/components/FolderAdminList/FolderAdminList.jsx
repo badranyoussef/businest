@@ -96,7 +96,7 @@ export function FolderList() {
 
               return (
                 <tr key={folder.id}>
-                  <td className="folder-name">
+                  <td>
                     <Folder className="folder-icon" size={18} />
                     {" " + folder.folderName}
                   </td>
