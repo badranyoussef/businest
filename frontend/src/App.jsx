@@ -4,6 +4,7 @@ import { FolderList } from "./components/FolderAdminList/FolderAdminList";
 import { Profile } from "./components/Profile/Profile";
 import { NotFound } from "./components/NotFound/NotFound";
 import { Navbar } from "./components/shared/Navbar/Navbar";
+import {FileList} from "./components/Files";
 import Footer from "./components/shared/Footer/Footer";
 import MyLogs from './page/MyLogs';
 
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/logs" element={<MyLogs />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/folderTest" element={<FileList />} />
         </Routes>
       </div>
       <Footer />
