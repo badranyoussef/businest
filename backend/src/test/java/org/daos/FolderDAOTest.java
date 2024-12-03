@@ -11,6 +11,7 @@ import org.entities.PermissionMatrixSettings;
 import org.entities.Permissions;
 import org.entities.Role;
 import org.entities.SubRole;
+import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,14 +100,24 @@ public class FolderDAOTest {
         permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(folder2, subRole3, permissions1);
 
         folder1 = new Folder(new HashSet<File>(), new HashSet<Folder>(), new HashSet<SubRole>(), null, permissionMatrixSettingsList1);
+        folder2 = new Folder(new HashSet<File>(), new HashSet<Folder>(), new HashSet<SubRole>(), folder1, permissionMatrixSettingsList2);
+
     }
 
     private void persistSubrole() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.persist(new SubRole("subrole1", new ArrayList<PermissionMatrixSettings>()));
-            em.persist(new SubRole("subrole2", new ArrayList<PermissionMatrixSettings>()));
-            em.persist(new SubRole("subrole3", new ArrayList<PermissionMatrixSettings>()));
+            em.persist(subRole1);
+            em.persist(subRole2);
+            em.getTransaction().commit();
+        }
+    }
+
+    private void persistRole() {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.persist(role1);
+            em.persist(role2);
             em.getTransaction().commit();
         }
     }
@@ -114,27 +125,36 @@ public class FolderDAOTest {
     private void persistPermissions() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.persist(new Permission("permission1", new ArrayList<SubRole>()));
-            em.persist(new Permission("permission2", new ArrayList<SubRole>()));
-            em.persist(new Permission("permission3", new ArrayList<SubRole>()));
+            em.persist(permissions1);
+            em.persist(permissions2);
+            em.persist(permissions3);
             em.getTransaction().commit();
         }
     }
 
     private void persistPermissionMatrixSettings() {
         try (EntityManager em = emf.createEntityManager()) {
-
+            em.getTransaction().begin();
+            em.persist(permissionMatrixSettings1Folder1);
+            em.persist(permissionMatrixSettings2Folder1);
+            em.persist(permissionMatrixSettings1Folder2);
+            em.persist(permissionMatrixSettings2Folder2);
+            em.getTransaction().commit();
         }
     }
 
     private void persistFolder() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.persist(new Folder("folder1", new ArrayList<File>(), new ArrayList<Folder>(), new ArrayList<SubRole>(), null, new ArrayList<PermissionMatrixSettings>()));
-            em.persist(new Folder("folder2", new ArrayList<File>(), new ArrayList<Folder>(), new ArrayList<SubRole>(), null, new ArrayList<PermissionMatrixSettings>()));
-            em.persist(new Folder("folder3", new ArrayList<File>(), new ArrayList<Folder>(), new ArrayList<SubRole>(), null, new ArrayList<PermissionMatrixSettings>()));
+            em.persist(folder1);
+            em.persist(folder2);
             em.getTransaction().commit();
         }
+    }
+
+    @Test
+    public void testGetPermissions() {
+
     }
 
 }

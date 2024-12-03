@@ -6,8 +6,8 @@ class Account
 class File
 class Role {
     - String name
-    - List<Folder> folders
-    - List<SubRole> subRoles
+    - Set<Folder> folders
+    - Set<SubRole> subRoles
     + getName()
     + setName(String name)
 }
@@ -32,11 +32,11 @@ class Permissions {
 }
 
 class Folder {
-    - List<File> files
-    - List<Folder> folders
-    - List<Role> roles
+    - Set<File> files
+    - Set<Folder> folders
+    - Set<Role> roles
     - Folder parentFolder
-    - List<PermissionMatrixSettings> permissionMatrixSettings
+    - Set<PermissionMatrixSettings> permissionMatrixSettings
     + addFile(File file)
     + addFolder(Folder folder)
     + removeFile(File file)
