@@ -30,4 +30,7 @@ public class RoleController {
         roleDAO.delete(id);
         ctx.status(204);
     }
+    public List<Role> getRolesByCompanyId(Long companyId) {
+        return roleDAO.findRolesByCompanyId(companyId);
+    }
 }

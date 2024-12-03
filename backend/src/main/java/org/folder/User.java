@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.entities.Company;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,9 +24,6 @@ public class User {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-
-    @Column(name = "company", nullable = false)
-    private String company;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "company_title", nullable = true)
@@ -46,4 +44,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "sub_role_id")
     )
     private Set<SubRole> subRoles = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
 }

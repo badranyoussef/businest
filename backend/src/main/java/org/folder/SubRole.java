@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.entities.Company;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,4 +30,8 @@ public class SubRole {
 
     @ManyToMany(mappedBy = "subRoles")
     private Set<User> users = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

@@ -74,11 +74,18 @@ public class Endpoints {
 
         // Define company-specific routes
         app.routes(() -> {
-            // Get roles for a company
-            get("{companyName}/roles", ctx -> {
-                securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER);
-                companyController.getRoles(ctx); // GET /{companyName}/roles
+            path("companies", () -> {
+                before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
+
+                path("{companyId}", () -> {
+                    // Get all roles for a company
+                    get("roles", companyController::getAllRolesByCompanyId); // GET /companies/{companyId}/roles
+
+                    // Get all subroles for a company
+                    get("subroles", companyController::getAllSubRolesByCompanyId); // GET /companies/{companyId}/subroles
+                });
             });
         });
+
     }
 }

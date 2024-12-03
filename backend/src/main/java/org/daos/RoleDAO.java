@@ -70,4 +70,16 @@ public class RoleDAO {
         }
     }
 
+    public List<Role> findRolesByCompanyId(Long companyId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            String jpql = "SELECT r FROM Role r WHERE r.company.id = :companyId";
+            return em.createQuery(jpql, Role.class)
+                    .setParameter("companyId", companyId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
 }

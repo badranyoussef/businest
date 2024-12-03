@@ -3,10 +3,7 @@ package org.controllers;
 import org.exceptions.ApiException;
 import io.javalin.http.Context;
 import org.dtos.FolderDTO;
-import org.folder.CompanyService;
-import org.folder.Role;
-import org.folder.User;
-import org.folder.FolderService;
+import org.folder.*;
 
 import java.util.List;
 
@@ -14,10 +11,14 @@ public class CompanyController {
 
     private final FolderService folderService;
     private final CompanyService companyService;
+    private final RoleController roleController;
+    private final SubRoleController subRoleController;
 
-    public CompanyController(CompanyService companyService, FolderService folderService) {
+    public CompanyController(CompanyService companyService, FolderService folderService, RoleController roleController, SubRoleController subRoleController) {
         this.companyService = companyService;
         this.folderService = folderService;
+        this.roleController = roleController;
+        this.subRoleController = subRoleController;
     }
 
     // Retrieve roles by company name
@@ -50,7 +51,7 @@ public class CompanyController {
     public void getFolderByName(Context ctx) {
         String folderName = ctx.pathParam("folderName");
         User manager = ctx.attribute("user");
-        String company = manager.getCompany();
+        String company = String.valueOf(manager.getCompany());
 
         try {
             // Use the service method to get the folder by name and company
@@ -61,6 +62,29 @@ public class CompanyController {
             ctx.status(e.getStatusCode()).result(e.getMessage());
         } catch (Exception e) {
             ctx.status(500).result("Internal Server Error");
+        }
+    }
+    public void getAllRolesByCompanyId(Context ctx) {
+        Long companyId = Long.parseLong(ctx.pathParam("companyId"));
+        try {
+            List<Role> roles = roleController.getRolesByCompanyId(companyId);
+            ctx.json(roles);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500).result("Error retrieving roles: " + e.getMessage());
+        }
+    }
+
+
+    // Get all subroles by company ID
+    public void getAllSubRolesByCompanyId(Context ctx) {
+        Long companyId = Long.parseLong(ctx.pathParam("companyId"));
+        try {
+            List<SubRole> subRoles = subRoleController.getSubRolesByCompanyId(companyId);
+            ctx.json(subRoles);
+            ctx.status(200);
+        } catch (Exception e) {
+            ctx.status(500).result("Error retrieving subroles: " + e.getMessage());
         }
     }
 }

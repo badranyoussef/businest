@@ -30,5 +30,8 @@ public class SubRoleController {
         subRoleDAO.delete(id);
         ctx.status(204);
     }
+    public List<SubRole> getSubRolesByCompanyId(Long companyId) {
+        return subRoleDAO.findSubRolesByCompanyId(companyId);
+    }
 }
 

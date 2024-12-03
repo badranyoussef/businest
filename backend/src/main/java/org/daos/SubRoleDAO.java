@@ -68,5 +68,16 @@ public class SubRoleDAO {
             em.close();
         }
     }
+    public List<SubRole> findSubRolesByCompanyId(Long companyId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            String jpql = "SELECT sr FROM SubRole sr WHERE sr.company.id = :companyId";
+            return em.createQuery(jpql, SubRole.class)
+                    .setParameter("companyId", companyId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
 }

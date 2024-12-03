@@ -67,7 +67,7 @@ public class FolderControllerIntegrationTest {
         folderController = new FolderController(folderService);
         roleController = new RoleController(roleDAO);
         subRoleController = new SubRoleController(subRoleDAO);
-        companyController = new CompanyController(companyService, folderService);
+        companyController = new CompanyController(companyService, folderService, roleController, subRoleController);
 
         // Initialize Security Controller
         securityController = new TestSecurityController();
