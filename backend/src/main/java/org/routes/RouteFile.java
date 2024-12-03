@@ -3,11 +3,13 @@ package org.routes;
 import io.javalin.apibuilder.EndpointGroup;
 import org.controllers.FileController;
 import org.daos.FileDAO;
+import org.daos.RoleDAO;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class RouteFile {
     private FileDAO fileDAO;
+    private RoleDAO roleDAO;
 
     public RouteFile(FileDAO fileDAO) {
         this.fileDAO = fileDAO;
@@ -28,7 +30,7 @@ public class RouteFile {
 
             put("/", ctx -> FileController.update(fileDAO).handle(ctx));
 
-            get("/getpermissions/{folder_id}", ctx -> FileController.getPermissionsForFilesInFolder(fileDAO).handle(ctx));
+            get("/getpermissions/{folder_id}", ctx -> FileController.getFilePermissionsForUserInFolder(fileDAO).handle(ctx));
         });
 
     }

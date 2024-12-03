@@ -4,8 +4,10 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
+import org.daos.RoleDAO;
 import org.dtos.FileDTO;
 import org.dtos.PermissionsDTO;
+import org.entities.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
 import org.util.TokenUtils;
@@ -20,6 +22,8 @@ public class FileController {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
+
+    private static RoleDAO roleDAO = new RoleDAO();
 
     public static FileDTO convertToDTO(File file) {
         return FileDTO.builder()
@@ -128,7 +132,7 @@ public class FileController {
         };
     }
 
-    public static Handler getPermissionsForFilesInFolder(FileDAO fileDAO) {
+    public static Handler getFilePermissionsForUserInFolder(FileDAO fileDAO) {
 
         return ctx -> {
             var folderID = Integer.parseInt(ctx.pathParam("folder_id"));
@@ -136,7 +140,10 @@ public class FileController {
 
             try {
 
-                List<PermissionsDTO> userFilePermissionsInFolder = new ArrayList<>();
+                PermissionsDTO userFilePermissionsInFolder = new PermissionsDTO();
+
+
+                List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
 
                 // userFilePermissionsInFolder = methodGettingPermissionsOfUserInFolder(folderID, userID)
 
