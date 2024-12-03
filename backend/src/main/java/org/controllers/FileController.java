@@ -7,8 +7,8 @@ import org.daos.FileDAO;
 import org.daos.FolderDAO;
 import org.daos.RoleDAO;
 import org.dtos.FileDTO;
-import org.dtos.PermissionsDTO;
-import org.entities.Permissions;
+import org.dtos.UserFilePermInFolderDTO;
+import org.entities.Permissions1;
 import org.entities.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
@@ -147,11 +147,11 @@ public class FileController {
 
                 List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
 
-                List<Permissions> userFilePermissionsInFolder = folderDAO.getPermissions(folderID, subRolesOfUser);
+                List<Permissions1> userFilePermissionsInFolder = folderDAO.getPermissions(folderID, subRolesOfUser);
 
-                UserFilePermInFolderDTO  userFilePermissionsInFolderDTO
+                UserFilePermInFolderDTO userFilePermissionsInFolderDTO = new UserFilePermInFolderDTO(userFilePermissionsInFolder);
 
-                ctx.status(200).json(userFilePermissionsInFolderDT0);
+                ctx.status(200).json(userFilePermissionsInFolderDTO);
 
             } catch (NumberFormatException e) {
                 ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());

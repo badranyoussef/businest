@@ -3,8 +3,6 @@ package org.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
@@ -29,9 +27,9 @@ public class PermissionMatrixSettings {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "permissions_id")
-    private Permissions permissions;
+    private Permissions1 permissions;
 
-    public PermissionMatrixSettings(Folder folder, SubRole subRole, Permissions permissions) {
+    public PermissionMatrixSettings(Folder folder, SubRole subRole, Permissions1 permissions) {
         this.role = subRole.getRole();
         this.folder = folder;
         this.subRole = subRole;

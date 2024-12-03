@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @Table(name = "permissions")
-public class Permissions {
+public class Permissions1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,7 @@ public class Permissions {
     @Column(name = "delete_permission")
     private boolean deletePermission;
 
-    public Permissions(boolean readPermission, boolean writePermission, boolean deletePermission) {
+    public Permissions1(boolean readPermission, boolean writePermission, boolean deletePermission) {
         this.readPermission = readPermission;
         this.writePermission = writePermission;
         this.deletePermission = deletePermission;

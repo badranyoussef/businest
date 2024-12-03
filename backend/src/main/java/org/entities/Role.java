@@ -34,7 +34,7 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "sub_role_id")
     )
     Set<SubRole> subRoles = new HashSet<>();
-    
+
     public Role(String name, Set<Folder> folders, Set<SubRole> subRoles) {
         this.name = name;
         this.folders = folders;
