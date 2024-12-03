@@ -6,7 +6,7 @@ class Account
 class File
 class Role {
     - String name
-    - List<Folders> folders
+    - List<Folder> folders
     - List<SubRole> subRoles
     + getName()
     + setName(String name)
@@ -22,19 +22,19 @@ class SubRole {
 class PermissionMatrixSettings {
     - SubRole subRole
     - Permissions permissions
+    - Folder folder
+    - Role role
     }
 class Permissions {
-    - String name
     - boolean read
     - boolean write
     - boolean delete
 }
 
 class Folder {
-    - String name
     - List<File> files
     - List<Folder> folders
-    - List<SubRole> subRoles
+    - List<Role> roles
     - Folder parentFolder
     - List<PermissionMatrixSettings> permissionMatrixSettings
     + addFile(File file)
@@ -93,9 +93,8 @@ class Account {
 '----- Relations -----
 Folder "1" *-- "0..*" File
 Folder "1" *-- "0..*" Folder
-Folder "1" *-- "0..*" SubRole
+Folder "1" *-- "0..*" Role
 Folder "1" *-- "0..*" PermissionMatrixSettings
-Role "1" *-- "0..*" Folders
 Role "1" *-- "0..*" SubRole
 PermissionMatrixSettings "1" *-- "0..*" Permissions
 PermissionMatrixSettings "1" *-- "0..*" SubRole

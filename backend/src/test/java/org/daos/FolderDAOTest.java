@@ -2,6 +2,7 @@ package org.daos;
 
 import java.security.Permission;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -88,13 +89,16 @@ public class FolderDAOTest {
         subRole2 = new SubRole("HR_LEAD", role1);
         subRole3 = new SubRole("MEDIA_RELATIONS_BASIC", role2);
 
-        permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(subRole1, permission1, true, true, true, true);
-        permissionMatrixSettings2Folder1 = new PermissionMatrixSettings(subRole2, permission2, true, true, true, true);
-        permissionMatrixSettings1Folder2 = new PermissionMatrixSettings(subRole3, permission3, true, true, true, true);
-        permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(subRole1, permission1, true, true, true, true);
+        permissions1 = new Permissions(true, true, true);
+        permissions2 = new Permissions(true, false, false);
+        permissions3 = new Permissions(true, false, true);
 
-        folder1 = new Folder("folder1", new ArrayList<File>(), new ArrayList<Folder>(), subRoles1, null, permissionMatrixSettingsList1);
-        folder2 = new Folder("folder2", new ArrayList<File>(), new ArrayList<Folder>(), subRoles2, null, permissionMatrixSettingsList2);
+        permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(folder1, subRole1, permissions1);
+        permissionMatrixSettings2Folder1 = new PermissionMatrixSettings(folder1, subRole2, permissions2);
+        permissionMatrixSettings1Folder2 = new PermissionMatrixSettings(folder2, subRole1, permissions3);
+        permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(folder2, subRole3, permissions1);
+
+        folder1 = new Folder(new HashSet<File>(), new HashSet<Folder>(), new HashSet<SubRole>(), null, permissionMatrixSettingsList1);
     }
 
     private void persistSubrole() {

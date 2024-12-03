@@ -16,50 +16,17 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
     private Set<File> files;
     private Set<Folder> folders;
     private Set<SubRole> subRoles;
     private Folder parentFolder;
     private Set<PermissionMatrixSettings> permissionMatrixSettings;
 
-    public void addFile(File file) {
-        // files.add(file);
-    }
-
-    public void addFolder(Folder folder) {
-        // folders.add(folder);
-    }
-
-    public void removeFile(File file) {
-        // files.remove(file);
-    }
-
-    public void removeFolder(Folder folder) {
-        // folders.remove(folder);
-    }
-
-    public void getFiles() {
-        // return files;
-    }
-
-    public void getFolders() {
-        // return folders;
-    }
-
-    public void getName() {
-        // return name;
-    }
-
-    public void setName(String name) {
-        // this.name = name;
-    }
-
-    public void getParentFolder() {
-        // return parentFolder;
-    }
-
-    public void setParentFolder(Folder parentFolder) {
-        // this.parentFolder = parentFolder;
+    public Folder(Set<File> files, Set<Folder> folders, Set<SubRole> subRoles, Folder parentFolder, Set<PermissionMatrixSettings> permissionMatrixSettings) {
+        this.files = files;
+        this.folders = folders;
+        this.subRoles = subRoles;
+        this.parentFolder = parentFolder;
+        this.permissionMatrixSettings = permissionMatrixSettings;
     }
 }

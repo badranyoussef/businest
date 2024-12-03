@@ -15,24 +15,24 @@ public class PermissionMatrixSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "sub_role_id")
     private SubRole subRole;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "permissions_id")
     private Permissions permissions;
 
-    public PermissionMatrixSettings(Role role, Folder folder, SubRole subRole, Permissions permissions) {
-        this.role = role;
+    public PermissionMatrixSettings(Folder folder, SubRole subRole, Permissions permissions) {
+        this.role = subRole.getRole();
         this.folder = folder;
         this.subRole = subRole;
         this.permissions = permissions;
