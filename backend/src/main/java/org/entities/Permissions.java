@@ -7,14 +7,24 @@ import lombok.*;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "permissions")
 public class Permissions {
-    private String name;
-    private String description;
-    private String code;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Permissions(String name, String description, String code) {
-        this.name = name;
-        this.description = description;
-        this.code = code;
+    @Column(name = "read_permission")
+    private boolean readPermission;
+
+    @Column(name = "write_permission")
+    private boolean writePermission;
+
+    @Column(name = "delete_permission")
+    private boolean deletePermission;
+
+    public Permissions(boolean readPermission, boolean writePermission, boolean deletePermission) {
+        this.readPermission = readPermission;
+        this.writePermission = writePermission;
+        this.deletePermission = deletePermission;
     }
 }

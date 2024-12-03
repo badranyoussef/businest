@@ -12,6 +12,7 @@ public class SubRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     private String name;
 
     @ManyToOne
@@ -21,7 +22,4 @@ public class SubRole {
         this.name = name;
         this.role = role;
     }
-
-
-
 }
