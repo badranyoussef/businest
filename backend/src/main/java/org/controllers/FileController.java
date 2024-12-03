@@ -4,9 +4,11 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
+import org.daos.FolderDAO;
 import org.daos.RoleDAO;
 import org.dtos.FileDTO;
 import org.dtos.PermissionsDTO;
+import org.entities.Permissions;
 import org.entities.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
@@ -24,6 +26,7 @@ public class FileController {
     private static String timestamp = dateFormat.format(new Date());
 
     private static RoleDAO roleDAO = new RoleDAO();
+    private static FolderDAO folderDAO = new FolderDAO();
 
     public static FileDTO convertToDTO(File file) {
         return FileDTO.builder()
@@ -105,9 +108,11 @@ public class FileController {
 
     public static Handler create(FileDAO dao) {
         return ctx -> {
+
             File file = ctx.bodyAsClass(File.class);
             File createdFile = dao.create(file);
             FileDTO dto = convertToDTO(createdFile);
+
             if (dto != null) {
                 System.out.println("Det gik godt ven.");
                 ctx.status(HttpStatus.OK).json(dto);
@@ -140,14 +145,13 @@ public class FileController {
 
             try {
 
-                PermissionsDTO userFilePermissionsInFolder = new PermissionsDTO();
-
-
                 List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
 
-                // userFilePermissionsInFolder = methodGettingPermissionsOfUserInFolder(folderID, userID)
+                List<Permissions> userFilePermissionsInFolder = folderDAO.getPermissions(folderID, subRolesOfUser);
 
-                ctx.status(200).json(userFilePermissionsInFolder);
+                UserFilePermInFolderDTO  userFilePermissionsInFolderDTO
+
+                ctx.status(200).json(userFilePermissionsInFolderDT0);
 
             } catch (NumberFormatException e) {
                 ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
