@@ -27,7 +27,7 @@ public class RoleController {
         try {
             var roles = roleDao.getAllRoles()
                             .stream()
-                            .map(r -> new RoleDTO(r.getTitle()))
+                            .map(r -> new RoleDTO(r.getTitle(), r.getSubRoles()))
                             .collect(Collectors.toList());
             var subRoles = subRoleDao.getAllSubRoles()
                             .stream()

@@ -25,8 +25,8 @@ public class AccountController {
                 .map(a -> new AccountDTO(
                         a.getId(),
                         a.getName(),
-                        a.getRole().getTitle(),
-                        a.getSubRoles().stream().map(SubRole::getTitle).collect(Collectors.toList())
+                        a.getRoles()
+                        //a.getSubRoles().stream().map(SubRole::getTitle).collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
         ctx.json(accounts);
@@ -37,10 +37,10 @@ public class AccountController {
         Account account = new Account(
                 dto.getId(),
                 dto.getName(),
-                new Role(dto.getRole()),
-                dto.getSubRoles().stream()
-                        .map(subRole -> new SubRole(subRole)) // dto.getSubRoles() er en liste af titles
-                        .collect(Collectors.toList())
+                dto.getRoles()
+//                dto.getSubRoles().stream()
+//                        .map(subRole -> new SubRole(subRole)) // dto.getSubRoles() er en liste af titles
+//                        .collect(Collectors.toList())
         );
 
         // Tilføj ny account til DAO (eller en liste i dit tilfælde)
@@ -60,8 +60,8 @@ public class AccountController {
             AccountDTO dto = new AccountDTO(
                     account.getId(),
                     account.getName(),
-                    account.getRole().getTitle(),
-                    account.getSubRoles().stream().map(SubRole::getTitle).collect(Collectors.toList())
+                    account.getRoles()//.getTitle(),
+                    //account.getSubRoles().stream().map(SubRole::getTitle).collect(Collectors.toList())
             );
             ctx.json(dto);
         }
@@ -73,8 +73,7 @@ public class AccountController {
         Account account = dao.getAccountById(dto.getId());
         if (account != null) {
             account.setName(dto.getName());
-            account.setRole(new Role(dto.getRole()));
-            account.setSubRoles(dto.getSubRoles().stream().map(SubRole::new).collect(Collectors.toList()));
+            account.setRoles(dto.getRoles());
             dao.updateAccount(account);
             ctx.status(200).result("Account updated");
         } else {

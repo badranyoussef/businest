@@ -10,13 +10,13 @@ import java.util.List;
 public class AccountDAO {
 
     private List<Account> accountList;
-    private SubRoleDAO subRoleDAO = new SubRoleDAO();  // SubRoleDAO som intern komponent
-    private List<SubRole> subRoles = subRoleDAO.createSubRoleList();
+    private RoleDAO roleDAO = new RoleDAO();  // RoleDAO som intern komponent
+    private List<Role> roles = roleDAO.createRoleList();
 
 
     // Constructor
     public AccountDAO() {
-        this.subRoleDAO = new SubRoleDAO(); // Initialiserer SubRoleDAO internt
+        this.roleDAO = new RoleDAO(); // Initialiserer RoleDAO internt
         this.accountList = createAccountList(); // Initialiserer listen af accounts
     }
 
@@ -24,17 +24,79 @@ public class AccountDAO {
     public List<Account> createAccountList() {
         List<Account> accountList = new ArrayList<>();
 
-        // Her tilføjer vi subRoles til Account, og vi giver mulighed for at tilføje flere SubRoles senere
-        accountList.add(new Account(1, "Alex Johnson", new Role("Company Manager"), new ArrayList<>(List.of(subRoles.get(0)))));
-        accountList.add(new Account(2, "Jamie Smith", new Role("Employee"), new ArrayList<>()));
-        accountList.add(new Account(3, "Taylor Brown", new Role("Employee"), new ArrayList<>()));
-        accountList.add(new Account(4, "Morgan White", new Role("Company Manager"), new ArrayList<>(List.of(subRoles.get(0)))));
-        accountList.add(new Account(5, "Casey Black", new Role("HR"), new ArrayList<>()));
-        accountList.add(new Account(6, "Jordan Green", new Role("Employee"), new ArrayList<>()));
-        accountList.add(new Account(7, "Riley Grey", new Role("Employee"), new ArrayList<>()));
-        accountList.add(new Account(8, "Avery Gold", new Role("Company Manager"), new ArrayList<>(List.of(subRoles.get(0)))));
-        accountList.add(new Account(9, "Cameron Blue", new Role("Employee"), new ArrayList<>()));
-        accountList.add(new Account(10, "Dakota Silver", new Role("Employee"), new ArrayList<>()));
+        accountList.add(new Account(1, "Alex Johnson", new ArrayList<>(List.of(
+                new Role("Company Manager", new ArrayList<>(List.of(
+                        new SubRole("Budget Manager"),
+                        new SubRole("Operations Manager")
+                ))),
+                new Role("ROLETEST", new ArrayList<>(List.of(
+                        new SubRole("TEST SUBROLE"),
+                        new SubRole("TEST SUBROLE")
+                )))
+        ))));
+
+        accountList.add(new Account(2, "Jamie Smith", new ArrayList<>(List.of(
+                new Role("Developer", new ArrayList<>(List.of(
+                        new SubRole("Frontend Developer"),
+                        new SubRole("Backend Developer")
+                )))
+        ))));
+
+        accountList.add(new Account(3, "Taylor Brown", new ArrayList<>(List.of(
+                new Role("Employee", new ArrayList<>(List.of(
+                        new SubRole("Intern"),
+                        new SubRole("Support Staff")
+                )))
+        ))));
+
+        accountList.add(new Account(4, "Morgan White", new ArrayList<>(List.of(
+                new Role("Company Manager", new ArrayList<>(List.of(
+                        new SubRole("Strategic Planner"),
+                        new SubRole("Department Manager")
+                )))
+        ))));
+
+        accountList.add(new Account(5, "Casey Black", new ArrayList<>(List.of(
+                new Role("HR", new ArrayList<>(List.of(
+                        new SubRole("Recruitment Specialist"),
+                        new SubRole("Training Coordinator")
+                )))
+        ))));
+
+        accountList.add(new Account(6, "Jordan Green", new ArrayList<>(List.of(
+                new Role("Marketing", new ArrayList<>(List.of(
+                        new SubRole("SEO Specialist"),
+                        new SubRole("Content Strategist")
+                )))
+        ))));
+
+        accountList.add(new Account(7, "Riley Grey", new ArrayList<>(List.of(
+                new Role("Employee", new ArrayList<>(List.of(
+                        new SubRole("Customer Support"),
+                        new SubRole("Office Assistant")
+                )))
+        ))));
+
+        accountList.add(new Account(8, "Avery Gold", new ArrayList<>(List.of(
+                new Role("Developer", new ArrayList<>(List.of(
+                        new SubRole("Mobile Developer"),
+                        new SubRole("DevOps Engineer")
+                )))
+        ))));
+
+        accountList.add(new Account(9, "Cameron Blue", new ArrayList<>(List.of(
+                new Role("Employee", new ArrayList<>(List.of(
+                        new SubRole("Warehouse Staff"),
+                        new SubRole("Logistics Coordinator")
+                )))
+        ))));
+
+        accountList.add(new Account(10, "Dakota Silver", new ArrayList<>(List.of(
+                new Role("HR", new ArrayList<>(List.of(
+                        new SubRole("Benefits Coordinator"),
+                        new SubRole("Employee Relations Specialist")
+                )))
+        ))));
 
         return accountList;
     }
@@ -67,8 +129,7 @@ public class AccountDAO {
         Account account = getAccountById(updatedAccount.getId());
         if (account != null) {
             account.setName(updatedAccount.getName());
-            account.setRole(updatedAccount.getRole());
-            account.setSubRoles(updatedAccount.getSubRoles());
+            account.setRoles(updatedAccount.getRoles());
         }
         return account;
     }
@@ -78,10 +139,16 @@ public class AccountDAO {
     }
 
     // Metode til at tilføje en subrole til en account
-    public void addSubRoleToAccount(int accountId, SubRole subRole) {
+    public void addSubRoleToAccount(int accountId, Role role, SubRole subRole) {
         Account account = getAccountById(accountId);
         if (account != null) {
-            account.getSubRoles().add(subRole);
+            account.getRoles().stream()
+                    .filter(r -> r.getTitle().equals(role.getTitle())) // Filtrer på roleName
+                    .findFirst()  // Find den første rolle der matcher
+                    .ifPresent(r -> {
+                        // Hvis rollen findes, tilføj SubRole til denne rolle
+                        r.getSubRoles().add(subRole);
+                    });
         } else {
             throw new IllegalArgumentException("Account with ID " + accountId + " not found");
         }
@@ -91,7 +158,7 @@ public class AccountDAO {
     public void removeSubRoleFromAccount(int accountId, String subRoleTitle) {
         Account account = getAccountById(accountId);
         if (account != null) {
-            account.getSubRoles().removeIf(subRole -> subRole.getTitle().equals(subRoleTitle));
+            //account.getSubRoles().removeIf(subRole -> subRole.getTitle().equals(subRoleTitle));
         } else {
             throw new IllegalArgumentException("Account with ID " + accountId + " not found");
         }

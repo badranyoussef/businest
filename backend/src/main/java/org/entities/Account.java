@@ -15,15 +15,13 @@ import java.util.List;
 public class Account {
     private int id;
     private String name;
-    private Role role;
-    private List<SubRole> subRoles;
+    private List<Role> roles;
 
 
-    public Account(int id, String name, Role role, List<SubRole> subRoles) {
+    public Account(int id, String name, List<Role> roles) {
         this.id = id;
         this.name = name;
-        this.role = role;
-        this.subRoles = subRoles;
+        this.roles = roles;
     }
 
 
@@ -40,11 +38,11 @@ public class Account {
 //        this.subRoles = subRoles;
 //    }
 
-    public void addSubRole(SubRole subRole) {
-        this.subRoles.add(subRole);
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
-    public void removeSubRole(SubRole subRole) {
-        this.subRoles.remove(subRole);
+    public void removeRole(Role role) {
+        this.roles.remove(role);
     }
 }
