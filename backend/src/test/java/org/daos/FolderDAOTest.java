@@ -1,9 +1,8 @@
 package org.daos;
 
-import java.security.Permission;
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.entities.Folder;
@@ -11,14 +10,13 @@ import org.entities.PermissionMatrixSettings;
 import org.entities.Permissions;
 import org.entities.Role;
 import org.entities.SubRole;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.persistence.HibernateConfig;
 import org.persistence.model.File;
 
-import groovy.transform.builder.InitializerStrategy.SET;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -27,55 +25,54 @@ public class FolderDAOTest {
     private static EntityManagerFactory emf;
     private static FolderDAO folderDAO;
 
-    private SubRole subRole1;
-    private SubRole subRole2;
-    private SubRole subRole3;
+    private SubRole subRole1 = new SubRole();
+    private SubRole subRole2 = new SubRole();
+    private SubRole subRole3 = new SubRole();
 
-    private Permissions permissions1;
-    private Permissions permissions2;
-    private Permissions permissions3;
+    private Permissions permissions1 = new Permissions();
+    private Permissions permissions2 = new Permissions();
+    private Permissions permissions3 = new Permissions();
     
-    private PermissionMatrixSettings permissionMatrixSettings1Folder1;
-    private PermissionMatrixSettings permissionMatrixSettings2Folder1;
-    private PermissionMatrixSettings permissionMatrixSettings1Folder2;
-    private PermissionMatrixSettings permissionMatrixSettings2Folder2;
+    private PermissionMatrixSettings permissionMatrixSettings1Folder1 = new PermissionMatrixSettings();
+    private PermissionMatrixSettings permissionMatrixSettings2Folder1 = new PermissionMatrixSettings();
+    private PermissionMatrixSettings permissionMatrixSettings1Folder2 = new PermissionMatrixSettings();
+    private PermissionMatrixSettings permissionMatrixSettings2Folder2 = new PermissionMatrixSettings();
 
-    private Folder folder1;
-    private Folder folder2;
+    private Folder folder1 = new Folder();
+    private Folder folder2 = new Folder();
 
     private Set<SubRole> subRoles1;
     private Set<SubRole> subRoles2;
 
-    private Role role1;
-    private Role role2;
+    private Role role1 = new Role();
+    private Role role2 = new Role();
 
-    private Set<PermissionMatrixSettings> permissionMatrixSettingsList1;
-    private Set<PermissionMatrixSettings> permissionMatrixSettingsList2;
+    private Set<PermissionMatrixSettings> permissionMatrixSettingsList1 = new HashSet<>(); 
+    private Set<PermissionMatrixSettings> permissionMatrixSettingsList2 = new HashSet<>();
 
     @BeforeAll
     public static void beforeAll() {
-        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
         folderDAO = FolderDAO.getInstance(emf);
     }
 
     @AfterAll
     public static void afterAll() {
-        emf.close();
+        //emf.close();
     }
 
     @BeforeEach
     public void beforeEach() {
-
-
-        permissionMatrixSettingsList1 = List.of(permissionMatrixSettings1Folder1, permissionMatrixSettings2Folder1);
-        permissionMatrixSettingsList2 = List.of(permissionMatrixSettings1Folder2, permissionMatrixSettings2Folder2);
-
-
-
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
-            em.persist(em.persist(new Folder ("folder1", new ArrayList<File>(), new ArrayList<Folder>(), new ArrayList<SubRole>(), null, new ArrayList<PermissionMatrixSettings>()));
+            em.getTransaction().commit();
+
+            setupInstances();
+            persistSubrole();
+            persistRole();
+            persistPermissions();
+            persistPermissionMatrixSettings();
+            persistFolder();
         }
     }
 
@@ -154,7 +151,9 @@ public class FolderDAOTest {
 
     @Test
     public void testGetPermissions() {
-
+        Permissions expected = new Permissions(true, true, true);
+        Permissions actual = folderDAO.getPermissions(folder1, subRole1);
+        assertEquals(expected, actual);
     }
 
 }

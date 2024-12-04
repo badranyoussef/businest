@@ -64,7 +64,9 @@ class NotificationController
 class FileDAO
 class LogDAO
 class AccountDAO
-class FolderDAO
+class FolderDAO {
+    + permissions getPermissions(long folderId, long subRoleId)
+}
 
 class FileValidator {
     - FileRequirements
@@ -76,7 +78,6 @@ class FileValidator {
     + validateFileSymbols(String name)
 
 }
-
 
 'List <|-- AbstractList
 'Collection <|-- AbstractCollection

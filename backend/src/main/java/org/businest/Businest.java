@@ -1,25 +1,20 @@
 package org.businest;
 
 import jakarta.persistence.EntityManagerFactory;
-import org.daos.FileDAO;
 import org.daos.LogDAO;
 import org.persistence.HibernateConfig;
 import org.persistence.model.UserChangesLogEntry;
 import org.rest.ApplicationConfig;
 import org.routes.Route;
-import org.routes.RouteFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 public class Businest {
 
-
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         Route route = new Route(emf);
 
         ApplicationConfig app = ApplicationConfig.getInstance();

@@ -4,7 +4,6 @@ import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 import org.daos.FileDAO;
 import org.daos.LogDAO;
-import org.persistence.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 

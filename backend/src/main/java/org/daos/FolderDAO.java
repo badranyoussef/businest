@@ -1,6 +1,8 @@
 package org.daos;
 
 import org.entities.Folder;
+import org.entities.Permissions;
+import org.entities.SubRole;
 
 import jakarta.persistence.EntityManagerFactory;
 
@@ -18,6 +20,10 @@ public class FolderDAO extends AbstractDAO<Folder> {
             instance = new FolderDAO(emf, Folder.class);
         }
         return instance;
+    }
+
+    public Permissions getPermissions(Folder folder1, SubRole subRole1) {
+        return null;
     }
 
 }
