@@ -6,6 +6,9 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.entities.Company;
+import org.entities.CompanyTitle;
+import org.entities.Role;
+import org.entities.SubRole;
 
 import java.util.HashSet;
 import java.util.Set;

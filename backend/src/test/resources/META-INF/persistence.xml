@@ -6,9 +6,15 @@
              version="3.0">
     <persistence-unit name="test-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Include all your entity classes here -->
+        <class>org.entities.Company</class>
+        <class>org.entities.Role</class>
+        <class>org.entities.SubRole</class>
         <class>org.entities.Folder</class>
         <class>org.folder.User</class>
-        <!-- Include other entity classes if necessary -->
+        <!-- Add any other entity classes if necessary -->
+
         <properties>
             <!-- H2 Database Configuration -->
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>

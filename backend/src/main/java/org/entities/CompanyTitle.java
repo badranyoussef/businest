@@ -1,4 +1,4 @@
-package org.folder;
+package org.entities;
 
 public enum CompanyTitle {
 

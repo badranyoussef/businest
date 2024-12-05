@@ -2,7 +2,7 @@ package org.controllers;
 
 import io.javalin.http.Context;
 import org.daos.RoleDAO;
-import org.folder.Role;
+import org.entities.Role;
 
 import java.util.List;
 
@@ -32,5 +32,9 @@ public class RoleController {
     }
     public List<Role> getRolesByCompanyId(Long companyId) {
         return roleDAO.findRolesByCompanyId(companyId);
+    }
+
+    public List<Role> getRolesByCompanyName(String companyName) {
+        return roleDAO.findRolesByCompanyName(companyName);
     }
 }

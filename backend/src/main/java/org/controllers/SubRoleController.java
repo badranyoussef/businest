@@ -2,7 +2,7 @@ package org.controllers;
 
 import io.javalin.http.Context;
 import org.daos.SubRoleDAO;
-import org.folder.SubRole;
+import org.entities.SubRole;
 
 import java.util.List;
 
@@ -33,5 +33,9 @@ public class SubRoleController {
     public List<SubRole> getSubRolesByCompanyId(Long companyId) {
         return subRoleDAO.findSubRolesByCompanyId(companyId);
     }
+    public List<SubRole> getSubRolesByCompanyName(String companyName) {
+        return subRoleDAO.findSubRolesByCompanyName(companyName);
+    }
+
 }
 

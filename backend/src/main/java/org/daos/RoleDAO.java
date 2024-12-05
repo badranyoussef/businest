@@ -1,7 +1,7 @@
 package org.daos;
 
 import jakarta.persistence.*;
-import org.folder.Role;
+import org.entities.Role;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class RoleDAO {
         }
     }
 
-    public List<Role> findRolesByUserId(String userId) {
+    public List<Role> findRolesByUserId(Long userId) {
         EntityManager em = emf.createEntityManager();
         try {
             String jpql = "SELECT r FROM Role r JOIN r.users u WHERE u.id = :userId";
@@ -81,5 +81,15 @@ public class RoleDAO {
             em.close();
         }
     }
-
+    public List<Role> findRolesByCompanyName(String companyName) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            String jpql = "SELECT r FROM Role r WHERE r.company.companyName = :companyName";
+            return em.createQuery(jpql, Role.class)
+                    .setParameter("companyName", companyName)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

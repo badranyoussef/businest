@@ -1,10 +1,11 @@
 package org.folder;
 
 import io.javalin.Javalin;
-import org.controllers.CompanyController;
+import org.controllers.*;
 import org.controllers.FolderController;
 import org.controllers.RoleController;
 import org.controllers.SubRoleController;
+import org.entities.CompanyTitle;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -74,15 +75,32 @@ public class Endpoints {
 
         // Define company-specific routes
         app.routes(() -> {
-            path("companies", () -> {
-                before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
+            // Apply authorization to all routes under this path
+            before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
 
-                path("{companyId}", () -> {
-                    // Get all roles for a company
-                    get("roles", companyController::getAllRolesByCompanyId); // GET /companies/{companyId}/roles
+            // Routes using company ID
+            path("companies/{companyId}", () -> {
+                // Get all roles for a company by ID
+                get("roles", ctx -> {
+                    companyController.getAllRolesByCompanyId(ctx); // GET /companies/{companyId}/roles
+                });
 
-                    // Get all subroles for a company
-                    get("subroles", companyController::getAllSubRolesByCompanyId); // GET /companies/{companyId}/subroles
+                // Get all subroles for a company by ID
+                get("subroles", ctx -> {
+                    companyController.getAllSubRolesByCompanyId(ctx); // GET /companies/{companyId}/subroles
+                });
+            });
+
+            // Routes using company name
+            path("companies/{companyName}", () -> {
+                // Get roles for a company by name
+                get("roles", ctx -> {
+                    companyController.getAllRolesByCompanyName(ctx); // GET /companies/{companyName}/roles
+                });
+
+                // Get subroles for a company by name
+                get("subroles", ctx -> {
+                    companyController.getAllSubRolesByCompanyName(ctx); // GET /companies/{companyName}/subroles
                 });
             });
         });

@@ -1,6 +1,9 @@
 package org.folder;
 
 import io.javalin.http.Context;
+import org.entities.CompanyTitle;
+import org.entities.Role;
+import org.entities.SubRole;
 
 public interface ISecurityController {
     void authenticate(Context ctx);

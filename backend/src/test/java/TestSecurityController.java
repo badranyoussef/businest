@@ -1,8 +1,11 @@
-
-
 import io.javalin.http.Context;
 import io.javalin.http.ForbiddenResponse;
-import org.folder.*;
+import org.entities.Company;
+import org.entities.CompanyTitle;
+import org.entities.Role;
+import org.entities.SubRole;
+import org.folder.ISecurityController;
+import org.folder.User;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +17,7 @@ public class TestSecurityController implements ISecurityController {
         User testUser = new User();
         testUser.setId(123L);
         testUser.setUsername("john.doe");
-        testUser.setCompany("ExampleCompany");
+        testUser.setCompany(new Company(1L, "ExampleCompany", null, null));
 
         // For testing, assign roles and subroles based on headers
         Set<Role> roles = extractRolesFromHeader(ctx);
@@ -46,6 +49,7 @@ public class TestSecurityController implements ISecurityController {
     public void authorizeTitle(Context ctx, CompanyTitle requiredTitle) {
 
     }
+
 
     @Override
     public void authorizeSubRole(Context ctx, SubRole requiredSubRole) {

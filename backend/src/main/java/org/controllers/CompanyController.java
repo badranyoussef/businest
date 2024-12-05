@@ -1,13 +1,19 @@
 package org.controllers;
 
+import org.entities.Role;
+import org.entities.SubRole;
 import org.exceptions.ApiException;
 import io.javalin.http.Context;
 import org.dtos.FolderDTO;
 import org.folder.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class CompanyController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 
     private final FolderService folderService;
     private final CompanyService companyService;
@@ -87,4 +93,48 @@ public class CompanyController {
             ctx.status(500).result("Error retrieving subroles: " + e.getMessage());
         }
     }
+
+
+    public void getAllRolesByCompanyName(Context ctx) {
+        String companyName = ctx.pathParam("companyName");
+
+        if (companyName == null || companyName.isEmpty()) {
+            ctx.status(400).result("Company name is missing.");
+            return;
+        }
+
+        try {
+            List<Role> roles = companyService.getRolesByCompanyName(companyName);
+            ctx.json(roles);
+            ctx.status(200);
+        } catch (ApiException e) {
+            logger.error("Error retrieving roles for company '{}': {}", companyName, e.getMessage());
+            ctx.status(e.getStatusCode()).result(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error retrieving roles for company '{}': {}", companyName, e.getMessage());
+            ctx.status(500).result("Internal Server Error");
+        }
+    }
+
+    public void getAllSubRolesByCompanyName(Context ctx) {
+        String companyName = ctx.pathParam("companyName");
+
+        if (companyName == null || companyName.isEmpty()) {
+            ctx.status(400).result("Company name is missing.");
+            return;
+        }
+
+        try {
+            List<SubRole> subRoles = companyService.getSubRolesByCompanyName(companyName);
+            ctx.json(subRoles);
+            ctx.status(200);
+        } catch (ApiException e) {
+            logger.error("Error retrieving sub-roles for company '{}': {}", companyName, e.getMessage());
+            ctx.status(e.getStatusCode()).result(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error retrieving sub-roles for company '{}': {}", companyName, e.getMessage());
+            ctx.status(500).result("Internal Server Error");
+        }
+    }
+
 }

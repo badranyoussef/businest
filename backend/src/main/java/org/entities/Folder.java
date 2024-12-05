@@ -1,12 +1,8 @@
 package org.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import org.folder.Role;
-import org.folder.SubRole;
+import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "folders")
@@ -14,17 +10,21 @@ import org.folder.SubRole;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Folder {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "folder_id", nullable = false)
-    private String id;
+    private Long id;
 
     @Column(name = "folder_name", nullable = false)
     private String name;
 
-    @Column(name = "company", nullable = false)
-    private String company;
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    @JsonBackReference
+    private Company company;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -33,14 +33,4 @@ public class Folder {
     @ManyToOne
     @JoinColumn(name = "sub_role_id")
     private SubRole subRole;
-
-    @PrePersist
-    public void prePersist() {
-        if (role == null) {
-            role = null; // Or set a default
-        }
-        if (subRole == null) {
-            subRole = null; // Or set a default
-        }
-    }
 }

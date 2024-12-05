@@ -1,7 +1,9 @@
 package org.daos;
 
 import jakarta.persistence.*;
+import org.entities.Company;
 import org.entities.Folder;
+
 import java.util.List;
 
 public class FolderDAO {
@@ -34,7 +36,7 @@ public class FolderDAO {
         }
     }
 
-    public Folder findById(String folderId) {
+    public Folder findById(Long folderId) { // Changed parameter type to Long
         EntityManager em = emf.createEntityManager();
         try {
             return em.find(Folder.class, folderId);
@@ -43,7 +45,7 @@ public class FolderDAO {
         }
     }
 
-    public List<Folder> findByCompany(String company) {
+    public List<Folder> findByCompany(Company company) {
         EntityManager em = emf.createEntityManager();
         try {
             String jpql = "SELECT f FROM Folder f WHERE f.company = :company";
@@ -54,23 +56,23 @@ public class FolderDAO {
             em.close();
         }
     }
-    // Find a folder by its name and company
-    public Folder findByName(String folderName, String company) {
+
+    public Folder findByNameAndCompanyName(String folderName, String companyName) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT f FROM Folder f WHERE f.name = :folderName AND f.company = :company";
+            String jpql = "SELECT f FROM Folder f WHERE f.name = :folderName AND f.company.companyName = :companyName";
             return em.createQuery(jpql, Folder.class)
                     .setParameter("folderName", folderName)
-                    .setParameter("company", company)
+                    .setParameter("companyName", companyName)
                     .getResultStream()
                     .findFirst()
-                    .orElse(null); // Return null if no result
+                    .orElse(null);
         } finally {
             em.close();
         }
     }
 
-    public void delete(String folderId) {
+    public void delete(Long folderId) { // Changed parameter type to Long
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -83,4 +85,17 @@ public class FolderDAO {
             em.close();
         }
     }
+
+    public List<Folder> findByCompanyId(Long companyId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            String jpql = "SELECT f FROM Folder f WHERE f.company.id = :companyId";
+            return em.createQuery(jpql, Folder.class)
+                    .setParameter("companyId", companyId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
 }

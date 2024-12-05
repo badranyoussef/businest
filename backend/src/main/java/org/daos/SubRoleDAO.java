@@ -2,7 +2,7 @@ package org.daos;
 
 import jakarta.persistence.*;
 import java.util.List;
-import org.folder.SubRole;
+import org.entities.SubRole;
 
 public class SubRoleDAO {
 
@@ -57,7 +57,7 @@ public class SubRoleDAO {
         }
     }
 
-    public List<SubRole> findSubRolesByUserId(String userId) {
+    public List<SubRole> findSubRolesByUserId(Long userId) {
         EntityManager em = emf.createEntityManager();
         try {
             String jpql = "SELECT sr FROM SubRole sr JOIN sr.users u WHERE u.id = :userId";
@@ -74,6 +74,18 @@ public class SubRoleDAO {
             String jpql = "SELECT sr FROM SubRole sr WHERE sr.company.id = :companyId";
             return em.createQuery(jpql, SubRole.class)
                     .setParameter("companyId", companyId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<SubRole> findSubRolesByCompanyName(String companyName) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            String jpql = "SELECT sr FROM SubRole sr WHERE sr.company.companyName = :companyName";
+            return em.createQuery(jpql, SubRole.class)
+                    .setParameter("companyName", companyName)
                     .getResultList();
         } finally {
             em.close();
