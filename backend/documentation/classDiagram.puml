@@ -3,52 +3,75 @@
 
 '----- Entities -----
 class Account
-class File
+class FileRequirements {
+    - int id;
+    - char[] forbiddenSymbols_Title;
+    - int charMaxLength_Title;
+    - double fileSizeBytes;
+    - Set<String> fileExtensionsAllowed;
+}
+class FileData {
+    - int id;
+    - String folder_path;
+    - Folder parentFolder;
+    - String name;
+    - string fileType;
+}
 class Role {
+    - int id;
     - String name
     - Set<Folder> folders
     - Set<SubRole> subRoles
-    + getName()
-    + setName(String name)
+    + addSubFolder(Folder subFolder)
+    + addSubRole(SubRole subRole)
+    + removeSubFolder(Folder subFolder)
+    + removeSubRole(SubRole subRole)
 }
 class SubRole {
+    - int id
+    - Set<Folder> folders
     - String name
     - Role role
-    + getName()
-    + setName(String name)
-    + getRole()
-    + setRole(Role role)
+    + addFolder(Folder folder)
 }
 class PermissionMatrixSettings {
+    - int id
     - SubRole subRole
     - Permissions permissions
     - Folder folder
     - Role role
-    }
+}
 class Permissions {
+    - int id
     - boolean read
     - boolean write
     - boolean delete
 }
 
 class Folder {
+    - int id
+    - String name
     - Set<File> files
-    - Set<Folder> folders
-    - Set<Role> roles
+    - Set<Folder> subFolders
     - Folder parentFolder
+    - Set<SubRole> subRoles
     - Set<PermissionMatrixSettings> permissionMatrixSettings
     + addFile(File file)
-    + addFolder(Folder folder)
+    + addSubFolder(Folder subFolder)
+    + addSubRole(SubRole subRole)
+    + addRole(Role role)
+    + addPermissionMatrixSettings(PermissionMatrixSettings permissionMatrixSettings)
     + removeFile(File file)
-    + removeFolder(Folder folder)
-    + getFiles()
-    + getFolders()
-    + getName()
-    + setName(String name)
-    + getParentFolder()
-    + setParentFolder(Folder parentFolder)
+    + removeSubFolder(Folder subFolder)
 }
-class UserChangesLogEntry
+class UserChangesLogEntry {
+    - int id
+    - String updatedUser
+    - String title
+    - String description
+    - LocalDate date
+    - String accountEditor
+}
 enum SystemRole {
     USER
     COMPANY MANAGER
@@ -56,7 +79,19 @@ enum SystemRole {
 
 '----- Controllers -----
 class AccountController
-class FileController
+class FileController { 
+    **NOT YET IMPLEMENTED()**
+    + uploadFile(File file, int folderId)
+    + downloadFile(int fileId)
+    + renameFile(int fileId, String newName)
+    + moveFile(int fileId, int folderId)
+
+    **IMPLEMENTED(why dao as parameter)**
+    + convertToDTO(FileData file)
+    + getAllBytTypeInPath(FileDAO dao)
+    + delete(FileDAO dao)
+    + getById(FileDAO dao)
+}
 class FolderController
 class NotificationController
 
@@ -92,7 +127,7 @@ class Account {
 }
 
 '----- Relations -----
-Folder "1" *-- "0..*" File
+Folder "1" *-- "0..*" FileData
 Folder "1" *-- "0..*" Folder
 Folder "1" *-- "0..*" Role
 Folder "1" *-- "0..*" PermissionMatrixSettings

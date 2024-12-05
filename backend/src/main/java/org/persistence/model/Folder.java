@@ -16,6 +16,8 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String name;
+
     @OneToMany(mappedBy = "parentFolder", fetch = FetchType.LAZY)
     private Set<FileData> files = new HashSet<>();
 

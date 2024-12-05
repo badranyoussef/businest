@@ -35,7 +35,7 @@ public class FolderDAOTest {
 
     @BeforeAll
     public static void beforeAll() {
-        emf = HibernateConfig.getEntityManagerFactory();
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
         folderDAO = FolderDAO.getInstance(emf);
     }
 
