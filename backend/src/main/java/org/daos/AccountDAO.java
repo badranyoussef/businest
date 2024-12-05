@@ -27,11 +27,11 @@ public class AccountDAO {
         accountList.add(new Account(1, "Alex Johnson", new ArrayList<>(List.of(
                 new Role("Company Manager", new ArrayList<>(List.of(
                         new SubRole("Budget Manager"),
-                        new SubRole("Operations Manager")
+                        new SubRole("Operations Coordinator")
                 ))),
-                new Role("ROLETEST", new ArrayList<>(List.of(
-                        new SubRole("TEST SUBROLE"),
-                        new SubRole("TEST SUBROLE")
+                new Role("HR", new ArrayList<>(List.of(
+                        new SubRole("Recruitment Specialist"),
+                        new SubRole("Employee Relations Manager")
                 )))
         ))));
 

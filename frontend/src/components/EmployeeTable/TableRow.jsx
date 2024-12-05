@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 export function TableRow({ employee }) {
   const navigate = useNavigate();
-
+  const roles = employee.roles;
+  const subRoles = roles.subRoles;
   return (
     <tr className="hover:bg-gray-50 transition-colors duration-200">
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -13,25 +14,38 @@ export function TableRow({ employee }) {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
         {employee.name}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-        {employee.role}
+      <td className="px-6 py-4">
+        <div className="flex flex-wrap gap-1">
+          {Array.isArray(employee.roles) && employee.roles.length > 0 ? (
+            employee.roles.map((role) => (
+              <span
+                key={role.title}
+                className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+              >
+                {role.title}
+              </span>
+            ))
+          ) : (
+            <span className="text-sm text-gray-500 italic">No roles assigned</span>
+          )}
+      </div>
       </td>
       <td className="px-6 py-4">
-  <div className="flex flex-wrap gap-1">
-     {Array.isArray(employee.subRoles) && employee.subRoles.length > 0 ? (
-      employee.subRoles.map((subrole) => (
-        <span
-          key={subrole}
-          className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
-        >
-          {subrole}
-        </span>
-      ))
-    ) : (
-      <span className="text-sm text-gray-500 italic">No subroles assigned</span>
-    )}
-  </div>
-</td>
+        <div className="flex flex-wrap gap-1">
+          {/* {Array.isArray(employee.subRoles) && employee.subRoles.length > 0 ? (
+            employee.subRoles.map((subrole) => (
+              <span
+                key={subrole}
+                className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+              >
+                {subrole}
+              </span>
+            ))
+          ) : (
+            <span className="text-sm text-gray-500 italic">No subroles assigned</span>
+          )} */}
+        </div>
+      </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm">
         <button
           onClick={() => navigate(`/account/${employee.id}`)}

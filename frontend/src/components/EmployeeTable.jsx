@@ -22,17 +22,29 @@ export function EmployeeTable({ employees }) {
             <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-200">
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.role}</td>
+              {/*<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.role}</td>*/}
               <td className="px-6 py-4 text-sm text-gray-900">
                 <div className="flex flex-wrap gap-1">
-                  {employee.subRoles?.map((subrole) => (
+                  {employee.roles?.map((role) => (
+                    <span
+                      key={role}
+                      className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+                    >
+                      {role.title}
+                    </span>
+                  ))}
+                </div>
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-900">
+                <div className="flex flex-wrap gap-1">
+                  {/* {employee.roles.subRoles?.map((subrole) => (
                     <span
                       key={subrole}
                       className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
                     >
                       {subrole}
                     </span>
-                  ))}
+                  ))} */}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">

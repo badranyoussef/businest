@@ -52,18 +52,18 @@ export const getRolesAndSubroles = async () => {
   try {
     const response = await axios.get(`${API_URL}/roles_subroles`);
     // Transform the API response to match our needs
-    const roles = Array.isArray(response.data.roles) 
-      ? response.data.roles.map(role => role.title) 
-      : [];
+    // const roles = Array.isArray(response.data.roles) 
+    //   ? response.data.roles.map(role => role.title) 
+    //   : [];
     
-    const subRoles = Array.isArray(response.data.subRoles) 
-      ? response.data.subRoles.map(subrole => subrole.title) 
-      : [];
-    
-    return {
-      roles,
-      subRoles // Now it's a flat array of all available subroles
-    };
+    // const subRoles = Array.isArray(response.data.subRoles) 
+    //   ? response.data.subRoles.map(subrole => subrole.title) 
+    //   : [];
+    return response.data;
+    // return {
+    //   roles,
+    //   subRoles // Now it's a flat array of all available subroles
+    // };
   } catch (error) {
     console.error('Error fetching roles and subRoles:', error);
     throw error;

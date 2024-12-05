@@ -29,14 +29,14 @@ public class RoleController {
                             .stream()
                             .map(r -> new RoleDTO(r.getTitle(), r.getSubRoles()))
                             .collect(Collectors.toList());
-            var subRoles = subRoleDao.getAllSubRoles()
+            /*var subRoles = subRoleDao.getAllSubRoles()
                             .stream()
                             .map(s -> new SubRoleDTO(s.getTitle()))
                             .collect(Collectors.toList());
             HashMap<String, Object> model = new HashMap<>();
             model.put("roles", roles);
-            model.put("subRoles", subRoles);
-            ctx.json(model);
+            model.put("subRoles", subRoles);*/
+            ctx.json(roles);
         } catch (Exception e) {
             e.printStackTrace(); // Log the full stack trace
             ctx.status(500).result("Server error: " + e.getMessage());

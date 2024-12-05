@@ -26,8 +26,8 @@ export function AccountPage() {
         ]);
         
         setAccount(accountData);
-        setRoles(rolesData.roles);
-        setSubRoles(rolesData.subRoles || []);
+        setRoles(rolesData);
+        //setSubRoles(rolesData.subRoles || []);
         console.log('testing data');
         console.log(rolesData);
       } catch (err) {
@@ -100,7 +100,7 @@ export function AccountPage() {
             <AccountForm
               account={account}
               roles={roles}
-              subRoles={subRoles}
+              //subRoles={subRoles}
               onSubmit={handleSubmit}
               onChange={setAccount}
               isSubmitting={isSubmitting}

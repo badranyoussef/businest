@@ -3,6 +3,7 @@ import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
 
 export function EmployeeTable({ employees }) {
+  
   if (!employees?.length) {
     return (
       <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
@@ -18,7 +19,8 @@ export function EmployeeTable({ employees }) {
         <tbody className="bg-white divide-y divide-gray-200">
           {employees.map((employee) => (
             <TableRow key={employee.id} employee={employee} />
-          ))}
+          ))
+          }
         </tbody>
       </table>
     </div>

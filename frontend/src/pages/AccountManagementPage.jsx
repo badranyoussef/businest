@@ -30,13 +30,18 @@ export function AccountManagementPage() {
 
   const filteredEmployees = useMemo(() => {
     return employees.filter(employee => {
-      const name = employee.name || '';  // Hvis name er undefined, brug en tom streng
-      const role = employee.role || '';  // Hvis role er undefined, brug en tom streng
-      const subRoles = employee.subRoles || [];  // Hvis subRoles er undefined, brug en tom liste
-      
-      return name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        subRoles.some(subrole => subrole.toLowerCase().includes(searchQuery.toLowerCase()));
+      const name = employee.name || ''; // Use an empty string if name is undefined
+      const roles = employee.roles || []; // Use an empty array if roles is undefined
+      console.log(employee)
+      return (
+        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        roles.some(role =>
+          role.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (role.subRoles || []).some(subrole =>
+            subrole.title.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        )
+      );
     });
   }, [searchQuery, employees]);
 
