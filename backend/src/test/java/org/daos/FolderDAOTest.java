@@ -14,6 +14,7 @@ import org.persistence.model.SubRole;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashSet;
@@ -28,23 +29,8 @@ public class FolderDAOTest {
     private SubRole subRole2;
     private SubRole subRole3;
 
-    // private Permissions permissions1 = new Permissions();
-    // private Permissions permissions2 = new Permissions();
-    // private Permissions permissions3 = new Permissions();
-
-    // private PermissionMatrixSettings permissionMatrixSettings1Folder1 = new PermissionMatrixSettings();
-    // private PermissionMatrixSettings permissionMatrixSettings2Folder1 = new PermissionMatrixSettings();
-    // private PermissionMatrixSettings permissionMatrixSettings1Folder2 = new PermissionMatrixSettings();
-    // private PermissionMatrixSettings permissionMatrixSettings2Folder2 = new PermissionMatrixSettings();
-
     private Folder folder1;
     private Folder folder2;
-
-    // private Role role1 = new Role();
-    // private Role role2 = new Role();
-
-    // private Set<PermissionMatrixSettings> permissionMatrixSettingsList1 = new HashSet<>();
-    // private Set<PermissionMatrixSettings> permissionMatrixSettingsList2 = new HashSet<>();
 
     @BeforeAll
     public static void beforeAll() {
@@ -97,15 +83,6 @@ public class FolderDAOTest {
         folder1 = new Folder(new HashSet<FileData>(), new HashSet<Folder>(), null);
         folder2 = new Folder(new HashSet<FileData>(), new HashSet<Folder>(), folder1);
 
-        Permissions permissions1 = new Permissions(true, true, true);
-        Permissions permissions2 = new Permissions(true, false, false);
-        Permissions permissions3 = new Permissions(true, false, true);
-        
-        PermissionMatrixSettings permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(folder2, subRole3, permissions1);
-        PermissionMatrixSettings permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(folder1, subRole1, permissions1);
-        PermissionMatrixSettings permissionMatrixSettings2Folder1 = new PermissionMatrixSettings(folder1, subRole2, permissions2);
-        PermissionMatrixSettings permissionMatrixSettings1Folder2 = new PermissionMatrixSettings(folder2, subRole1, permissions3);
-
         role1.addSubFolder(folder1);
         role1.addSubFolder(folder2);
         role2.addSubFolder(folder1);
@@ -120,17 +97,9 @@ public class FolderDAOTest {
             role1.addSubrole(subRole2);
             role2.addSubrole(subRole3);
 
-            em.persist(subRole3);
             em.persist(subRole1);
             em.persist(subRole2);
-
-            em.persist(permissions1);
-            em.persist(permissions2);
-            em.persist(permissions3);
-            em.persist(permissionMatrixSettings1Folder1);
-            em.persist(permissionMatrixSettings2Folder1);
-            em.persist(permissionMatrixSettings1Folder2);
-            em.persist(permissionMatrixSettings2Folder2);
+            em.persist(subRole3);
             em.persist(folder1);
             em.persist(folder2);
             em.getTransaction().commit();
@@ -140,7 +109,28 @@ public class FolderDAOTest {
     @Test
     public void testGetPermissions() {
         Permissions expected = new Permissions(false, true, false);
-        Permissions actual = folderDAO.getPermissions(folder1, subRole3);
-        assertEquals(expected, actual);
+        PermissionMatrixSettings permissionMatrixSettings = new PermissionMatrixSettings(folder1, subRole2, expected);
+        try(EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.persist(expected);
+            em.persist(permissionMatrixSettings);
+            em.getTransaction().commit();
+        }
+        Permissions actual = folderDAO.getPermissions(folder1, subRole2);
+        assertEquals(expected.getId(), actual.getId());
+    }
+
+    @Test
+    public void testGetPermissions2() {
+        Permissions expected = new Permissions(true, true, false);
+        PermissionMatrixSettings permissionMatrixSettings = new PermissionMatrixSettings(folder2, subRole1, expected);
+        try(EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.persist(expected);
+            em.persist(permissionMatrixSettings);
+            em.getTransaction().commit();
+        }
+        Permissions actual = folderDAO.getPermissions(folder2, subRole1);
+        assertEquals(expected.getId(), actual.getId());
     }
 }
