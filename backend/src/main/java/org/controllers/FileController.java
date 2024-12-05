@@ -5,7 +5,7 @@ import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
 import org.dtos.FileDTO;
 import org.exceptions.ApiException;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class FileController {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
 
-    public static FileDTO convertToDTO(File file) {
+    public static FileDTO convertToDTO(FileData file) {
         return FileDTO.builder()
                 .id(file.getId())
                 .folderPath(file.getFolderPath())
@@ -30,9 +30,9 @@ public class FileController {
         return ctx -> {
             String folderPath = ctx.pathParam("folder_path");
             String fileType = ctx.pathParam("file_type");
-            List<File> itemList = dao.getAllByTypeInPath(folderPath, fileType);
+            List<FileData> itemList = dao.getAllByTypeInPath(folderPath, fileType);
             List<FileDTO> dtoList = new ArrayList<>();
-            for (File i : itemList) {
+            for (FileData i : itemList) {
                 dtoList.add(convertToDTO(i));
             }
             if (dtoList.isEmpty()) {
@@ -46,9 +46,9 @@ public class FileController {
     public static Handler getAllFilesInPath(FileDAO dao) {
         return ctx -> {
             String filePath = ctx.pathParam("folder_path");
-            List<File> fileList = dao.getAllFilesInPath(filePath);
+            List<FileData> fileList = dao.getAllFilesInPath(filePath);
             List<FileDTO> dtoList = new ArrayList<>();
-            for (File f : fileList) {
+            for (FileData f : fileList) {
                 dtoList.add(convertToDTO(f));
             }
             if (dtoList.isEmpty()) {
@@ -62,7 +62,7 @@ public class FileController {
     public static Handler delete(FileDAO dao) {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
-            File foundFile = dao.getById(id);
+            FileData foundFile = dao.getById(id);
             if (foundFile != null) {
                 FileDTO dto = convertToDTO(foundFile);
                 dao.delete(dto.getId());
@@ -78,7 +78,7 @@ public class FileController {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             try {
-                File foundFile = dao.getById(id);
+                FileData foundFile = dao.getById(id);
                 if (foundFile != null) {
                     FileDTO dto = convertToDTO(foundFile);
                     if (dto != null) {
@@ -97,8 +97,8 @@ public class FileController {
 
     public static Handler create(FileDAO dao) {
         return ctx -> {
-            File file = ctx.bodyAsClass(File.class);
-            File createdFile = dao.create(file);
+            FileData file = ctx.bodyAsClass(FileData.class);
+            FileData createdFile = dao.create(file);
             FileDTO dto = convertToDTO(createdFile);
             if (dto != null) {
                 System.out.println("Det gik godt ven.");
@@ -111,9 +111,9 @@ public class FileController {
 
     public static Handler update(FileDAO fileDAO) {
         return ctx -> {
-            File file = ctx.bodyAsClass(File.class);
+            FileData file = ctx.bodyAsClass(FileData.class);
             if (file != null) {
-                File i = fileDAO.update(file);
+                FileData i = fileDAO.update(file);
                 if (i != null) {
                     FileDTO dto = convertToDTO(file);
                     ctx.json(dto);

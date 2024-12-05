@@ -1,10 +1,7 @@
-package org.util;
-
-import org.entities.FileRequirements;
-
+package org.service;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+
+import org.persistence.model.FileRequirements;
 
 public class FileValidator {
 

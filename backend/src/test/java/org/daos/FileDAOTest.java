@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.daos.FileDAO;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class FileDAOTest {
 
     @BeforeAll
     public static void beforeAll() {
-        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
         fileDAO = FileDAO.getInstance(emf);
     }
 
@@ -34,9 +34,9 @@ public class FileDAOTest {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
-            em.persist(new File("/folder", "profile-picture", ".jpg"));
-            em.persist(new File("/folder", "profile-picture2", ".jpg"));
-            em.persist(new File("/folder2", "profile-picture3", ".png"));
+            em.persist(new FileData("/folder", "profile-picture", ".jpg"));
+            em.persist(new FileData("/folder", "profile-picture2", ".jpg"));
+            em.persist(new FileData("/folder2", "profile-picture3", ".png"));
             em.getTransaction().commit();
         }
     }
@@ -76,11 +76,11 @@ public class FileDAOTest {
     @DisplayName("Testing creating a file.")
     public void createFile(){
         //Given
-        File expectedFile = new File("ademnation","adem-picture", ".jpg");
+        FileData expectedFile = new FileData("ademnation","adem-picture", ".jpg");
         int expectedId = 4;
 
         //When
-        File createdFile = fileDAO.create(expectedFile);
+        FileData createdFile = fileDAO.create(expectedFile);
 
         //Then
         assertNotNull(createdFile);
@@ -127,7 +127,7 @@ public class FileDAOTest {
         String expectedName = "profile-picture";
 
         //When
-        File foundFile = fileDAO.getById(1);
+        FileData foundFile = fileDAO.getById(1);
 
         //THen
         assertNotNull(foundFile);
@@ -140,16 +140,16 @@ public class FileDAOTest {
     public void updateFile(){
         //Given
         int getFile = 1;
-        File fileExpected;
+        FileData fileExpected;
         try (EntityManager em = emf.createEntityManager()) {
-            fileExpected =  em.find(File.class, getFile);
+            fileExpected =  em.find(FileData.class, getFile);
         }
         fileExpected.setFolderPath("halluu");
         fileExpected.setName("hallu-picture");
         fileExpected.setFileType(".png");
 
         //When
-        File fileUpdated = fileDAO.update(fileExpected);
+        FileData fileUpdated = fileDAO.update(fileExpected);
 
         //Then
         assertNotNull(fileUpdated);
@@ -167,7 +167,7 @@ public class FileDAOTest {
         int expectedIdForTheFirstIndex = 1;
 
         //When
-        List<File> allFiles = fileDAO.getAllByTypeInPath("/folder", ".jpg");
+        List<FileData> allFiles = fileDAO.getAllByTypeInPath("/folder", ".jpg");
 
         //Then
         assertNotNull(allFiles);
@@ -183,7 +183,7 @@ public class FileDAOTest {
         int expectedIdForTheFirstIndex = 3;
 
         //When
-        List<File> allFiles = fileDAO.getAllFilesInPath("/folder2");
+        List<FileData> allFiles = fileDAO.getAllFilesInPath("/folder2");
 
         //Then
         assertNotNull(allFiles);

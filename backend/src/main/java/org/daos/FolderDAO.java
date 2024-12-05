@@ -1,8 +1,8 @@
 package org.daos;
 
-import org.entities.Folder;
-import org.entities.Permissions;
-import org.entities.SubRole;
+import org.persistence.model.Folder;
+import org.persistence.model.Permissions;
+import org.persistence.model.SubRole;
 
 import jakarta.persistence.EntityManagerFactory;
 
@@ -23,7 +23,13 @@ public class FolderDAO extends AbstractDAO<Folder> {
     }
 
     public Permissions getPermissions(Folder folder1, SubRole subRole1) {
-        return null;
+        try(var em = emf.createEntityManager()) {
+            return em.createQuery("SELECT p.Permissions FROM PermissionMatrixSettings p WHERE p.folder = :folder AND p.subRole = :subRole", Permissions.class)
+                    .setParameter("folder", folder1)
+                    .setParameter("subRole", subRole1)
+                    .getSingleResult();
+        }
+
     }
 
 }

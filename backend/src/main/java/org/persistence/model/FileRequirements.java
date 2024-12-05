@@ -1,9 +1,8 @@
-package org.entities;
+package org.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +16,14 @@ public class FileRequirements {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ElementCollection
+    @Column(name = "forbidden_symbols_title")
     private char[] forbiddenSymbols_Title;
+
+    @Column(name = "char_max_length_title")
     private int charMaxLength_Title;
+
+    @Column(name = "file_size_bytes")
     private double fileSizeBytes;
 
     @ElementCollection

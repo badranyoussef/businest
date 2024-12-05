@@ -1,4 +1,4 @@
-package org.util;
+package org.service;
 
 import javax.swing.JFileChooser;
 import java.io.File;

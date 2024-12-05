@@ -1,16 +1,18 @@
 package org.persistence;
 
 import jakarta.persistence.EntityManagerFactory;
-import org.entities.Folder;
-import org.entities.PermissionMatrixSettings;
-import org.entities.Permissions;
-import org.entities.Role;
-import org.entities.SubRole;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
+import org.persistence.model.FileRequirements;
+import org.persistence.model.Folder;
+import org.persistence.model.PermissionMatrixSettings;
+import org.persistence.model.Permissions;
+import org.persistence.model.Role;
+import org.persistence.model.SubRole;
 import org.persistence.model.UserChangesLogEntry;
 import org.util.Utils;
 import java.util.Properties;
@@ -37,10 +39,13 @@ public class HibernateConfig {
         return emfTest;
     }
 
-    // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
+    // TODO: IMPORTANT: Add Entity classes here for them to be registered with
+    // Hibernate
     private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(File.class);
         configuration.addAnnotatedClass(UserChangesLogEntry.class);
+
+        configuration.addAnnotatedClass(FileData.class);
+        configuration.addAnnotatedClass(FileRequirements.class);
         configuration.addAnnotatedClass(Folder.class);
         configuration.addAnnotatedClass(PermissionMatrixSettings.class);
         configuration.addAnnotatedClass(Permissions.class);

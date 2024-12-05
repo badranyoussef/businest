@@ -8,7 +8,6 @@ import org.exceptions.ApiException;
 
 /**
  * Purpose: Utility class to read properties from a file
- * Author: Thomas Hartmann
  */
 public class Utils {
     public static void main(String[] args) {

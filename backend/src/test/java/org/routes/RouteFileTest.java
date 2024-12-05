@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.dtos.FileDTO;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
 import org.rest.ApplicationConfig;
 
 import static org.hamcrest.Matchers.*;
@@ -23,7 +23,7 @@ class RouteFileTest {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 7007;
         RestAssured.basePath = "/api/files";
-        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
         Route route = new Route(emf);
 
         app = ApplicationConfig.getInstance();
@@ -44,10 +44,10 @@ class RouteFileTest {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
-            em.persist(new File("folder", "profile-picture1", ".jpg"));
-            em.persist(new File("folder", "profile-picture2", ".jpg"));
-            em.persist(new File("folder2", "profile-picture3", ".png"));
-            em.persist(new File("folder2", "profile-picture4", ".png"));
+            em.persist(new FileData("folder", "profile-picture1", ".jpg"));
+            em.persist(new FileData("folder", "profile-picture2", ".jpg"));
+            em.persist(new FileData("folder2", "profile-picture3", ".png"));
+            em.persist(new FileData("folder2", "profile-picture4", ".png"));
             em.getTransaction().commit();
         }
     }
@@ -89,7 +89,7 @@ class RouteFileTest {
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(new File("folder", "profile-picture1", ".jpg"))
+                .body(new FileData("folder", "profile-picture1", ".jpg"))
                 .when()
                 .post("/")
                 .then()

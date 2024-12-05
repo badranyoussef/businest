@@ -11,9 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "file")
-
-public class File {
+@Table(name = "fileData")
+public class FileData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,13 +21,17 @@ public class File {
     @Column(name = "folder_path", nullable = false)
     private String folderPath;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_folder_id")
+    private Folder parentFolder;
+
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "file_type", nullable = false)
     private String fileType;
 
-    public File(String folderPath, String name, String fileType) {
+    public FileData(String folderPath, String name, String fileType) {
         this.folderPath = folderPath;
         this.name = name;
         this.fileType = fileType;

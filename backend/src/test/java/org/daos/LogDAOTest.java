@@ -20,7 +20,7 @@ public class LogDAOTest {
 
     @BeforeAll
     public static void beforeAll() {
-        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
         logDAO = new LogDAO(emf);
     }
 

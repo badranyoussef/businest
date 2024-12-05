@@ -1,8 +1,8 @@
-package org.util;
+package org.service;
 
-import org.entities.FileRequirements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.persistence.model.FileRequirements;
 
 import java.io.File;
 import java.net.URL;
