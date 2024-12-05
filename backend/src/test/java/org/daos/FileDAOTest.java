@@ -2,6 +2,8 @@ package org.daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+import org.TestUtilities.TestDBUtils;
 import org.daos.FileDAO;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
@@ -17,6 +19,7 @@ public class FileDAOTest {
 
     private static EntityManagerFactory emf;
     private static FileDAO fileDAO;
+    private TestDBUtils testDBUtils = new TestDBUtils(emf);
 
     @BeforeAll
     public static void beforeAll() {
@@ -31,21 +34,13 @@ public class FileDAOTest {
 
     @BeforeEach
     public void beforeEach() {
+        testDBUtils.resetDB();
+
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
             em.persist(new FileData("/folder", "profile-picture", ".jpg"));
             em.persist(new FileData("/folder", "profile-picture2", ".jpg"));
             em.persist(new FileData("/folder2", "profile-picture3", ".png"));
-            em.getTransaction().commit();
-        }
-    }
-
-    @AfterEach
-    public void afterEach() {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM File ").executeUpdate();
             em.getTransaction().commit();
         }
     }

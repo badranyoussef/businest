@@ -27,7 +27,7 @@ public class FileDAO extends AbstractDAO<FileData> {
 
     public List<FileData> getAllByTypeInPath(String folderPath, String fileType) {
         try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<FileData> query = em.createQuery("SELECT f FROM File f WHERE f.folderPath =:folder_path AND f.fileType =:file_type", FileData.class);
+            TypedQuery<FileData> query = em.createQuery("SELECT f FROM FileData f WHERE f.folderPath =:folder_path AND f.fileType =:file_type", FileData.class);
             query.setParameter("folder_path", folderPath);
             query.setParameter("file_type", fileType);
             return query.getResultList();
@@ -36,7 +36,7 @@ public class FileDAO extends AbstractDAO<FileData> {
 
     public List<FileData> getAllFilesInPath(String folderPath) {
         try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<FileData> query = em.createQuery("SELECT f FROM File f WHERE f.folderPath =:folder_path", FileData.class);
+            TypedQuery<FileData> query = em.createQuery("SELECT f FROM FileData f WHERE f.folderPath =:folder_path", FileData.class);
             query.setParameter("folder_path", folderPath);
             return query.getResultList();
         }

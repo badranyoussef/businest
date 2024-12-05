@@ -13,10 +13,13 @@ import org.rest.ApplicationConfig;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.TestUtilities.TestDBUtils;
+
 class RouteFileTest {
 
     private static EntityManagerFactory emf;
     private static ApplicationConfig app;
+    private static TestDBUtils testDBUtils;
 
     @BeforeAll
     static void setUpBeforeAll() {
@@ -25,6 +28,7 @@ class RouteFileTest {
         RestAssured.basePath = "/api/files";
         emf = HibernateConfig.getEntityManagerFactoryForTest();
         Route route = new Route(emf);
+        testDBUtils = new TestDBUtils(emf);
 
         app = ApplicationConfig.getInstance();
         app.initiateServer()
@@ -41,22 +45,13 @@ class RouteFileTest {
 
     @BeforeEach
     public void beforeEach() {
+        testDBUtils.resetDB();
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.createNativeQuery("TRUNCATE TABLE File RESTART IDENTITY").executeUpdate();
             em.persist(new FileData("folder", "profile-picture1", ".jpg"));
             em.persist(new FileData("folder", "profile-picture2", ".jpg"));
             em.persist(new FileData("folder2", "profile-picture3", ".png"));
             em.persist(new FileData("folder2", "profile-picture4", ".png"));
-            em.getTransaction().commit();
-        }
-    }
-
-    @AfterEach
-    public void afterEach() {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM File ").executeUpdate();
             em.getTransaction().commit();
         }
     }

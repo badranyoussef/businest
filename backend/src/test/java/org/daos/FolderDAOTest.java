@@ -1,5 +1,6 @@
 package org.daos;
 
+import org.TestUtilities.TestDBUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,12 +19,12 @@ import jakarta.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class FolderDAOTest {
 
     private static EntityManagerFactory emf;
     private static FolderDAO folderDAO;
+    private TestDBUtils testDBUtils = new TestDBUtils(emf);
 
     private SubRole subRole1;
     private SubRole subRole2;
@@ -45,31 +46,8 @@ public class FolderDAOTest {
 
     @BeforeEach
     public void beforeEach() {
-        resetDB();
+        testDBUtils.resetDB();
         persistAll();
-    }
-
-
-    private void resetDB() {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM PermissionMatrixSettings").executeUpdate();
-            em.createQuery("DELETE FROM Folder").executeUpdate();
-            em.createQuery("DELETE FROM SubRole").executeUpdate();
-            em.createQuery("DELETE FROM Role").executeUpdate();
-            em.createQuery("DELETE FROM Permissions").executeUpdate();
-            em.createQuery("DELETE FROM FileData").executeUpdate();
-            em.createQuery("DELETE FROM UserChangesLogEntry").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE folder_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE filerequirements_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE subrole_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE permissions_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE filedata_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE role_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE userchangeslogentry_id_seq RESTART WITH 1").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE permission_matrix_settings_id_seq RESTART WITH 1").executeUpdate();
-            em.getTransaction().commit();
-        }
     }
 
     private void persistAll() {
@@ -110,7 +88,7 @@ public class FolderDAOTest {
     public void testGetPermissions() {
         Permissions expected = new Permissions(false, true, false);
         PermissionMatrixSettings permissionMatrixSettings = new PermissionMatrixSettings(folder1, subRole2, expected);
-        try(EntityManager em = emf.createEntityManager()) {
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(expected);
             em.persist(permissionMatrixSettings);
@@ -124,7 +102,7 @@ public class FolderDAOTest {
     public void testGetPermissions2() {
         Permissions expected = new Permissions(true, true, false);
         PermissionMatrixSettings permissionMatrixSettings = new PermissionMatrixSettings(folder2, subRole1, expected);
-        try(EntityManager em = emf.createEntityManager()) {
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(expected);
             em.persist(permissionMatrixSettings);
