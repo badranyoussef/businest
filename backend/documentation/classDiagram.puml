@@ -1,139 +1,195 @@
 @startuml
 'https://plantuml.com/class-diagram
+skinparam linetype ortho
+
 
 '----- Entities -----
-class Account
-class FileRequirements {
-    - int id;
-    - char[] forbiddenSymbols_Title;
-    - int charMaxLength_Title;
-    - double fileSizeBytes;
-    - Set<String> fileExtensionsAllowed;
-}
-class FileData {
-    - int id;
-    - String folder_path;
-    - Folder parentFolder;
-    - String name;
-    - string fileType;
-}
-class Role {
-    - int id;
-    - String name
-    - Set<Folder> folders
-    - Set<SubRole> subRoles
-    + addSubFolder(Folder subFolder)
-    + addSubRole(SubRole subRole)
-    + removeSubFolder(Folder subFolder)
-    + removeSubRole(SubRole subRole)
-}
-class SubRole {
-    - int id
-    - Set<Folder> folders
-    - String name
-    - Role role
-    + addFolder(Folder folder)
-}
-class PermissionMatrixSettings {
-    - int id
-    - SubRole subRole
-    - Permissions permissions
-    - Folder folder
-    - Role role
-}
-class Permissions {
-    - int id
-    - boolean read
-    - boolean write
-    - boolean delete
-}
+package "entity" {
 
-class Folder {
-    - int id
-    - String name
-    - Set<File> files
-    - Set<Folder> subFolders
-    - Folder parentFolder
-    - Set<SubRole> subRoles
-    - Set<PermissionMatrixSettings> permissionMatrixSettings
-    + addFile(File file)
-    + addSubFolder(Folder subFolder)
-    + addSubRole(SubRole subRole)
-    + addRole(Role role)
-    + addPermissionMatrixSettings(PermissionMatrixSettings permissionMatrixSettings)
-    + removeFile(File file)
-    + removeSubFolder(Folder subFolder)
-}
-class UserChangesLogEntry {
-    - int id
-    - String updatedUser
-    - String title
-    - String description
-    - LocalDate date
-    - String accountEditor
-}
-enum SystemRole {
-    USER
-    COMPANY MANAGER
-}
+    package "Possible entities" {
+        class CompanyPlan
 
+        class Account {
+            - String name
+            - SystemRole systemRole
+            + methodExample()
+        }
+        enum SystemRole {
+            USER
+            COMPANY MANAGER
+            SYSTEM ADMIN
+        }
+        class CompanyAccount {
+
+        }
+
+    }
+
+    class FileRequirements {
+        - int id;
+        - char[] forbiddenSymbols_Title;
+        - int charMaxLength_Title;
+        - double fileSizeBytes;
+        - Set<String> fileExtensionsAllowed;
+    }
+
+    class FileData {
+        - int id;
+        - String folder_path;
+        - Folder parentFolder;
+        - String name;
+        - string fileType;
+    }
+
+    class Role {
+        - int id;
+        - String name
+        - Set<Folder> folders
+        - Set<SubRole> subRoles
+        + addSubFolder(Folder subFolder)
+        + addSubRole(SubRole subRole)
+        + removeSubFolder(Folder subFolder)
+        + removeSubRole(SubRole subRole)
+    }
+    class SubRole {
+        - int id
+        - Set<Folder> folders
+        - String name
+        - Role role
+        + addFolder(Folder folder)
+    }
+    class PermissionMatrixSettings {
+        - int id
+        - SubRole subRole
+        - Permissions permissions
+        - Folder folder
+        - Role role
+    }
+    class Permissions {
+        - int id
+        - boolean read
+        - boolean write
+        - boolean delete
+    }
+
+    class Folder {
+        - int id
+        - String name
+        - Set<File> files
+        - Set<Folder> subFolders
+        - Folder parentFolder
+        - Set<SubRole> subRoles
+        - Set<PermissionMatrixSettings> permissionMatrixSettings
+        + addFile(File file)
+        + addSubFolder(Folder subFolder)
+        + addSubRole(SubRole subRole)
+        + addRole(Role role)
+        + addPermissionMatrixSettings(PermissionMatrixSettings permissionMatrixSettings)
+        + removeFile(File file)
+        + removeSubFolder(Folder subFolder)
+    }
+    class UserChangesLogEntry {
+        - int id
+        - String updatedUser
+        - String title
+        - String description
+        - LocalDate date
+        - String accountEditor
+    }
+
+}
 '----- Controllers -----
-class AccountController
-class FileController { 
-    **NOT YET IMPLEMENTED()**
-    + uploadFile(File file, int folderId)
-    + downloadFile(int fileId)
-    + renameFile(int fileId, String newName)
-    + moveFile(int fileId, int folderId)
+package "controllers" {
 
-    **IMPLEMENTED(why dao as parameter)**
-    + convertToDTO(FileData file)
-    + getAllBytTypeInPath(FileDAO dao)
-    + delete(FileDAO dao)
-    + getById(FileDAO dao)
+    class AccountController
+    class FileController {
+
+        **NOT YET IMPLEMENTED()**
+        + uploadFile(File file, int folderId)
+        + downloadFile(int fileId)
+        + renameFile(int fileId, String newName)
+        + moveFile(int fileId, int folderId)
+
+        **IMPLEMENTED(why dao as parameter)**
+        + convertToDTO(FileData file)
+        + getAllBytTypeInPath(FileDAO dao)
+        + delete(FileDAO dao)
+        + getById(FileDAO dao)
+    }
+    class FolderController
+    class NotificationController {
+        getAllLogEntries(LogDAO logDAO)
+    }
+
 }
-class FolderController
-class NotificationController
 
 '----- DAOs -----
-class FileDAO
-class LogDAO
-class AccountDAO
-class FolderDAO {
-    + permissions getPermissions(long folderId, long subRoleId)
+package "DAO" {
+
+    class AbstractDAO{
+        + getById(long id)
+        + create()
+        + update()
+        + delete()
+    }
+
+    class FileDAO {
+        + getAllByTypeInPath(String folderPath, String fileType)
+        getAllFilesInPath(String folderPath)
+
+    }
+
+    class LogDAO {
+        + getAll()
+        + create()
+    }
+
+    class FolderDAO {
+        + permissions getPermissions(long folderId, long subRoleId)
+
+        ** NOT YET IMPLEMENTED() **
+        + getSubFolders(long folderId)
+        + getAllFiles(long folderId)
+        + getAllRoles(long folderId)
+        + getAllSubRoles(long folderId)
+        + getPermissionMatrixSettings(long folderId)
+        + getFolder(long folderId)
+        + getParentFolder(long folderId)
+    }
+
+
 }
 
-class FileValidator {
-    - FileRequirements
-    + validateFile(FileRequirements fileRequirements)
-    + validateExtension(File file)
-    + validateTitleLength(String name)
-    - getTitleLengthWithoutExtension(String name)
-    + validateFileSize(File file)
-    + validateFileSymbols(String name)
+'----- Services -----
+package "services" {
+    class FileValidator {
+        - FileRequirements
+        + validateFile(FileRequirements fileRequirements)
+        + validateExtension(File file)
+        + validateTitleLength(String name)
+        - getTitleLengthWithoutExtension(String name)
+        + validateFileSize(File file)
+        + validateFileSymbols(String name)
+    }
 
-}
-
-'List <|-- AbstractList
-'Collection <|-- AbstractCollection
-
-'Collection <|- List
-'AbstractCollection <|- AbstractList
-'AbstractList <|-- ArrayList
-
-class Account {
-    - String example
-    + methodExample()
+    class FileSelector {
+        + selectFile(String filePath)
+    }
 }
 
 '----- Relations -----
-Folder "1" *-- "0..*" FileData
-Folder "1" *-- "0..*" Folder
-Folder "1" *-- "0..*" Role
-Folder "1" *-- "0..*" PermissionMatrixSettings
-Role "1" *-- "0..*" SubRole
-PermissionMatrixSettings "1" *-- "0..*" Permissions
-PermissionMatrixSettings "1" *-- "0..*" SubRole
+Folder "1" --* "0..*" FileData
+Folder "1" --* "0..*" Folder
+Folder "1" --* "0..*" Role
+Folder "1" --* "0..*" PermissionMatrixSettings
+Role "1" --* "0..*" SubRole
+PermissionMatrixSettings "1" --* "0..*" Permissions
+PermissionMatrixSettings "1" --* "0..*" SubRole
+Account "*" *--"1" SystemRole
+CompanyAccount "1" -- "1" CompanyPlan
+CompanyAccount "1" -- "0..*" Account
+
+FileDAO <|-- AbstractDAO
 
 
 !pragma layout smetana
