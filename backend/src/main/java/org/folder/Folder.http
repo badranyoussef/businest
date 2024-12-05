@@ -1,0 +1,40 @@
+# Get All Files in a Folder
+ GET http://localhost:7007/api/folders/alle
+
+###
+
+# Get folder by id
+GET http://localhost:7007/api/folders/1/files
+
+###
+
+# Create a new folder
+POST http://localhost:7007/api/folders
+Content-Type: application/json
+
+{
+  "name": "documents",
+  "folderPath": "/",
+  "parentFolderId": 1
+}
+
+###
+# Get All Folders
+GET http://localhost:7007/api/folders/1
+
+###
+
+POST http://localhost:7007/api/folders/1/files
+Content-Type: application/json
+
+{
+  "name": "example.txt",
+  "fileType": "txt",
+  "folderPath": "/documents"
+}
+
+
+
+
+
+

@@ -3,6 +3,7 @@ package org.persistence;
 import jakarta.persistence.EntityManagerFactory;
 
 import lombok.*;
+import org.folder.Folder;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -98,6 +99,7 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(File.class);
         configuration.addAnnotatedClass(UserChangesLogEntry.class);
+        configuration.addAnnotatedClass(Folder.class);
     }
 
     private static EntityManagerFactory getEntityManagerFactoryConfigDevelopment() {
