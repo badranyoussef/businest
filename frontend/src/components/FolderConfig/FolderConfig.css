@@ -1,3 +1,4 @@
+
 .folder-config-container {
   width: 150%;
 }
@@ -20,6 +21,7 @@
 }
 
 .folder-info {
+
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -27,6 +29,7 @@
 }
 
 h1 {
+
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 16px;
@@ -37,3 +40,4 @@ h2 {
   font-weight: normal;
   margin-bottom: 24px;
 }
+

@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres:latest
+    container_name: bus
+    mem_limit: 1536MB
+    mem_reservation: 1024MB
+    restart: unless-stopped
+    networks:
+      - backend
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:7.3
+    container_name: pgadmin_bus
+    mem_reservation: 512MB
+    mem_limit: 1024MB
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ./pgadmin-data:/pgadmin
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cphbusiness.dk
+      PGADMIN_DEFAULT_PASSWORD: 1234
+
+networks:
+  backend:
+    name: backend
+    internal: false
+    driver: bridge
+
+volumes:
+  postgres_data:
