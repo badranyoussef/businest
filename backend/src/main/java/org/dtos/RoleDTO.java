@@ -2,12 +2,14 @@ package org.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.entities.SubRole;
 
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class RoleDTO {
     private String title;
     private List<SubRole> subRoles;

@@ -2,11 +2,13 @@ package org.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     private String title;
     private List<SubRole> subRoles;
