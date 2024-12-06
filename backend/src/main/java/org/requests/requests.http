@@ -14,7 +14,7 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:7007/api/account/1
+GET http://localhost:7007/api/account/11
 Content-Type: application/json
 
 ###
@@ -23,12 +23,20 @@ PUT http://localhost:7007/api/account/update_role
 Content-Type: application/json
 
 {
-  "id": 1,
-  "name": "Alex Johnson updated",
-  "roles": "Company Manager",
-  "subRoles": [
-    "Super Manager",
-    "HR Specialistddd"
+  "id": 11,
+  "name": "Youssef B",
+  "roles": [
+    {
+      "title": "HR",
+      "subRoles": [
+        {
+          "title": "Benefits Coordinator"
+        },
+        {
+          "title": "Employee Relations Specialist"
+        }
+      ]
+    }
   ]
 }
 
@@ -40,11 +48,19 @@ Content-Type: application/json
 
 {
   "id": 11,
-  "name": "New USER TEST",
-  "role": "Company Manager",
-  "subRoles": [
-    "Super Manager",
-    "HR Specialist"
+  "name": "Youssef",
+  "roles": [
+    {
+      "title": "HR",
+      "subRoles": [
+        {
+          "title": "Benefits Coordinator"
+        },
+        {
+          "title": "Employee Relations Specialist"
+        }
+      ]
+    }
   ]
 }
 
