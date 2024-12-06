@@ -15,6 +15,10 @@ const FileOptions = ({ file, handleDelete }) => {
     }
   };
 
+  const handleOpenFileClick = () => {
+    window.open("", "_blank");
+  };
+
   const fileWrapperStyle = {
     position: 'relative',
     border: '1px solid #ccc',
@@ -49,21 +53,35 @@ const FileOptions = ({ file, handleDelete }) => {
     justifyContent: 'center',
   };
 
-  const nameTypeWrapperStyle = {
+  const openFileButtonStyle = {
+    position: 'absolute',
+    top: '5px',
+    left: '5px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    padding: '5px 10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   };
 
   const typeStyle = {
-    marginLeft: '10px',
     fontWeight: 'bold',
+    marginBottom: '10px',
+  };
+
+  const nameWrapperStyle = {
+    marginTop: '10px',
   };
 
   return (
     <div style={fileWrapperStyle}>
       <button style={deleteButtonStyle} onClick={handleDeleteClick}>×</button>
-      <div style={nameTypeWrapperStyle}>
+      <button style={openFileButtonStyle} onClick={handleOpenFileClick}>Open</button>
+      <div style={nameWrapperStyle}>
         <input
           id="name"
           value={fileName}
