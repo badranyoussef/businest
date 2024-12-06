@@ -11,7 +11,6 @@ export function AccountPage() {
   const navigate = useNavigate();
   const [account, setAccount] = useState(null);
   const [roles, setRoles] = useState([]);
-  const [subRoles, setSubRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +43,7 @@ export function AccountPage() {
     setIsSubmitting(true);
     setError(null);
     setUpdateMessage('');
-
+    console.log(account)
     try {
       await updateAccountRole(updatedAccount);
       setUpdateMessage('Account updated successfully');
@@ -100,11 +99,14 @@ export function AccountPage() {
             <AccountForm
               account={account}
               roles={roles}
-              //subRoles={subRoles}
               onSubmit={handleSubmit}
-              onChange={setAccount}
+              onChange={(updatedAccount) => {
+                const { subRoles, ...cleanedAccount } = updatedAccount;
+                setAccount(cleanedAccount);
+              }}
               isSubmitting={isSubmitting}
             />
+
           </div>
         </div>
       </div>

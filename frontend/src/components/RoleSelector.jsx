@@ -5,14 +5,14 @@ export function RoleSelector({ selectedRoles, roles, onChange, disabled }) {
   const handleRoleChange = (role) => {
     const updatedRoles = selectedRoles.some(selected => selected.title === role.title)
       ? selectedRoles.filter(selected => selected.title !== role.title)
-      : [...selectedRoles, { ...role, subRoles: [] }];
+      : [...selectedRoles, { ...role, subRoles: role.subRoles ? [] : undefined }];
     onChange(updatedRoles);
   };
 
-  const handleSubroleChange = (role, subRoles) => {
+  const handleSubroleChange = (role, updatedSubroles) => {
     const updatedRoles = selectedRoles.map(selected =>
       selected.title === role.title
-        ? { ...selected, subRoles }
+        ? { ...selected, subRoles: updatedSubroles }
         : selected
     );
     onChange(updatedRoles);
@@ -42,7 +42,7 @@ export function RoleSelector({ selectedRoles, roles, onChange, disabled }) {
                 <SubroleSelector
                   selectedSubroles={selectedRole.subRoles || []}
                   availableSubroles={role.subRoles}
-                  onChange={(subRoles) => handleSubroleChange(role, subRoles)}
+                  onChange={(updatedSubroles) => handleSubroleChange(role, updatedSubroles)}
                   disabled={disabled}
                 />
               )}

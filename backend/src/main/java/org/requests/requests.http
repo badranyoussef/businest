@@ -25,7 +25,7 @@ Content-Type: application/json
 {
   "id": 1,
   "name": "Alex Johnson updated",
-  "role": "Company Manager",
+  "roles": "Company Manager",
   "subRoles": [
     "Super Manager",
     "HR Specialistddd"

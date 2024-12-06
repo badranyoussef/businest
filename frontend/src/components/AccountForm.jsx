@@ -1,6 +1,5 @@
 import React from 'react';
 import { RoleSelector } from './RoleSelector';
-import { SubroleSelector } from './SubroleSelector';
 import { FormField } from './FormField';
 
 export function AccountForm({ 
@@ -16,8 +15,13 @@ export function AccountForm({
   };
 
   const handleChange = (field, value) => {
-    onChange({ ...account, [field]: value });
+    if (field === 'roles') {
+      onChange({ ...account, roles: value }); // Only update the roles field
+    } else {
+      onChange({ ...account, [field]: value });
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
