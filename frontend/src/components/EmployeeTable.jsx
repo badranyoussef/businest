@@ -13,7 +13,6 @@ export function EmployeeTable({ employees }) {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subroles</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -33,18 +32,6 @@ export function EmployeeTable({ employees }) {
                       {role.title}
                     </span>
                   ))}
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-900">
-                <div className="flex flex-wrap gap-1">
-                  {/* {employee.roles.subRoles?.map((subrole) => (
-                    <span
-                      key={subrole}
-                      className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
-                    >
-                      {subrole}
-                    </span>
-                  ))} */}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
