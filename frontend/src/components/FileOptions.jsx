@@ -49,17 +49,28 @@ const FileOptions = ({ file, handleDelete }) => {
     justifyContent: 'center',
   };
 
+  const nameTypeWrapperStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  };
+
+  const typeStyle = {
+    marginLeft: '10px',
+    fontWeight: 'bold',
+  };
+
   return (
     <div style={fileWrapperStyle}>
       <button style={deleteButtonStyle} onClick={handleDeleteClick}>×</button>
-      <div>
+      <div style={nameTypeWrapperStyle}>
         <input
           id="name"
           value={fileName}
           onChange={handleFileNameChange}
           style={inputStyle}
         />
-        <p>Type: {file.type}</p>
+        <p style={typeStyle}>{file.type}</p>
       </div>
       <div>HARD CODED DATE: 06.12.24</div>
     </div>
