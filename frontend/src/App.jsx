@@ -6,6 +6,7 @@ import { NotFound } from "./components/NotFound/NotFound";
 import { Navbar } from "./components/shared/Navbar/Navbar";
 import Footer from "./components/shared/Footer/Footer";
 import MyLogs from './page/MyLogs';
+import PathFinder from "./page/FileExplorer.jsx";
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/logs" element={<MyLogs />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/pathfinder" element={<PathFinder />} />
         </Routes>
       </div>
       <Footer />
