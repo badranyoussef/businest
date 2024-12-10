@@ -3,7 +3,7 @@ package org.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.entities.Permissions1;
+import org.persistence.model.Permissions;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class UserFilePermInFolderDTO {
     private boolean write;
     private boolean delete;
 
-    public UserFilePermInFolderDTO(List<Permissions1> allPermissions) {
+    public UserFilePermInFolderDTO(List<Permissions> allPermissions) {
 
-        for ( Permissions1 p :  allPermissions){
+        for ( Permissions p :  allPermissions){
 
             if (p.isReadPermission()){
                 read = true;

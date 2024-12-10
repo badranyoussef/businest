@@ -2,7 +2,7 @@ package org.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.entities.Permissions1;
+import org.persistence.model.Permissions;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +14,7 @@ public class PermissionsDTO {
 
     private String code;
 
-    public PermissionsDTO(Permissions1 perm) {
+    public PermissionsDTO(Permissions perm) {
         this.name = perm.getName();
         this.description = perm.getDescription();
         this.code = perm.getCode();

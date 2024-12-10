@@ -1,6 +1,6 @@
 package org.daos;
 
-import org.entities.Folder;
+import org.persistence.model.Folder;
 
 import jakarta.persistence.EntityManagerFactory;
 

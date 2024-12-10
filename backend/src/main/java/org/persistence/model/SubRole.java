@@ -1,7 +1,8 @@
-package org.entities;
+package org.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.persistence.model.Role;
 
 @Getter
 @Setter

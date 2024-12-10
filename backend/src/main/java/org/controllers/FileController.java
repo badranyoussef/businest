@@ -8,8 +8,8 @@ import org.daos.FolderDAO;
 import org.daos.RoleDAO;
 import org.dtos.FileDTO;
 import org.dtos.UserFilePermInFolderDTO;
-import org.entities.Permissions1;
-import org.entities.SubRole;
+import org.persistence.model.Permissions;
+import org.persistence.model.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.File;
 import org.util.TokenUtils;
@@ -147,7 +147,13 @@ public class FileController {
 
                 List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
 
-                List<Permissions1> userFilePermissionsInFolder = folderDAO.getPermissions(folderID, subRolesOfUser);
+                for (SubRole sR : subRolesOfUser){
+                    List<Permissions> userFilePermissionsInFolder = new ArrayList<>();
+
+                    Permissions perm = folderDAO.getPermissions(folderID, sR);
+
+                    userFilePermissionsInFolder.add(perm);
+                }
 
                 UserFilePermInFolderDTO userFilePermissionsInFolderDTO = new UserFilePermInFolderDTO(userFilePermissionsInFolder);
 

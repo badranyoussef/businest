@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.entities.Folder;
-import org.entities.PermissionMatrixSettings;
-import org.entities.Permissions1;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.persistence.model.Folder;
+import org.persistence.model.PermissionMatrixSettings;
+import org.persistence.model.Permissions;
+import org.persistence.model.Role;
+import org.persistence.model.SubRole;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,9 +29,9 @@ public class FolderDAOTest {
     private SubRole subRole2;
     private SubRole subRole3;
 
-    private Permissions1 permissions1;
-    private Permissions1 permissions2;
-    private Permissions1 permissions3;
+    private Permissions permissions;
+    private Permissions permissions2;
+    private Permissions permissions3;
     
     private PermissionMatrixSettings permissionMatrixSettings1Folder1;
     private PermissionMatrixSettings permissionMatrixSettings2Folder1;
@@ -88,14 +88,14 @@ public class FolderDAOTest {
         subRole2 = new SubRole("HR_LEAD", role1);
         subRole3 = new SubRole("MEDIA_RELATIONS_BASIC", role2);
 
-        permissions1 = new Permissions1(true, true, true);
-        permissions2 = new Permissions1(true, false, false);
-        permissions3 = new Permissions1(true, false, true);
+        permissions = new Permissions(true, true, true);
+        permissions2 = new Permissions(true, false, false);
+        permissions3 = new Permissions(true, false, true);
 
-        permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(folder1, subRole1, permissions1);
+        permissionMatrixSettings1Folder1 = new PermissionMatrixSettings(folder1, subRole1, permissions);
         permissionMatrixSettings2Folder1 = new PermissionMatrixSettings(folder1, subRole2, permissions2);
         permissionMatrixSettings1Folder2 = new PermissionMatrixSettings(folder2, subRole1, permissions3);
-        permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(folder2, subRole3, permissions1);
+        permissionMatrixSettings2Folder2 = new PermissionMatrixSettings(folder2, subRole3, permissions);
 
         folder1 = new Folder(new HashSet<File>(), new HashSet<Folder>(), new HashSet<SubRole>(), null, permissionMatrixSettingsList1);
         folder2 = new Folder(new HashSet<File>(), new HashSet<Folder>(), new HashSet<SubRole>(), folder1, permissionMatrixSettingsList2);
@@ -123,7 +123,7 @@ public class FolderDAOTest {
     private void persistPermissions() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.persist(permissions1);
+            em.persist(permissions);
             em.persist(permissions2);
             em.persist(permissions3);
             em.getTransaction().commit();

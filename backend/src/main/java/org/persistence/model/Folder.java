@@ -1,11 +1,9 @@
-package org.entities;
+package org.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
-
-import org.persistence.model.File;
 
 @Getter
 @Setter

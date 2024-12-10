@@ -1,13 +1,11 @@
 package org.util;
 
-import org.entities.FileRequirements;
+import org.persistence.model.FileRequirements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package org.entities;
+package org.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,9 +27,9 @@ public class PermissionMatrixSettings {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "permissions_id")
-    private Permissions1 permissions;
+    private Permissions permissions;
 
-    public PermissionMatrixSettings(Folder folder, SubRole subRole, Permissions1 permissions) {
+    public PermissionMatrixSettings(Folder folder, SubRole subRole, Permissions permissions) {
         this.role = subRole.getRole();
         this.folder = folder;
         this.subRole = subRole;
