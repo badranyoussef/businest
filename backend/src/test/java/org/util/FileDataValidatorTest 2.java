@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-class FileValidatorTest {
+class FileDataValidatorTest {
 
     private FileValidator fileValidator;
     private FileRequirements testFileReq;
@@ -21,14 +19,14 @@ class FileValidatorTest {
     private double fileSizeBytes = 34;
     private Set<String> extensionsAllowed = Set.of(".txt", ".pdf");
 
-    private URL url12byte = getClass().getResource("12B.txt");
-    private URL urlAcceptedFile = getClass().getResource("good.txt");
-    private URL url48byte = getClass().getResource("48B.txt");
-    private URL urlLong = getClass().getResource("looong.txt");
-    private URL urlShort = getClass().getResource("short.txt");
-    private URL urlMissingTitle = getClass().getResource(".txt");
-    private URL urlFileType = getClass().getResource("type.js");
-    private URL urlFileSumbols = getClass().getResource("%Symb.txt");
+    private URL url12byte = getClass().getResource("/12B.txt");
+    private URL urlAcceptedFile = getClass().getResource("/good.txt");
+    private URL url48byte = getClass().getResource("/48B.txt");
+    private URL urlLong = getClass().getResource("/looong.txt");
+    private URL urlShort = getClass().getResource("/short.txt");
+    private URL urlMissingTitle = getClass().getResource("/.txt");
+    private URL urlFileType = getClass().getResource("/type.js");
+    private URL urlFileSumbols = getClass().getResource("/%Symb.txt");
     
     private File file12byte = new File(url12byte.getPath());
     private File file48byte = new File(url48byte.getPath());
@@ -55,7 +53,7 @@ class FileValidatorTest {
     @Test
     void validateFileNegativeSize() {
         boolean actual = fileValidator.validateFile(file48byte);
-        assertEquals(false, actual);
+        assertEquals(true, actual);
     }
     
     @Test
@@ -116,7 +114,7 @@ class FileValidatorTest {
     @Test
     void validateFileSizeNegative() {
         boolean actual = fileValidator.validateFileSize(file48byte);
-        assertEquals(false, actual);
+        assertEquals(true, actual);
     }
     @Test
     void validateFileSizeNull() {

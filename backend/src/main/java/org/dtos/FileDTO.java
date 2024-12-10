@@ -1,5 +1,6 @@
 package org.dtos;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -13,4 +14,6 @@ public class FileDTO {
     private String folderPath;
     private String name;
     private String fileType;
+    private String description;
+    private String topic;
 }

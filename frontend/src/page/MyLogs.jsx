@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { readAllLogEntries } from "../services/logServices.js";
 
+
+
 const MyLogs = () => {
   const [logs, setLogs] = useState([]);
 

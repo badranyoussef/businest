@@ -7,6 +7,7 @@ import { Navbar } from "./components/shared/Navbar/Navbar";
 import Footer from "./components/shared/Footer/Footer";
 import MyLogs from './page/MyLogs';
 import FileList from "./page/FileList";
+import PathFinder from "./page/FileExplorer.jsx";
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/folderTest" element={<FileList />} />
 
           <Route path="*" element={<NotFound />} />
+          <Route path="/pathfinder" element={<PathFinder />} />
         </Routes>
       </div>
       <Footer />
