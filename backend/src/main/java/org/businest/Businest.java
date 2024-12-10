@@ -4,7 +4,7 @@ import org.rest.ApplicationConfig;
 import org.routes.RouteAccount;
 
 
-public class app {
+public class Businest {
 
 
     public static void main(String[] args) {
