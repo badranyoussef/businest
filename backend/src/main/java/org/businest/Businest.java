@@ -7,8 +7,8 @@ import org.persistence.HibernateConfig;
 import org.persistence.model.UserChangesLogEntry;
 import org.rest.ApplicationConfig;
 import org.routes.Route;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 
