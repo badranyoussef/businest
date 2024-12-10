@@ -1,12 +1,20 @@
 package org.controllers;
 
+import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.daos.FileDAO;
+import org.daos.FolderDAO;
+import org.daos.RoleDAO;
 import org.dtos.FileDTO;
+import org.dtos.UserFilePermInFolderDTO;
+import org.persistence.model.Permissions;
+import org.persistence.model.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.FileData;
+import org.util.TokenUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +24,9 @@ public class FileController {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
+
+    private static RoleDAO roleDAO = new RoleDAO();
+    private static FolderDAO folderDAO = new FolderDAO();
 
     public static FileDTO convertToDTO(FileData file) {
         return FileDTO.builder()
@@ -100,6 +111,7 @@ public class FileController {
             FileData file = ctx.bodyAsClass(FileData.class);
             FileData createdFile = dao.create(file);
             FileDTO dto = convertToDTO(createdFile);
+
             if (dto != null) {
                 System.out.println("Det gik godt ven.");
                 ctx.status(HttpStatus.OK).json(dto);
@@ -122,5 +134,43 @@ public class FileController {
                 }
             }
         };
+    }
+
+    public static Handler getFilePermissionsForUserInFolder(FileDAO fileDAO) {
+
+        return ctx -> {
+            var folderID = Integer.parseInt(ctx.pathParam("folder_id"));
+            var userID = getUserIdFromToken(ctx);
+
+            try {
+
+                List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
+
+                for (SubRole sR : subRolesOfUser){
+                    List<Permissions> userFilePermissionsInFolder = new ArrayList<>();
+
+                    Permissions perm = folderDAO.getPermissions(folderID, sR);
+
+                    userFilePermissionsInFolder.add(perm);
+                }
+
+                UserFilePermInFolderDTO userFilePermissionsInFolderDTO = new UserFilePermInFolderDTO(userFilePermissionsInFolder);
+
+                ctx.status(200).json(userFilePermissionsInFolderDTO);
+
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
+
+            } catch (ApiException e) {
+                throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "Item was not found: " + folderID, timestamp);
+            }
+        };
+    }
+
+    private static String getUserIdFromToken(Context ctx) throws ParseException {
+        var header = ctx.headerMap();
+        var token = (header.get("Authorization").split(" "))[1];
+        var userID = TokenUtils.getUserIdFromToken(token);
+        return userID;
     }
 }
