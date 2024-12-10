@@ -3,7 +3,9 @@ package org.routes;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 import org.daos.FileDAO;
+import org.daos.FolderDAO;
 import org.daos.LogDAO;
+import org.daos.RoleDAO;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
@@ -11,6 +13,8 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class Route {
     private EntityManagerFactory emf;
     private FileDAO fileDAO;
+    private FolderDAO folderDAO;
+    private RoleDAO roleDAO;
     private RouteFile routeFile;
 
     private LogDAO logDAO;
@@ -18,9 +22,11 @@ public class Route {
 
     public Route(EntityManagerFactory _emf) {
         this.emf = _emf;
-        fileDAO = FileDAO.getInstance(emf);
+        fileDAO = new FileDAO(emf);
+        folderDAO = new FolderDAO(emf);
+        roleDAO = new RoleDAO();
 
-        routeFile = new RouteFile(fileDAO);
+        routeFile = new RouteFile(fileDAO, folderDAO, roleDAO);
         logDAO = new LogDAO(emf);
         routeLogEntries = new RouteLogEntries(logDAO);
 

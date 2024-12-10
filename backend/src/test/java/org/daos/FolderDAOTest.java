@@ -36,7 +36,7 @@ public class FolderDAOTest {
     @BeforeAll
     public static void beforeAll() {
         emf = HibernateConfig.getEntityManagerFactoryForTest();
-        folderDAO = FolderDAO.getInstance(emf);
+        folderDAO = new FolderDAO(emf);
     }
 
     @AfterAll
@@ -94,7 +94,7 @@ public class FolderDAOTest {
             em.persist(permissionMatrixSettings);
             em.getTransaction().commit();
         }
-        Permissions actual = folderDAO.getPermissions(folder1, subRole2);
+        Permissions actual = folderDAO.getPermissions(folder1.getId(), subRole2.getId());
         assertEquals(expected.getId(), actual.getId());
     }
 
@@ -108,7 +108,7 @@ public class FolderDAOTest {
             em.persist(permissionMatrixSettings);
             em.getTransaction().commit();
         }
-        Permissions actual = folderDAO.getPermissions(folder2, subRole1);
+        Permissions actual = folderDAO.getPermissions(folder2.getId(), subRole1.getId());
         assertEquals(expected.getId(), actual.getId());
     }
 }

@@ -13,7 +13,6 @@ import org.persistence.model.SubRole;
 import org.exceptions.ApiException;
 import org.persistence.model.FileData;
 import org.util.TokenUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,11 +23,17 @@ public class FileController {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
+    private FileDAO fileDAO;
+    private FolderDAO folderDAO;
+    private RoleDAO roleDAO;
 
-    private static RoleDAO roleDAO = new RoleDAO();
-    private static FolderDAO folderDAO = new FolderDAO();
+    public FileController(FileDAO fileDAO, FolderDAO folderDAO, RoleDAO roleDAO) {
+        this.fileDAO = fileDAO;
+        this.roleDAO = roleDAO;
+        this.folderDAO = folderDAO;
+    }
 
-    public static FileDTO convertToDTO(FileData file) {
+    public FileDTO convertToDTO(FileData file) {
         return FileDTO.builder()
                 .id(file.getId())
                 .folderPath(file.getFolderPath())
@@ -37,11 +42,11 @@ public class FileController {
                 .build();
     }
 
-    public static Handler getAllByTypeInPath(FileDAO dao) {
+    public Handler getAllByTypeInPath() {
         return ctx -> {
             String folderPath = ctx.pathParam("folder_path");
             String fileType = ctx.pathParam("file_type");
-            List<FileData> itemList = dao.getAllByTypeInPath(folderPath, fileType);
+            List<FileData> itemList = fileDAO.getAllByTypeInPath(folderPath, fileType);
             List<FileDTO> dtoList = new ArrayList<>();
             for (FileData i : itemList) {
                 dtoList.add(convertToDTO(i));
@@ -54,10 +59,10 @@ public class FileController {
         };
     }
 
-    public static Handler getAllFilesInPath(FileDAO dao) {
+    public Handler getAllFilesInPath() {
         return ctx -> {
             String filePath = ctx.pathParam("folder_path");
-            List<FileData> fileList = dao.getAllFilesInPath(filePath);
+            List<FileData> fileList = fileDAO.getAllFilesInPath(filePath);
             List<FileDTO> dtoList = new ArrayList<>();
             for (FileData f : fileList) {
                 dtoList.add(convertToDTO(f));
@@ -70,7 +75,7 @@ public class FileController {
         };
     }
 
-    public static Handler delete(FileDAO dao) {
+    public Handler delete(FileDAO dao) {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             FileData foundFile = dao.getById(id);
@@ -85,11 +90,11 @@ public class FileController {
     }
 
 
-    public static Handler getById(FileDAO dao) {
+    public Handler getById() {
         return ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             try {
-                FileData foundFile = dao.getById(id);
+                FileData foundFile = fileDAO.getById(id);
                 if (foundFile != null) {
                     FileDTO dto = convertToDTO(foundFile);
                     if (dto != null) {
@@ -106,10 +111,10 @@ public class FileController {
         };
     }
 
-    public static Handler create(FileDAO dao) {
+    public Handler create() {
         return ctx -> {
             FileData file = ctx.bodyAsClass(FileData.class);
-            FileData createdFile = dao.create(file);
+            FileData createdFile = fileDAO.create(file);
             FileDTO dto = convertToDTO(createdFile);
 
             if (dto != null) {
@@ -121,7 +126,7 @@ public class FileController {
         };
     }
 
-    public static Handler update(FileDAO fileDAO) {
+    public Handler update() {
         return ctx -> {
             FileData file = ctx.bodyAsClass(FileData.class);
             if (file != null) {
@@ -136,38 +141,31 @@ public class FileController {
         };
     }
 
-    public static Handler getFilePermissionsForUserInFolder(FileDAO fileDAO) {
-
+    public Handler getFilePermissionsForUserInFolder() {
         return ctx -> {
             var folderID = Integer.parseInt(ctx.pathParam("folder_id"));
             var userID = getUserIdFromToken(ctx);
 
             try {
-
+                List<Permissions> userFilePermissionsInFolder = new ArrayList<>();
                 List<SubRole> subRolesOfUser = roleDAO.getUserSubRoles(Integer.parseInt(userID));
 
                 for (SubRole sR : subRolesOfUser){
-                    List<Permissions> userFilePermissionsInFolder = new ArrayList<>();
-
-                    Permissions perm = folderDAO.getPermissions(folderID, sR);
-
+                    Permissions perm = folderDAO.getPermissions(folderID, sR.getId());
                     userFilePermissionsInFolder.add(perm);
                 }
-
                 UserFilePermInFolderDTO userFilePermissionsInFolderDTO = new UserFilePermInFolderDTO(userFilePermissionsInFolder);
 
                 ctx.status(200).json(userFilePermissionsInFolderDTO);
-
             } catch (NumberFormatException e) {
                 ctx.status(HttpStatus.BAD_REQUEST.getCode()).json("Invalid id format: " + e.getMessage());
-
             } catch (ApiException e) {
                 throw new ApiException(HttpStatus.NOT_FOUND.getCode(), "Item was not found: " + folderID, timestamp);
             }
         };
     }
 
-    private static String getUserIdFromToken(Context ctx) throws ParseException {
+    private String getUserIdFromToken(Context ctx) throws ParseException {
         var header = ctx.headerMap();
         var token = (header.get("Authorization").split(" "))[1];
         var userID = TokenUtils.getUserIdFromToken(token);

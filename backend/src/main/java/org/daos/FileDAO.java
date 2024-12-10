@@ -10,19 +10,11 @@ import org.persistence.model.FileData;
 
 public class FileDAO extends AbstractDAO<FileData> {
 
-    private static FileDAO instance;
     private static EntityManagerFactory emf;
 
-    private FileDAO(EntityManagerFactory _emf, Class<FileData> entityClass) {
-        super(_emf, entityClass);
-    }
-
-    public static FileDAO getInstance(EntityManagerFactory _emf) {
-        if (instance == null) {
-            emf = _emf;
-            instance = new FileDAO(emf, FileData.class);
-        }
-        return instance;
+    public FileDAO(EntityManagerFactory _emf) {
+        super(_emf, FileData.class);
+        emf = super.emf;
     }
 
     public List<FileData> getAllByTypeInPath(String folderPath, String fileType) {

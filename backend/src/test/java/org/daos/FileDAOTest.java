@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 import org.TestUtilities.TestDBUtils;
-import org.daos.FileDAO;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
 import org.persistence.model.FileData;
@@ -24,7 +23,7 @@ public class FileDAOTest {
     @BeforeAll
     public static void beforeAll() {
         emf = HibernateConfig.getEntityManagerFactoryForTest();
-        fileDAO = FileDAO.getInstance(emf);
+        fileDAO = new FileDAO(emf);
     }
 
     @AfterAll
