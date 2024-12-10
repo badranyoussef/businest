@@ -1,12 +1,18 @@
 package org.businest;
 
-import org.rest.ApplicationConfig;
 import org.routes.RouteAccount;
+import jakarta.persistence.EntityManagerFactory;
+import org.daos.LogDAO;
+import org.persistence.HibernateConfig;
+import org.persistence.model.UserChangesLogEntry;
+import org.rest.ApplicationConfig;
+import org.routes.Route;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.LocalDate;
 
 public class Businest {
-
-
     public static void main(String[] args) {
 
         //EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
@@ -21,6 +27,7 @@ public class Businest {
 
 
         //LocalDate today = LocalDate.now();
+
         // Popuplating UserChangesLogEntry table in DB
         /*UserChangesLogEntry u1 = new UserChangesLogEntry("user1", "Roles changed", "New role added1", today, "Team Leader 1");
         UserChangesLogEntry u2 = new UserChangesLogEntry("user2", "Roles changed", "New role added2", today, "Team Leader 2");

@@ -1,0 +1,39 @@
+.folder-config-container {
+  width: 150%;
+}
+
+.folder-config {
+  display: flex;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .folder-config {
+    flex-direction: column;
+  }
+
+  .folder-info,
+  .role-config {
+    flex: unset;
+    width: 100%;
+  }
+}
+
+.folder-info {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 24px;
+}
