@@ -13,7 +13,6 @@ public class Route {
     private EntityManagerFactory emf;
     private FileDAO fileDAO;
     private RouteFile routeFile;
-
     private LogDAO logDAO;
     private RouteLogEntries routeLogEntries;
 

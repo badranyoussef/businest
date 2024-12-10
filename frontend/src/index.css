@@ -1,4 +1,10 @@
 /* Reset default styles */
+
+@tailwind base;
+@tailwind componets;
+@tailwind utilities;
+
+
 * {
   margin: 0;
   padding: 0;

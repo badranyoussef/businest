@@ -43,14 +43,12 @@ public class ApplicationConfig {
         app = Javalin.create(config -> {
             config.http.defaultContentType = "application/json";
             config.routing.contextPath = "/api";
-            /*config.plugins.enableCors(cors -> {
+            config.plugins.enableCors(cors -> {
                 cors.add(it -> {
                     it.anyHost();
                     //it.allowHost("https://cphbusinessprojekt.dk");
                 });
             });
-
-             */
         });
         return instance;
     }
@@ -69,6 +67,7 @@ public class ApplicationConfig {
 
     public ApplicationConfig setExceptionHandlers() {
         app.exception(Exception.class, (e, ctx) -> {
+            e.printStackTrace(); // Udskriv stack trace i konsollen
             ObjectNode node = om.createObjectNode().put("errorMessage from application config", e.getMessage());
             ctx.status(500).json(node);
         });
