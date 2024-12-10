@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 import org.persistence.HibernateConfig;
-import org.persistence.model.File;
 import org.persistence.model.UserChangesLogEntry;
 
 import java.time.LocalDate;

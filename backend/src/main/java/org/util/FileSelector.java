@@ -18,7 +18,7 @@ public class FileSelector {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         } else {
-            System.out.println("File selection was canceled.");
+            System.out.println("FileData selection was canceled.");
         }
     }
 }

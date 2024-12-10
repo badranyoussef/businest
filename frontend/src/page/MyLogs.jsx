@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { readAllLogEntries } from "C:/Inteli/businest/frontend/src/services/logServices.js";
+import { readAllLogEntries } from "/Users/hannisalman/Desktop/Skole/4semester/SYS/businest/frontend/src/services/logServices.js";
 
 const MyLogs = () => {
   const [logs, setLogs] = useState([]);
