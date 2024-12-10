@@ -19,6 +19,12 @@ export const updateFolderRoleAsync = async (folderId, newRole) => {
   return response.data;
 };
 
+export const getAllFilesInFolderAsync = async (folderId) => {
+  //Insert correct URL for fetching all files in a folder 
+  const response = await axios.get(`${API_URL}/folders/${folderId}`);
+  return response.data;
+};
+
 const mockFolderPermissions1 = {
   read: true,
   write: false,
