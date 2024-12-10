@@ -1,4 +1,4 @@
-import { BASE_URL } from "../utils/globalVariables";
+//import { BASE_URL } from "../utils/globalVariables";
 
 const readAllLogEntries = async () => {
   try {
