@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.persistence.model.File;
+import org.persistence.model.FileData;
 import org.persistence.model.UserChangesLogEntry;
 
 import java.util.Properties;
@@ -96,7 +96,7 @@ public class HibernateConfig {
     }
 
     private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(File.class);
+        configuration.addAnnotatedClass(FileData.class);
         configuration.addAnnotatedClass(UserChangesLogEntry.class);
     }
 
