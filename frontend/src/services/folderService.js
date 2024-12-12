@@ -30,10 +30,8 @@ const mockFolderPermissions1 = {
   write: false,
   delete: false,
   download: false,
-
   manageFolder: false,
   manageFiles: false,
-
 };
 
 const mockFolderPermissions2 = {
@@ -41,10 +39,8 @@ const mockFolderPermissions2 = {
   write: true,
   delete: false,
   download: true,
-
   manageFolder: false,
   manageFiles: false,
-
 };
 
 const mockFolderPermissions3 = {
@@ -52,10 +48,8 @@ const mockFolderPermissions3 = {
   write: true,
   delete: true,
   download: true,
-
   manageFolder: true,
   manageFiles: true,
-
 };
 
 const mockFolderPermissions4 = {
@@ -63,10 +57,8 @@ const mockFolderPermissions4 = {
   write: false,
   delete: false,
   download: false,
-
   manageFolder: false,
   manageFiles: false,
-
 };
 
 const mockFolderPermissions5 = {
@@ -74,10 +66,8 @@ const mockFolderPermissions5 = {
   write: false,
   delete: false,
   download: false,
-
   manageFolder: false,
   manageFiles: false,
-
 };
 
 const mockFolderPermissions6 = {
@@ -85,10 +75,8 @@ const mockFolderPermissions6 = {
   write: true,
   delete: true,
   download: false,
-
   manageFolder: false,
   manageFiles: false,
-
 };
 
 export const mockFolders = [
