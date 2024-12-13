@@ -28,10 +28,10 @@ public class Businest {
 
         LocalDate today = LocalDate.now();
         // Popuplating UserChangesLogEntry table in DB
-        UserChangesLogEntry u1 = new UserChangesLogEntry("user1", "Roles changed", "New roleFolder added1", today, "Team Leader 1");
-        UserChangesLogEntry u2 = new UserChangesLogEntry("user2", "Roles changed", "New roleFolder added2", today, "Team Leader 2");
-        UserChangesLogEntry u3 = new UserChangesLogEntry("user3", "Roles changed", "New roleFolder added3", today, "Team Leader 3");
-        UserChangesLogEntry u4 = new UserChangesLogEntry("user4", "Roles changed", "New roleFolder added4", today, "Team Leader 4");
+        UserChangesLogEntry u1 = new UserChangesLogEntry("user1", "Roles changed", "New role added1", today, "Team Leader 1");
+        UserChangesLogEntry u2 = new UserChangesLogEntry("user2", "Roles changed", "New role added2", today, "Team Leader 2");
+        UserChangesLogEntry u3 = new UserChangesLogEntry("user3", "Roles changed", "New role added3", today, "Team Leader 3");
+        UserChangesLogEntry u4 = new UserChangesLogEntry("user4", "Roles changed", "New role added4", today, "Team Leader 4");
 
         LogDAO logDAO1 = new LogDAO(emf);
 
