@@ -28,9 +28,9 @@ public class Folder {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role role;
+    private RoleFolder roleFolder;
 
     @ManyToOne
     @JoinColumn(name = "sub_role_id")
-    private SubRole subRole;
+    private SubRoleFolder subRoleFolder;
 }

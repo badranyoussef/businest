@@ -2,10 +2,10 @@ import io.javalin.http.Context;
 import io.javalin.http.ForbiddenResponse;
 import org.entities.Company;
 import org.entities.CompanyTitle;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.folder.ISecurityController;
-import org.folder.User;
+import org.folder.UserFolder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,34 +14,34 @@ public class TestSecurityController implements ISecurityController {
 
     @Override
     public void authenticate(Context ctx) {
-        User testUser = new User();
-        testUser.setId(123L);
-        testUser.setUsername("john.doe");
-        testUser.setCompany(new Company(1L, "ExampleCompany", null, null));
+        UserFolder testUserFolder = new UserFolder();
+        testUserFolder.setId(123L);
+        testUserFolder.setUsername("john.doe");
+        testUserFolder.setCompany(new Company(1L, "ExampleCompany", null, null));
 
-        // For testing, assign roles and subroles based on headers
-        Set<Role> roles = extractRolesFromHeader(ctx);
-        Set<SubRole> subRoles = extractSubRolesFromHeader(ctx);
+        // For testing, assign roleFolders and subroles based on headers
+        Set<RoleFolder> roleFolders = extractRolesFromHeader(ctx);
+        Set<SubRoleFolder> subRoleFolders = extractSubRolesFromHeader(ctx);
 
-        testUser.setRoles(roles);
-        testUser.setSubRoles(subRoles);
+        testUserFolder.setRoleFolders(roleFolders);
+        testUserFolder.setSubRoleFolders(subRoleFolders);
 
-        ctx.attribute("user", testUser);
+        ctx.attribute("user", testUserFolder);
     }
 
     @Override
-    public void authorizeRole(Context ctx, Role requiredRole) {
-        User user = ctx.attribute("user");
+    public void authorizeRole(Context ctx, RoleFolder requiredRoleFolder) {
+        UserFolder userFolder = ctx.attribute("userFolder");
 
-        if (user == null || user.getRoles() == null) {
-            throw new ForbiddenResponse("Forbidden: No user authenticated.");
+        if (userFolder == null || userFolder.getRoleFolders() == null) {
+            throw new ForbiddenResponse("Forbidden: No userFolder authenticated.");
         }
 
-        boolean hasRole = user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(requiredRole.getName()));
+        boolean hasRole = userFolder.getRoleFolders().stream()
+                .anyMatch(role -> role.getName().equals(requiredRoleFolder.getName()));
 
         if (!hasRole) {
-            throw new ForbiddenResponse("Forbidden: Insufficient role.");
+            throw new ForbiddenResponse("Forbidden: Insufficient roleFolder.");
         }
     }
 
@@ -52,48 +52,48 @@ public class TestSecurityController implements ISecurityController {
 
 
     @Override
-    public void authorizeSubRole(Context ctx, SubRole requiredSubRole) {
-        User user = ctx.attribute("user");
+    public void authorizeSubRole(Context ctx, SubRoleFolder requiredSubRoleFolder) {
+        UserFolder userFolder = ctx.attribute("userFolder");
 
-        if (user == null || user.getSubRoles() == null) {
-            throw new ForbiddenResponse("Forbidden: No user authenticated.");
+        if (userFolder == null || userFolder.getSubRoleFolders() == null) {
+            throw new ForbiddenResponse("Forbidden: No userFolder authenticated.");
         }
 
-        boolean hasSubRole = user.getSubRoles().stream()
-                .anyMatch(subRole -> subRole.getName().equals(requiredSubRole.getName()));
+        boolean hasSubRole = userFolder.getSubRoleFolders().stream()
+                .anyMatch(subRole -> subRole.getName().equals(requiredSubRoleFolder.getName()));
 
         if (!hasSubRole) {
-            throw new ForbiddenResponse("Forbidden: Insufficient sub-role.");
+            throw new ForbiddenResponse("Forbidden: Insufficient sub-roleFolder.");
         }
     }
 
-    // Helper method to extract roles from headers
-    private Set<Role> extractRolesFromHeader(Context ctx) {
-        String rolesHeader = ctx.header("Test-User-Roles");
-        Set<Role> roles = new HashSet<>();
+    // Helper method to extract roleFolders from headers
+    private Set<RoleFolder> extractRolesFromHeader(Context ctx) {
+        String rolesHeader = ctx.header("Test-UserFolder-Roles");
+        Set<RoleFolder> roleFolders = new HashSet<>();
         if (rolesHeader != null) {
             String[] roleNames = rolesHeader.split(",");
             for (String roleName : roleNames) {
-                Role role = new Role();
-                role.setName(roleName.trim());
-                roles.add(role);
+                RoleFolder roleFolder = new RoleFolder();
+                roleFolder.setName(roleName.trim());
+                roleFolders.add(roleFolder);
             }
         }
-        return roles;
+        return roleFolders;
     }
 
     // Helper method to extract subroles from headers
-    private Set<SubRole> extractSubRolesFromHeader(Context ctx) {
-        String subRolesHeader = ctx.header("Test-User-SubRoles");
-        Set<SubRole> subRoles = new HashSet<>();
+    private Set<SubRoleFolder> extractSubRolesFromHeader(Context ctx) {
+        String subRolesHeader = ctx.header("Test-UserFolder-SubRoles");
+        Set<SubRoleFolder> subRoleFolders = new HashSet<>();
         if (subRolesHeader != null) {
             String[] subRoleNames = subRolesHeader.split(",");
             for (String subRoleName : subRoleNames) {
-                SubRole subRole = new SubRole();
-                subRole.setName(subRoleName.trim());
-                subRoles.add(subRole);
+                SubRoleFolder subRoleFolder = new SubRoleFolder();
+                subRoleFolder.setName(subRoleName.trim());
+                subRoleFolders.add(subRoleFolder);
             }
         }
-        return subRoles;
+        return subRoleFolders;
     }
 }

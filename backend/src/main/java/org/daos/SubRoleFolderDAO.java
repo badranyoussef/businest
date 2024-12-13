@@ -2,42 +2,42 @@ package org.daos;
 
 import jakarta.persistence.*;
 import java.util.List;
-import org.entities.SubRole;
+import org.entities.SubRoleFolder;
 
-public class SubRoleDAO {
+public class SubRoleFolderDAO {
 
     private EntityManagerFactory emf;
 
-    public SubRoleDAO(EntityManagerFactory emf) {
+    public SubRoleFolderDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public SubRole create(SubRole subRole) {
+    public SubRoleFolder create(SubRoleFolder subRoleFolder) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(subRole);
+            em.persist(subRoleFolder);
             em.getTransaction().commit();
-            return subRole;
+            return subRoleFolder;
         } finally {
             em.close();
         }
     }
 
-    public List<SubRole> findAll() {
+    public List<SubRoleFolder> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT sr FROM SubRole sr";
-            return em.createQuery(jpql, SubRole.class).getResultList();
+            String jpql = "SELECT sr FROM SubRoleFolder sr";
+            return em.createQuery(jpql, SubRoleFolder.class).getResultList();
         } finally {
             em.close();
         }
     }
 
-    public SubRole findById(Long id) {
+    public SubRoleFolder findById(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.find(SubRole.class, id);
+            return em.find(SubRoleFolder.class, id);
         } finally {
             em.close();
         }
@@ -47,9 +47,9 @@ public class SubRoleDAO {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            SubRole subRole = em.find(SubRole.class, id);
-            if (subRole != null) {
-                em.remove(subRole);
+            SubRoleFolder subRoleFolder = em.find(SubRoleFolder.class, id);
+            if (subRoleFolder != null) {
+                em.remove(subRoleFolder);
             }
             em.getTransaction().commit();
         } finally {
@@ -57,22 +57,22 @@ public class SubRoleDAO {
         }
     }
 
-    public List<SubRole> findSubRolesByUserId(Long userId) {
+    public List<SubRoleFolder> findSubRolesByUserId(Long userId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT sr FROM SubRole sr JOIN sr.users u WHERE u.id = :userId";
-            return em.createQuery(jpql, SubRole.class)
+            String jpql = "SELECT sr FROM SubRoleFolder sr JOIN sr.users u WHERE u.id = :userId";
+            return em.createQuery(jpql, SubRoleFolder.class)
                     .setParameter("userId", userId)
                     .getResultList();
         } finally {
             em.close();
         }
     }
-    public List<SubRole> findSubRolesByCompanyId(Long companyId) {
+    public List<SubRoleFolder> findSubRolesByCompanyId(Long companyId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT sr FROM SubRole sr WHERE sr.company.id = :companyId";
-            return em.createQuery(jpql, SubRole.class)
+            String jpql = "SELECT sr FROM SubRoleFolder sr WHERE sr.company.id = :companyId";
+            return em.createQuery(jpql, SubRoleFolder.class)
                     .setParameter("companyId", companyId)
                     .getResultList();
         } finally {
@@ -80,11 +80,11 @@ public class SubRoleDAO {
         }
     }
 
-    public List<SubRole> findSubRolesByCompanyName(String companyName) {
+    public List<SubRoleFolder> findSubRolesByCompanyName(String companyName) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT sr FROM SubRole sr WHERE sr.company.companyName = :companyName";
-            return em.createQuery(jpql, SubRole.class)
+            String jpql = "SELECT sr FROM SubRoleFolder sr WHERE sr.company.companyName = :companyName";
+            return em.createQuery(jpql, SubRoleFolder.class)
                     .setParameter("companyName", companyName)
                     .getResultList();
         } finally {

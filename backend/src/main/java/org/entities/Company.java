@@ -25,7 +25,7 @@ public class Company {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Role> roles;
+    private List<RoleFolder> roleFolders;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

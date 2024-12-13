@@ -1,40 +1,40 @@
 package org.controllers;
 
 import io.javalin.http.Context;
-import org.daos.SubRoleDAO;
-import org.entities.SubRole;
+import org.daos.SubRoleFolderDAO;
+import org.entities.SubRoleFolder;
 
 import java.util.List;
 
 public class SubRoleController {
 
-    private SubRoleDAO subRoleDAO;
+    private SubRoleFolderDAO subRoleFolderDAO;
 
-    public SubRoleController(SubRoleDAO subRoleDAO) {
-        this.subRoleDAO = subRoleDAO;
+    public SubRoleController(SubRoleFolderDAO subRoleFolderDAO) {
+        this.subRoleFolderDAO = subRoleFolderDAO;
     }
 
     public void createSubRole(Context ctx) {
-        SubRole subRole = ctx.bodyAsClass(SubRole.class);
-        SubRole createdSubRole = subRoleDAO.create(subRole);
-        ctx.status(201).json(createdSubRole);
+        SubRoleFolder subRoleFolder = ctx.bodyAsClass(SubRoleFolder.class);
+        SubRoleFolder createdSubRoleFolder = subRoleFolderDAO.create(subRoleFolder);
+        ctx.status(201).json(createdSubRoleFolder);
     }
 
     public void getSubRoles(Context ctx) {
-        List<SubRole> subRoles = subRoleDAO.findAll();
-        ctx.json(subRoles);
+        List<SubRoleFolder> subRoleFolders = subRoleFolderDAO.findAll();
+        ctx.json(subRoleFolders);
     }
 
     public void deleteSubRole(Context ctx) {
         Long id = Long.parseLong(ctx.pathParam("id"));
-        subRoleDAO.delete(id);
+        subRoleFolderDAO.delete(id);
         ctx.status(204);
     }
-    public List<SubRole> getSubRolesByCompanyId(Long companyId) {
-        return subRoleDAO.findSubRolesByCompanyId(companyId);
+    public List<SubRoleFolder> getSubRolesByCompanyId(Long companyId) {
+        return subRoleFolderDAO.findSubRolesByCompanyId(companyId);
     }
-    public List<SubRole> getSubRolesByCompanyName(String companyName) {
-        return subRoleDAO.findSubRolesByCompanyName(companyName);
+    public List<SubRoleFolder> getSubRolesByCompanyName(String companyName) {
+        return subRoleFolderDAO.findSubRolesByCompanyName(companyName);
     }
 
 }

@@ -1,19 +1,17 @@
 
 
 import org.daos.FolderDAO;
-import org.daos.RoleDAO;
-import org.daos.SubRoleDAO;
+import org.daos.RoleFolderDAO;
+import org.daos.SubRoleFolderDAO;
 import org.entities.Company;
 import org.entities.Folder;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.exceptions.ApiException;
 import org.folder.FolderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-
-import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,10 +22,10 @@ class FolderServiceTest {
     private FolderDAO folderDAO;
 
     @Mock
-    private RoleDAO roleDAO;
+    private RoleFolderDAO roleFolderDAO;
 
     @Mock
-    private SubRoleDAO subRoleDAO;
+    private SubRoleFolderDAO subRoleFolderDAO;
 
     @InjectMocks
     private FolderService folderService;
@@ -42,7 +40,7 @@ class FolderServiceTest {
     void testAssignRole_Success() {
         // Arrange
         Long folderId = 123L;
-        Role newRole = Role.builder()
+        RoleFolder newRoleFolder = RoleFolder.builder()
                 .id(2L)
                 .name("USER")
                 .build();
@@ -56,7 +54,7 @@ class FolderServiceTest {
                 .id(folderId)
                 .name("Test Folder")
                 .company(company)
-                .role(Role.builder()
+                .roleFolder(RoleFolder.builder()
                         .id(1L)
                         .name("GUEST")
                         .build())
@@ -66,10 +64,10 @@ class FolderServiceTest {
         doNothing().when(folderDAO).update(folder);
 
         // Act
-        folderService.assignRole(folderId, newRole);
+        folderService.assignRole(folderId, newRoleFolder);
 
         // Assert
-        assertEquals(newRole.getId(), folder.getRole().getId());
+        assertEquals(newRoleFolder.getId(), folder.getRoleFolder().getId());
         verify(folderDAO).findById(folderId);
         verify(folderDAO).update(folder);
     }
@@ -81,7 +79,7 @@ class FolderServiceTest {
                 .id(1L)
                 .companyName("ExampleCompany")
                 .build();
-        Role newRole = Role.builder()
+        RoleFolder newRoleFolder = RoleFolder.builder()
                 .id(2L)
                 .name("USER")
                 .company(company) // Set the company
@@ -91,7 +89,7 @@ class FolderServiceTest {
 
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () -> {
-            folderService.assignRole(folderId, newRole);
+            folderService.assignRole(folderId, newRoleFolder);
         });
 
         assertEquals(404, exception.getStatusCode());
@@ -104,7 +102,7 @@ class FolderServiceTest {
     void testAssignSubRole_Success() {
         // Arrange
         Long folderId = 124L;
-        SubRole newSubRole = SubRole.builder()
+        SubRoleFolder newSubRoleFolder = SubRoleFolder.builder()
                 .id(2L)
                 .name("HIGH")
                 .build();
@@ -118,7 +116,7 @@ class FolderServiceTest {
                 .id(folderId)
                 .name("Test Folder")
                 .company(company)
-                .subRole(SubRole.builder()
+                .subRoleFolder(SubRoleFolder.builder()
                         .id(1L)
                         .name("MEDIUM")
                         .build())
@@ -128,10 +126,10 @@ class FolderServiceTest {
         doNothing().when(folderDAO).update(folder);
 
         // Act
-        folderService.assignSubRole(folderId, newSubRole);
+        folderService.assignSubRole(folderId, newSubRoleFolder);
 
         // Assert
-        assertEquals(newSubRole.getId(), folder.getSubRole().getId());
+        assertEquals(newSubRoleFolder.getId(), folder.getSubRoleFolder().getId());
         verify(folderDAO).findById(folderId);
         verify(folderDAO).update(folder);
     }
@@ -144,7 +142,7 @@ class FolderServiceTest {
                 .id(1L)
                 .companyName("ExampleCompany")
                 .build();
-        SubRole newSubRole = SubRole.builder()
+        SubRoleFolder newSubRoleFolder = SubRoleFolder.builder()
                 .id(2L)
                 .name("HIGH")
                 .company(company) // Set the company
@@ -154,7 +152,7 @@ class FolderServiceTest {
 
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () -> {
-            folderService.assignSubRole(folderId, newSubRole);
+            folderService.assignSubRole(folderId, newSubRoleFolder);
         });
 
         assertEquals(404, exception.getStatusCode());

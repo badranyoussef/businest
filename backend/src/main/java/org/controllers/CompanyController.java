@@ -1,7 +1,7 @@
 package org.controllers;
 
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.exceptions.ApiException;
 import io.javalin.http.Context;
 import org.dtos.FolderDTO;
@@ -17,25 +17,25 @@ public class CompanyController {
 
     private final FolderService folderService;
     private final CompanyService companyService;
-    private final RoleController roleController;
+    private final RoleFolderController roleFolderController;
     private final SubRoleController subRoleController;
 
-    public CompanyController(CompanyService companyService, FolderService folderService, RoleController roleController, SubRoleController subRoleController) {
+    public CompanyController(CompanyService companyService, FolderService folderService, RoleFolderController roleFolderController, SubRoleController subRoleController) {
         this.companyService = companyService;
         this.folderService = folderService;
-        this.roleController = roleController;
+        this.roleFolderController = roleFolderController;
         this.subRoleController = subRoleController;
     }
 
-    // Retrieve roles by company name
+    // Retrieve roleFolders by company name
     public void getRoles(Context ctx) {
         String companyName = ctx.pathParam("companyName");
         try {
-            List<Role> roles = companyService.getRolesByCompany(companyName);
-            ctx.json(roles);
+            List<RoleFolder> roleFolders = companyService.getRolesByCompany(companyName);
+            ctx.json(roleFolders);
             ctx.status(200);
         } catch (Exception e) {
-            ctx.status(500).result("Error retrieving roles: " + e.getMessage());
+            ctx.status(500).result("Error retrieving roleFolders: " + e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class CompanyController {
     // Retrieve a folder by name
     public void getFolderByName(Context ctx) {
         String folderName = ctx.pathParam("folderName");
-        User manager = ctx.attribute("user");
+        UserFolder manager = ctx.attribute("user");
         String company = String.valueOf(manager.getCompany());
 
         try {
@@ -73,11 +73,11 @@ public class CompanyController {
     public void getAllRolesByCompanyId(Context ctx) {
         Long companyId = Long.parseLong(ctx.pathParam("companyId"));
         try {
-            List<Role> roles = roleController.getRolesByCompanyId(companyId);
-            ctx.json(roles);
+            List<RoleFolder> roleFolders = roleFolderController.getRolesByCompanyId(companyId);
+            ctx.json(roleFolders);
             ctx.status(200);
         } catch (Exception e) {
-            ctx.status(500).result("Error retrieving roles: " + e.getMessage());
+            ctx.status(500).result("Error retrieving roleFolders: " + e.getMessage());
         }
     }
 
@@ -86,8 +86,8 @@ public class CompanyController {
     public void getAllSubRolesByCompanyId(Context ctx) {
         Long companyId = Long.parseLong(ctx.pathParam("companyId"));
         try {
-            List<SubRole> subRoles = subRoleController.getSubRolesByCompanyId(companyId);
-            ctx.json(subRoles);
+            List<SubRoleFolder> subRoleFolders = subRoleController.getSubRolesByCompanyId(companyId);
+            ctx.json(subRoleFolders);
             ctx.status(200);
         } catch (Exception e) {
             ctx.status(500).result("Error retrieving subroles: " + e.getMessage());
@@ -104,14 +104,14 @@ public class CompanyController {
         }
 
         try {
-            List<Role> roles = companyService.getRolesByCompanyName(companyName);
-            ctx.json(roles);
+            List<RoleFolder> roleFolders = companyService.getRolesByCompanyName(companyName);
+            ctx.json(roleFolders);
             ctx.status(200);
         } catch (ApiException e) {
-            logger.error("Error retrieving roles for company '{}': {}", companyName, e.getMessage());
+            logger.error("Error retrieving roleFolders for company '{}': {}", companyName, e.getMessage());
             ctx.status(e.getStatusCode()).result(e.getMessage());
         } catch (Exception e) {
-            logger.error("Unexpected error retrieving roles for company '{}': {}", companyName, e.getMessage());
+            logger.error("Unexpected error retrieving roleFolders for company '{}': {}", companyName, e.getMessage());
             ctx.status(500).result("Internal Server Error");
         }
     }
@@ -125,14 +125,14 @@ public class CompanyController {
         }
 
         try {
-            List<SubRole> subRoles = companyService.getSubRolesByCompanyName(companyName);
-            ctx.json(subRoles);
+            List<SubRoleFolder> subRoleFolders = companyService.getSubRolesByCompanyName(companyName);
+            ctx.json(subRoleFolders);
             ctx.status(200);
         } catch (ApiException e) {
-            logger.error("Error retrieving sub-roles for company '{}': {}", companyName, e.getMessage());
+            logger.error("Error retrieving sub-roleFolders for company '{}': {}", companyName, e.getMessage());
             ctx.status(e.getStatusCode()).result(e.getMessage());
         } catch (Exception e) {
-            logger.error("Unexpected error retrieving sub-roles for company '{}': {}", companyName, e.getMessage());
+            logger.error("Unexpected error retrieving sub-roleFolders for company '{}': {}", companyName, e.getMessage());
             ctx.status(500).result("Internal Server Error");
         }
     }

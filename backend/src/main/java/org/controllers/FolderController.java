@@ -3,12 +3,12 @@ package org.controllers;
 import io.javalin.http.Context;
 import org.dtos.FolderDTO;
 import org.entities.Company;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.exceptions.ApiException;
 import org.folder.CompanyService;
 import org.folder.FolderService;
-import org.folder.User;
+import org.folder.UserFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,34 +25,34 @@ public class FolderController {
         this.companyService = companyService;
     }
 
-    // Assign a Role to a folder
+    // Assign a RoleFolder to a folder
     public void assignRole(Context ctx) {
         Long folderId = Long.parseLong(ctx.pathParam("folderId")); // Now using Long
         Long roleId = ctx.bodyAsClass(Long.class);
 
         try {
-            Role role = new Role();
-            role.setId(roleId);
-            folderService.assignRole(folderId, role);
-            ctx.status(200).result("Role updated successfully.");
+            RoleFolder roleFolder = new RoleFolder();
+            roleFolder.setId(roleId);
+            folderService.assignRole(folderId, roleFolder);
+            ctx.status(200).result("RoleFolder updated successfully.");
         } catch (Exception e) {
-            logger.error("Error updating role for folder {}: {}", folderId, e.getMessage());
+            logger.error("Error updating roleFolder for folder {}: {}", folderId, e.getMessage());
             ctx.status(500).result("Internal Server Error");
         }
     }
 
-    // Assign a SubRole to a folder
+    // Assign a SubRoleFolder to a folder
     public void assignSubRole(Context ctx) {
         Long folderId = Long.parseLong(ctx.pathParam("folderId")); // Now using Long
         Long subRoleId = ctx.bodyAsClass(Long.class);
 
         try {
-            SubRole subRole = new SubRole();
-            subRole.setId(subRoleId);
-            folderService.assignSubRole(folderId, subRole);
-            ctx.status(200).result("SubRole updated successfully.");
+            SubRoleFolder subRoleFolder = new SubRoleFolder();
+            subRoleFolder.setId(subRoleId);
+            folderService.assignSubRole(folderId, subRoleFolder);
+            ctx.status(200).result("SubRoleFolder updated successfully.");
         } catch (Exception e) {
-            logger.error("Error updating subRole for folder {}: {}", folderId, e.getMessage());
+            logger.error("Error updating subRoleFolder for folder {}: {}", folderId, e.getMessage());
             ctx.status(500).result("Internal Server Error");
         }
     }
@@ -79,10 +79,10 @@ public class FolderController {
     // Get a folder by its name
     public void getFolderByName(Context ctx) {
         String folderName = ctx.pathParam("folderName");
-        User manager = ctx.attribute("user");
+        UserFolder manager = ctx.attribute("user");
 
         if (manager == null) {
-            ctx.status(401).result("User not authenticated.");
+            ctx.status(401).result("UserFolder not authenticated.");
             return;
         }
 

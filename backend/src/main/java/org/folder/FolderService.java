@@ -5,11 +5,10 @@ import org.daos.FolderDAO;
 import org.dtos.FolderDTO;
 import org.entities.Company;
 import org.entities.Folder;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,27 +26,27 @@ public class FolderService {
         this.companyDAO = companyDAO;
     }
 
-    // Assign a Role to a Folder
-    public void assignRole(Long folderId, Role role) {
+    // Assign a RoleFolder to a Folder
+    public void assignRole(Long folderId, RoleFolder roleFolder) {
         Folder folder = folderDAO.findById(folderId);
 
         if (folder == null) {
             throw new IllegalArgumentException("Folder not found.");
         }
 
-        folder.setRole(role);
+        folder.setRoleFolder(roleFolder);
         folderDAO.update(folder);
     }
 
-    // Assign a SubRole to a Folder
-    public void assignSubRole(Long folderId, SubRole subRole) {
+    // Assign a SubRoleFolder to a Folder
+    public void assignSubRole(Long folderId, SubRoleFolder subRoleFolder) {
         Folder folder = folderDAO.findById(folderId);
 
         if (folder == null) {
             throw new IllegalArgumentException("Folder not found.");
         }
 
-        folder.setSubRole(subRole);
+        folder.setSubRoleFolder(subRoleFolder);
         folderDAO.update(folder);
     }
 
@@ -85,8 +84,8 @@ public class FolderService {
             throw new IllegalArgumentException("Folder not found.");
         }
 
-        folder.setRole(updatedFolderDTO.getRole());
-        folder.setSubRole(updatedFolderDTO.getSubRole());
+        folder.setRoleFolder(updatedFolderDTO.getRoleFolder());
+        folder.setSubRoleFolder(updatedFolderDTO.getSubRoleFolder());
         folderDAO.update(folder);
     }
 
@@ -122,8 +121,8 @@ public class FolderService {
                 folder.getId(),
                 folder.getName(),
                 folder.getCompany(),
-                folder.getRole(),
-                folder.getSubRole()
+                folder.getRoleFolder(),
+                folder.getSubRoleFolder()
         );
     }
 
@@ -134,8 +133,8 @@ public class FolderService {
         folder.setId(folderDTO.getId());
         folder.setName(folderDTO.getName());
         folder.setCompany(folderDTO.getCompany());
-        folder.setRole(folderDTO.getRole());
-        folder.setSubRole(folderDTO.getSubRole());
+        folder.setRoleFolder(folderDTO.getRoleFolder());
+        folder.setSubRoleFolder(folderDTO.getSubRoleFolder());
         return folder;
     }
 

@@ -92,7 +92,7 @@ public class ApplicationConfig {
                 Set<String> allowedRoles = permittedRoles.stream().map(role -> role.toString().toUpperCase()).collect(Collectors.toSet());
 
                 for (String s : allowedRoles) {
-                    System.out.println("roles to pass by "+s);
+                    System.out.println("roleFolders to pass by "+s);
                 }
 
                 if (allowedRoles.contains("ANYONE") || ctx.method().toString().equals("OPTIONS")) {
@@ -112,7 +112,7 @@ public class ApplicationConfig {
                 if (securityController.authorize(user, allowedRoles)) {
                     handler.handle(ctx);
                 } else {
-                    throw new ApiException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roles: " + allowedRoles, timestamp);
+                    throw new ApiException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roleFolders: " + allowedRoles, timestamp);
                 }*/
             });
         });

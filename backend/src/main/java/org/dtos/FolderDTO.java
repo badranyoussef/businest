@@ -5,8 +5,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.entities.Company;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 
 @Getter
 @Setter
@@ -16,6 +16,6 @@ public class FolderDTO {
     private Long id;
     private String name;
     private Company company;
-    private Role role;
-    private SubRole subRole;
+    private RoleFolder roleFolder;
+    private SubRoleFolder subRoleFolder;
 }

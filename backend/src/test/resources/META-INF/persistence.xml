@@ -9,17 +9,17 @@
 
         <!-- Include all your entity classes here -->
         <class>org.entities.Company</class>
-        <class>org.entities.Role</class>
-        <class>org.entities.SubRole</class>
+        <class>org.entities.RoleFolder</class>
+        <class>org.entities.SubRoleFolder</class>
         <class>org.entities.Folder</class>
-        <class>org.folder.User</class>
+        <class>org.folder.UserFolder</class>
         <!-- Add any other entity classes if necessary -->
 
         <properties>
             <!-- H2 Database Configuration -->
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"/>
-            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.userFolder" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
             <!-- Hibernate Configuration -->

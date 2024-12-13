@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.entities.Company;
-import org.entities.Role;
+import org.entities.RoleFolder;
 import org.persistence.HibernateConfig;
 
 public class CompanyDAO {
@@ -21,11 +21,11 @@ public class CompanyDAO {
     }
 
 
-    public List<Role> findRolesByCompanyName(String companyName) {
+    public List<RoleFolder> findRolesByCompanyName(String companyName) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             String jpql = "SELECT DISTINCT f.role FROM Folder f WHERE f.company.companyName = :companyName";
-            return entityManager.createQuery(jpql, Role.class)
+            return entityManager.createQuery(jpql, RoleFolder.class)
                     .setParameter("companyName", companyName)
                     .getResultList();
         } finally {

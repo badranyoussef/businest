@@ -8,25 +8,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.daos.RoleDAO;
-import org.daos.SubRoleDAO;
+import org.daos.RoleFolderDAO;
+import org.daos.SubRoleFolderDAO;
 import org.entities.CompanyTitle;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.folder.*;
 
 import org.entities.Company;
 
-import org.folder.User;
+import org.folder.UserFolder;
 
     public class SecurityController implements ISecurityController {
 
-        private final RoleDAO roleDAO;
-        private final SubRoleDAO subRoleDAO;
+        private final RoleFolderDAO roleFolderDAO;
+        private final SubRoleFolderDAO subRoleFolderDAO;
 
-        public SecurityController(RoleDAO roleDAO, SubRoleDAO subRoleDAO) {
-            this.roleDAO = roleDAO;
-            this.subRoleDAO = subRoleDAO;
+        public SecurityController(RoleFolderDAO roleFolderDAO, SubRoleFolderDAO subRoleFolderDAO) {
+            this.roleFolderDAO = roleFolderDAO;
+            this.subRoleFolderDAO = subRoleFolderDAO;
         }
 
         @Override
@@ -39,77 +39,77 @@ import org.folder.User;
 
             String token = authHeader.substring(7);
 
-            User user = getUserByToken(token);
+            UserFolder userFolder = getUserByToken(token);
 
-            if (user == null) {
+            if (userFolder == null) {
                 throw new UnauthorizedResponse("Unauthorized: Invalid token.");
             }
 
-            ctx.attribute("user", user);
+            ctx.attribute("userFolder", userFolder);
         }
 
         @Override
         public void authorizeTitle(Context ctx, CompanyTitle requiredTitle) {
-            User user = ctx.attribute("user");
+            UserFolder userFolder = ctx.attribute("userFolder");
 
-            if (user == null || user.getCompanyTitle() == null || !user.getCompanyTitle().equals(requiredTitle)) {
+            if (userFolder == null || userFolder.getCompanyTitle() == null || !userFolder.getCompanyTitle().equals(requiredTitle)) {
                 throw new ForbiddenResponse("Forbidden: Insufficient company title.");
             }
         }
 
         @Override
-        public void authorizeRole(Context ctx, Role requiredRole) {
-            User user = ctx.attribute("user");
+        public void authorizeRole(Context ctx, RoleFolder requiredRoleFolder) {
+            UserFolder userFolder = ctx.attribute("userFolder");
 
-            if (user == null || user.getRoles() == null || user.getRoles().isEmpty()) {
-                throw new ForbiddenResponse("Forbidden: User not authenticated or has no roles assigned.");
+            if (userFolder == null || userFolder.getRoleFolders() == null || userFolder.getRoleFolders().isEmpty()) {
+                throw new ForbiddenResponse("Forbidden: UserFolder not authenticated or has no roleFolders assigned.");
             }
 
-            boolean hasRole = user.getRoles().stream()
-                    .anyMatch(role -> role.getName().equals(requiredRole.getName()));
+            boolean hasRole = userFolder.getRoleFolders().stream()
+                    .anyMatch(role -> role.getName().equals(requiredRoleFolder.getName()));
 
             if (!hasRole) {
-                throw new ForbiddenResponse("Forbidden: Insufficient role.");
+                throw new ForbiddenResponse("Forbidden: Insufficient roleFolder.");
             }
         }
 
         @Override
-        public void authorizeSubRole(Context ctx, SubRole requiredSubRole) {
-            User user = ctx.attribute("user");
+        public void authorizeSubRole(Context ctx, SubRoleFolder requiredSubRoleFolder) {
+            UserFolder userFolder = ctx.attribute("userFolder");
 
-            if (user == null || user.getSubRoles() == null || user.getSubRoles().isEmpty()) {
-                throw new ForbiddenResponse("Forbidden: User not authenticated or has no sub-roles assigned.");
+            if (userFolder == null || userFolder.getSubRoleFolders() == null || userFolder.getSubRoleFolders().isEmpty()) {
+                throw new ForbiddenResponse("Forbidden: UserFolder not authenticated or has no sub-roleFolders assigned.");
             }
 
-            boolean hasSubRole = user.getSubRoles().stream()
-                    .anyMatch(subRole -> subRole.getName().equals(requiredSubRole.getName()));
+            boolean hasSubRole = userFolder.getSubRoleFolders().stream()
+                    .anyMatch(subRole -> subRole.getName().equals(requiredSubRoleFolder.getName()));
 
             if (!hasSubRole) {
-                throw new ForbiddenResponse("Forbidden: Insufficient sub-role.");
+                throw new ForbiddenResponse("Forbidden: Insufficient sub-roleFolder.");
             }
         }
 
-        private User getUserByToken(String token) {
+        private UserFolder getUserByToken(String token) {
             if (!isValidToken(token)) {
                 return null;
             }
 
             if ("validToken".equals(token)) {
-                User user = new User();
-                user.setId(123L);
-                user.setUsername("john.doe");
+                UserFolder userFolder = new UserFolder();
+                userFolder.setId(123L);
+                userFolder.setUsername("john.doe");
 
                 Company company = new Company();
                 company.setId(1L);
                 company.setCompanyName("ExampleCompany");
-                user.setCompany(company);
+                userFolder.setCompany(company);
 
-                user.setCompanyTitle(CompanyTitle.COMPANY_MANAGER);
+                userFolder.setCompanyTitle(CompanyTitle.COMPANY_MANAGER);
 
-                user.setRoles(getRolesForUser(user.getId()));
-                user.setSubRoles(getSubRolesForUser(user.getId()));
+                userFolder.setRoleFolders(getRolesForUser(userFolder.getId()));
+                userFolder.setSubRoleFolders(getSubRolesForUser(userFolder.getId()));
 
-                return user;
+                return userFolder;
             }
             return null;
         }
@@ -118,14 +118,14 @@ import org.folder.User;
             return "validToken".equals(token);
         }
 
-        private Set<Role> getRolesForUser(Long userId) {
-            List<Role> roles = roleDAO.findRolesByUserId(userId);
-            return new HashSet<>(roles);
+        private Set<RoleFolder> getRolesForUser(Long userId) {
+            List<RoleFolder> roleFolders = roleFolderDAO.findRolesByUserId(userId);
+            return new HashSet<>(roleFolders);
         }
 
-        private Set<SubRole> getSubRolesForUser(Long userId) {
-            List<SubRole> subRoles = subRoleDAO.findSubRolesByUserId(userId);
-            return new HashSet<>(subRoles);
+        private Set<SubRoleFolder> getSubRolesForUser(Long userId) {
+            List<SubRoleFolder> subRoleFolders = subRoleFolderDAO.findSubRolesByUserId(userId);
+            return new HashSet<>(subRoleFolders);
         }
     }
 

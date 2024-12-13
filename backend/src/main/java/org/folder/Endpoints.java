@@ -3,7 +3,7 @@ package org.folder;
 import io.javalin.Javalin;
 import org.controllers.*;
 import org.controllers.FolderController;
-import org.controllers.RoleController;
+import org.controllers.RoleFolderController;
 import org.controllers.SubRoleController;
 import org.entities.CompanyTitle;
 
@@ -14,16 +14,16 @@ public class Endpoints {
     private final ISecurityController securityController;
     private final FolderController folderController;
     private final CompanyController companyController;
-    private final RoleController roleController;
+    private final RoleFolderController roleFolderController;
     private final SubRoleController subRoleController;
 
     public Endpoints(ISecurityController securityController, FolderController folderController,
-                     CompanyController companyController, RoleController roleController,
+                     CompanyController companyController, RoleFolderController roleFolderController,
                      SubRoleController subRoleController) {
         this.securityController = securityController;
         this.folderController = folderController;
         this.companyController = companyController;
-        this.roleController = roleController;
+        this.roleFolderController = roleFolderController;
         this.subRoleController = subRoleController;
     }
 
@@ -31,13 +31,13 @@ public class Endpoints {
         // Apply authentication to all routes
         app.before("/*", ctx -> securityController.authenticate(ctx));
 
-        // Define role-related routes
+        // Define roleFolder-related routes
         app.routes(() -> {
-            path("roles", () -> {
+            path("roleFolders", () -> {
                 before(ctx -> securityController.authorizeTitle(ctx, CompanyTitle.COMPANY_MANAGER));
-                post(roleController::createRole);
-                get(roleController::getRoles);
-                delete("{id}", roleController::deleteRole);
+                post(roleFolderController::createRole);
+                get(roleFolderController::getRoles);
+                delete("{id}", roleFolderController::deleteRole);
             });
         });
 
@@ -65,8 +65,8 @@ public class Endpoints {
                 // Update folder permissions
                 post("{folderId}/permissions", folderController::updateFolderPermissionsById); // POST /folders/{folderId}/permissions
 
-                // Assign role to folder
-                post("{folderId}/role", folderController::assignRole); // POST /folders/{folderId}/role
+                // Assign roleFolder to folder
+                post("{folderId}/roleFolder", folderController::assignRole); // POST /folders/{folderId}/roleFolder
 
                 // Assign subrole to folder
                 post("{folderId}/subrole", folderController::assignSubRole); // POST /folders/{folderId}/subrole
@@ -80,9 +80,9 @@ public class Endpoints {
 
             // Routes using company ID
             path("companies/{companyId}", () -> {
-                // Get all roles for a company by ID
-                get("roles", ctx -> {
-                    companyController.getAllRolesByCompanyId(ctx); // GET /companies/{companyId}/roles
+                // Get all roleFolders for a company by ID
+                get("roleFolders", ctx -> {
+                    companyController.getAllRolesByCompanyId(ctx); // GET /companies/{companyId}/roleFolders
                 });
 
                 // Get all subroles for a company by ID
@@ -93,9 +93,9 @@ public class Endpoints {
 
             // Routes using company name
             path("companies/{companyName}", () -> {
-                // Get roles for a company by name
-                get("roles", ctx -> {
-                    companyController.getAllRolesByCompanyName(ctx); // GET /companies/{companyName}/roles
+                // Get roleFolders for a company by name
+                get("roleFolders", ctx -> {
+                    companyController.getAllRolesByCompanyName(ctx); // GET /companies/{companyName}/roleFolders
                 });
 
                 // Get subroles for a company by name

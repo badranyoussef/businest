@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.entities.Company;
 import org.entities.CompanyTitle;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "userFolders")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserFolder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleFolder> roleFolders = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -46,7 +46,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sub_role_id")
     )
-    private Set<SubRole> subRoles = new HashSet<>();
+    private Set<SubRoleFolder> subRoleFolders = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)

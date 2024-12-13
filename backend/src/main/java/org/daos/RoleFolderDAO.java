@@ -1,44 +1,44 @@
 package org.daos;
 
 import jakarta.persistence.*;
-import org.entities.Role;
+import org.entities.RoleFolder;
 
 import java.util.List;
 
-public class RoleDAO {
+public class RoleFolderDAO {
 
     private EntityManagerFactory emf;
 
-    public RoleDAO(EntityManagerFactory emf) {
+    public RoleFolderDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public Role create(Role role) {
+    public RoleFolder create(RoleFolder roleFolder) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(role);
+            em.persist(roleFolder);
             em.getTransaction().commit();
-            return role;
+            return roleFolder;
         } finally {
             em.close();
         }
     }
 
-    public List<Role> findAll() {
+    public List<RoleFolder> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT r FROM Role r";
-            return em.createQuery(jpql, Role.class).getResultList();
+            String jpql = "SELECT r FROM RoleFolder r";
+            return em.createQuery(jpql, RoleFolder.class).getResultList();
         } finally {
             em.close();
         }
     }
 
-    public Role findById(Long id) {
+    public RoleFolder findById(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.find(Role.class, id);
+            return em.find(RoleFolder.class, id);
         } finally {
             em.close();
         }
@@ -48,9 +48,9 @@ public class RoleDAO {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            Role role = em.find(Role.class, id);
-            if (role != null) {
-                em.remove(role);
+            RoleFolder roleFolder = em.find(RoleFolder.class, id);
+            if (roleFolder != null) {
+                em.remove(roleFolder);
             }
             em.getTransaction().commit();
         } finally {
@@ -58,11 +58,11 @@ public class RoleDAO {
         }
     }
 
-    public List<Role> findRolesByUserId(Long userId) {
+    public List<RoleFolder> findRolesByUserId(Long userId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT r FROM Role r JOIN r.users u WHERE u.id = :userId";
-            return em.createQuery(jpql, Role.class)
+            String jpql = "SELECT r FROM RoleFolder r JOIN r.users u WHERE u.id = :userId";
+            return em.createQuery(jpql, RoleFolder.class)
                     .setParameter("userId", userId)
                     .getResultList();
         } finally {
@@ -70,22 +70,22 @@ public class RoleDAO {
         }
     }
 
-    public List<Role> findRolesByCompanyId(Long companyId) {
+    public List<RoleFolder> findRolesByCompanyId(Long companyId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT r FROM Role r WHERE r.company.id = :companyId";
-            return em.createQuery(jpql, Role.class)
+            String jpql = "SELECT r FROM RoleFolder r WHERE r.company.id = :companyId";
+            return em.createQuery(jpql, RoleFolder.class)
                     .setParameter("companyId", companyId)
                     .getResultList();
         } finally {
             em.close();
         }
     }
-    public List<Role> findRolesByCompanyName(String companyName) {
+    public List<RoleFolder> findRolesByCompanyName(String companyName) {
         EntityManager em = emf.createEntityManager();
         try {
-            String jpql = "SELECT r FROM Role r WHERE r.company.companyName = :companyName";
-            return em.createQuery(jpql, Role.class)
+            String jpql = "SELECT r FROM RoleFolder r WHERE r.company.companyName = :companyName";
+            return em.createQuery(jpql, RoleFolder.class)
                     .setParameter("companyName", companyName)
                     .getResultList();
         } finally {

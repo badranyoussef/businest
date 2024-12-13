@@ -2,20 +2,19 @@ package org.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.entities.Company;
-import org.folder.User;
+import org.folder.UserFolder;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roleFolders")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Role {
+public class RoleFolder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +27,8 @@ public class Role {
     private String description;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roleFolders")
+    private Set<UserFolder> userFolders = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)

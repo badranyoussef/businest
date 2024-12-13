@@ -3,11 +3,11 @@ package org.folder;
 
 import jakarta.persistence.EntityManager;
 import org.daos.CompanyDAO;
-import org.daos.RoleDAO;
-import org.daos.SubRoleDAO;
+import org.daos.RoleFolderDAO;
+import org.daos.SubRoleFolderDAO;
 import org.entities.Company;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.exceptions.ApiException;
 
 import java.time.Instant;
@@ -18,13 +18,13 @@ import static org.persistence.HibernateConfig.entityManagerFactory;
 public class CompanyService {
 
     private CompanyDAO companyDAO;
-    private RoleDAO roleDAO;
-    private SubRoleDAO subRoleDAO;
+    private RoleFolderDAO roleFolderDAO;
+    private SubRoleFolderDAO subRoleFolderDAO;
     public CompanyService(CompanyDAO companyDAO) {
         this.companyDAO = companyDAO;
     }
 
-    public List<Role> getRolesByCompany(String companyName) throws Exception {
+    public List<RoleFolder> getRolesByCompany(String companyName) throws Exception {
         return companyDAO.findRolesByCompanyName(companyName);
     }
     public Company getCompanyById(Long companyId) {
@@ -46,19 +46,19 @@ public class CompanyService {
         }
     }
 
-    public List<Role> getRolesByCompanyName(String companyName) {
+    public List<RoleFolder> getRolesByCompanyName(String companyName) {
         Company company = companyDAO.findByName(companyName);
         if (company == null) {
             throw new ApiException(404, "Company not found.", Instant.now().toString());
         }
-        return roleDAO.findRolesByCompanyId(company.getId());
+        return roleFolderDAO.findRolesByCompanyId(company.getId());
     }
-    public List<SubRole> getSubRolesByCompanyName(String companyName) {
+    public List<SubRoleFolder> getSubRolesByCompanyName(String companyName) {
         Company company = companyDAO.findByName(companyName);
         if (company == null) {
             throw new ApiException(404, "Company not found.", Instant.now().toString());
         }
-        return subRoleDAO.findSubRolesByCompanyId(company.getId());
+        return subRoleFolderDAO.findSubRolesByCompanyId(company.getId());
     }
 
     public Company findByName(String companyName) {

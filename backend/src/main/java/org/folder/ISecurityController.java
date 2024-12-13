@@ -2,13 +2,13 @@ package org.folder;
 
 import io.javalin.http.Context;
 import org.entities.CompanyTitle;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 
 public interface ISecurityController {
     void authenticate(Context ctx);
-    void authorizeRole(Context ctx, Role requiredRole);
+    void authorizeRole(Context ctx, RoleFolder requiredRoleFolder);
     void authorizeTitle(Context ctx, CompanyTitle requiredTitle);
-    void authorizeSubRole(Context ctx, SubRole requiredSubRole);
+    void authorizeSubRole(Context ctx, SubRoleFolder requiredSubRoleFolder);
 
 }

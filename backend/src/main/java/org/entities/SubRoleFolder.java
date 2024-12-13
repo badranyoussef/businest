@@ -2,8 +2,7 @@ package org.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.entities.Company;
-import org.folder.User;
+import org.folder.UserFolder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubRole {
+public class SubRoleFolder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +27,8 @@ public class SubRole {
     private String description;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "subRoles")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "subRoleFolders")
+    private Set<UserFolder> userFolders = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
