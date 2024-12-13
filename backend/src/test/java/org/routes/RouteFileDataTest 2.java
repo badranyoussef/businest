@@ -1,4 +1,4 @@
-package org.routes;
+/* package org.routes;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -197,3 +197,5 @@ class RouteFileDataTest {
                 .body("[0].fileType", equalTo(".png"));
     }
 }
+
+ */

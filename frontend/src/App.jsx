@@ -1,4 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AccountManagementPage } from './pages/AccountManagementPage';
+import { AccountPage } from './pages/AccountPage';
 import FolderConfig from "./components/FolderConfig/FolderConfig";
 import { FolderList } from "./components/FolderAdminList/FolderAdminList";
 import { Profile } from "./components/Profile/Profile";
@@ -10,12 +13,15 @@ import FileList from "./page/FileList";
 import PathFinder from "./page/FileExplorer.jsx";
 
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <div className="app-body">
         <Routes>
+          <Route path="/" element={<Navigate to="/account" replace />} />
+          <Route path="/account" element={<AccountManagementPage />} />
+          <Route path="/account/:id" element={<AccountPage />} />
           <Route path="/folders" element={<FolderList />} />
           <Route
             path="/folders/:folderName/configure"
@@ -33,3 +39,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+export default App;
