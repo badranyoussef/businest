@@ -6,16 +6,16 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.controllers.CompanyController;
 import org.controllers.FolderController;
-import org.controllers.RoleController;
+import org.controllers.RoleFolderController;
 import org.controllers.SubRoleController;
 import org.daos.CompanyDAO;
 import org.daos.FolderDAO;
-import org.daos.RoleDAO;
-import org.daos.SubRoleDAO;
+import org.daos.RoleFolderDAO;
+import org.daos.SubRoleFolderDAO;
 import org.entities.Company;
 import org.entities.Folder;
-import org.entities.Role;
-import org.entities.SubRole;
+import org.entities.RoleFolder;
+import org.entities.SubRoleFolder;
 import org.folder.CompanyService;
 import org.folder.Endpoints;
 import org.folder.FolderService;
@@ -34,7 +34,7 @@ public class FolderControllerIntegrationTest {
     private ISecurityController securityController;
     private FolderService folderService;
     private CompanyController companyController;
-    private RoleController roleController;
+    private RoleFolderController roleFolderController;
     private SubRoleController subRoleController;
     private CompanyService companyService;
 
@@ -60,8 +60,8 @@ public class FolderControllerIntegrationTest {
     void setUp() {
         // Initialize DAOs
         FolderDAO folderDAO = new FolderDAO(emf);
-        RoleDAO roleDAO = new RoleDAO(emf);
-        SubRoleDAO subRoleDAO = new SubRoleDAO(emf);
+        RoleFolderDAO roleFolderDAO = new RoleFolderDAO(emf);
+        SubRoleFolderDAO subRoleFolderDAO = new SubRoleFolderDAO(emf);
         CompanyDAO companyDAO = new CompanyDAO(emf);
 
         // Initialize Services
@@ -69,10 +69,10 @@ public class FolderControllerIntegrationTest {
         companyService = new CompanyService(companyDAO);
 
         // Initialize Controllers
-        roleController = new RoleController(roleDAO);
-        subRoleController = new SubRoleController(subRoleDAO);
+        roleFolderController = new RoleFolderController(roleFolderDAO);
+        subRoleController = new SubRoleController(subRoleFolderDAO);
         folderController = new FolderController(folderService, companyService);
-        companyController = new CompanyController(companyService, folderService, roleController, subRoleController);
+        companyController = new CompanyController(companyService, folderService, roleFolderController, subRoleController);
 
         // Initialize Security Controller
         securityController = new TestSecurityController();
@@ -81,7 +81,7 @@ public class FolderControllerIntegrationTest {
         app = Javalin.create(config -> {});
 
         // Register endpoints
-        Endpoints endpoints = new Endpoints(securityController, folderController, companyController, roleController, subRoleController);
+        Endpoints endpoints = new Endpoints(securityController, folderController, companyController, roleFolderController, subRoleController);
         endpoints.registerRoutes(app);
 
         // Clean the database before each test
@@ -98,17 +98,17 @@ public class FolderControllerIntegrationTest {
         // Create company
         Company exampleCompany = createCompany("ExampleCompany");
 
-        // Create roles
-        Role userRole = createRole("USER", exampleCompany);
-        Role guestRole = createRole("GUEST", exampleCompany);
+        // Create roleFolders
+        RoleFolder userRoleFolder = createRole("USER", exampleCompany);
+        RoleFolder guestRoleFolder = createRole("GUEST", exampleCompany);
 
         // Insert test folder
-        insertTestFolder(123L, "Test Folder", exampleCompany, guestRole, null);
+        insertTestFolder(123L, "Test Folder", exampleCompany, guestRoleFolder, null);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
 
-            String requestBody = userRole.getId().toString();
+            String requestBody = userRoleFolder.getId().toString();
 
             RestAssured.given()
                     .header("Authorization", "Bearer validToken")
@@ -118,13 +118,13 @@ public class FolderControllerIntegrationTest {
                     .post("/folders/123/role")
                     .then()
                     .statusCode(200)
-                    .body(equalTo("Role updated successfully."));
+                    .body(equalTo("RoleFolder updated successfully."));
         });
 
         EntityManager em = emf.createEntityManager();
         Folder folder = em.find(Folder.class, 123L);
         assertNotNull(folder);
-        assertEquals(userRole.getId(), folder.getRole().getId());
+        assertEquals(userRoleFolder.getId(), folder.getRoleFolder().getId());
         em.close();
     }
 
@@ -133,18 +133,18 @@ public class FolderControllerIntegrationTest {
         // Create company
         Company exampleCompany = createCompany("ExampleCompany");
 
-        // Create role and subroles
-        Role userRole = createRole("USER", exampleCompany);
-        SubRole mediumSubRole = createSubRole("MEDIUM", exampleCompany);
-        SubRole highSubRole = createSubRole("HIGH", exampleCompany);
+        // Create roleFolder and subroles
+        RoleFolder userRoleFolder = createRole("USER", exampleCompany);
+        SubRoleFolder mediumSubRoleFolder = createSubRole("MEDIUM", exampleCompany);
+        SubRoleFolder highSubRoleFolder = createSubRole("HIGH", exampleCompany);
 
         // Insert test folder
-        insertTestFolder(124L, "Test Folder SubRole", exampleCompany, userRole, mediumSubRole);
+        insertTestFolder(124L, "Test Folder SubRoleFolder", exampleCompany, userRoleFolder, mediumSubRoleFolder);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
 
-            String requestBody = highSubRole.getId().toString();
+            String requestBody = highSubRoleFolder.getId().toString();
 
             RestAssured.given()
                     .header("Authorization", "Bearer validToken")
@@ -154,13 +154,13 @@ public class FolderControllerIntegrationTest {
                     .post("/folders/124/subrole")
                     .then()
                     .statusCode(200)
-                    .body(equalTo("SubRole updated successfully."));
+                    .body(equalTo("SubRoleFolder updated successfully."));
         });
 
         EntityManager em = emf.createEntityManager();
         Folder folder = em.find(Folder.class, 124L);
         assertNotNull(folder);
-        assertEquals(highSubRole.getId(), folder.getSubRole().getId());
+        assertEquals(highSubRoleFolder.getId(), folder.getSubRoleFolder().getId());
         em.close();
     }
 
@@ -170,16 +170,16 @@ public class FolderControllerIntegrationTest {
         Company exampleCompany = createCompany("ExampleCompany");
         Company otherCompany = createCompany("OtherCompany");
 
-        // Create roles and subroles
-        Role userRole = createRole("USER", exampleCompany);
-        Role managerRole = createRole("MANAGER", exampleCompany);
-        SubRole mediumSubRole = createSubRole("MEDIUM", exampleCompany);
-        SubRole highSubRole = createSubRole("HIGH", exampleCompany);
+        // Create roleFolders and subroles
+        RoleFolder userRoleFolder = createRole("USER", exampleCompany);
+        RoleFolder managerRoleFolder = createRole("MANAGER", exampleCompany);
+        SubRoleFolder mediumSubRoleFolder = createSubRole("MEDIUM", exampleCompany);
+        SubRoleFolder highSubRoleFolder = createSubRole("HIGH", exampleCompany);
 
         // Insert test folders
-        insertTestFolder(1L, "Folder One", exampleCompany, userRole, mediumSubRole);
-        insertTestFolder(2L, "Folder Two", exampleCompany, managerRole, highSubRole);
-        insertTestFolder(3L, "Folder Three", otherCompany, userRole, null);
+        insertTestFolder(1L, "Folder One", exampleCompany, userRoleFolder, mediumSubRoleFolder);
+        insertTestFolder(2L, "Folder Two", exampleCompany, managerRoleFolder, highSubRoleFolder);
+        insertTestFolder(3L, "Folder Three", otherCompany, userRoleFolder, null);
 
         JavalinTest.test(app, (server, client) -> {
             RestAssured.port = server.port();
@@ -195,28 +195,28 @@ public class FolderControllerIntegrationTest {
     }
 
     // Helper methods
-    private Role createRole(String roleName, Company company) {
+    private RoleFolder createRole(String roleName, Company company) {
         EntityManager em = emf.createEntityManager();
-        Role role = new Role();
-        role.setName(roleName);
-        role.setCompany(company); // Set the company
+        RoleFolder roleFolder = new RoleFolder();
+        roleFolder.setName(roleName);
+        roleFolder.setCompany(company); // Set the company
         em.getTransaction().begin();
-        em.persist(role);
+        em.persist(roleFolder);
         em.getTransaction().commit();
         em.close();
-        return role;
+        return roleFolder;
     }
 
-    private SubRole createSubRole(String subRoleName, Company company) {
+    private SubRoleFolder createSubRole(String subRoleName, Company company) {
         EntityManager em = emf.createEntityManager();
-        SubRole subRole = new SubRole();
-        subRole.setName(subRoleName);
-        subRole.setCompany(company); // Set the company
+        SubRoleFolder subRoleFolder = new SubRoleFolder();
+        subRoleFolder.setName(subRoleName);
+        subRoleFolder.setCompany(company); // Set the company
         em.getTransaction().begin();
-        em.persist(subRole);
+        em.persist(subRoleFolder);
         em.getTransaction().commit();
         em.close();
-        return subRole;
+        return subRoleFolder;
     }
 
     private Company createCompany(String companyName) {
@@ -230,7 +230,7 @@ public class FolderControllerIntegrationTest {
         return company;
     }
 
-    private void insertTestFolder(Long id, String name, Company company, Role role, SubRole subRole) {
+    private void insertTestFolder(Long id, String name, Company company, RoleFolder roleFolder, SubRoleFolder subRoleFolder) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -238,8 +238,8 @@ public class FolderControllerIntegrationTest {
             folder.setId(id);
             folder.setName(name);
             folder.setCompany(company);
-            folder.setRole(role);
-            folder.setSubRole(subRole);
+            folder.setRoleFolder(roleFolder);
+            folder.setSubRoleFolder(subRoleFolder);
             em.persist(folder);
             em.getTransaction().commit();
         } finally {
@@ -251,8 +251,8 @@ public class FolderControllerIntegrationTest {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.createQuery("DELETE FROM Folder").executeUpdate();
-        em.createQuery("DELETE FROM Role").executeUpdate();
-        em.createQuery("DELETE FROM SubRole").executeUpdate();
+        em.createQuery("DELETE FROM RoleFolder").executeUpdate();
+        em.createQuery("DELETE FROM SubRoleFolder").executeUpdate();
         em.createQuery("DELETE FROM Company").executeUpdate();
         em.getTransaction().commit();
         em.close();
