@@ -56,16 +56,10 @@ function RoleConfig({ folder, setFolder, setSelectedRole }) {
           onChange={(e) => setNewRole(e.target.value)}
           className="add-role-dropdown"
         >
-
-          <option value="">Select Role</option>
+          <option value="">Select Role to Add</option>
           {availableRoles
             .filter(
-              (role) =>
-                !Object.prototype.hasOwnProperty.call(
-                  rolesPermissionsMatrix,
-                  role
-                ) // Ensure role is not already added
-
+              (role) => !Object.prototype.hasOwnProperty.call(rolesPermissionsMatrix, role) // Ensure role is not already added
             )
             .map((role) => (
               <option key={role} value={role}>
@@ -76,9 +70,7 @@ function RoleConfig({ folder, setFolder, setSelectedRole }) {
         <Button text="Add Role" action={handleAddRole} type={true} />
       </div>
 
-
       {/* List of existing roles */}
-
       <ul className="roles-list">
         {Object.keys(rolesPermissionsMatrix).map((role) => (
           <li key={role}>

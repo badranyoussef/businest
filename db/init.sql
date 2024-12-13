@@ -1,2 +1,0 @@
-CREATE DATABASE businest;
-GRANT ALL PRIVILEGES ON DATABASE businest TO postgres;

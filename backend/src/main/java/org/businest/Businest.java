@@ -9,7 +9,6 @@ import org.routes.Route;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.sound.sampled.Port;
 import java.time.LocalDate;
 
 public class Businest {
@@ -17,7 +16,6 @@ public class Businest {
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
         Route route = new Route(emf);
-
 
         ApplicationConfig app = ApplicationConfig.getInstance();
 
